@@ -6,7 +6,6 @@
   <style>
     body {
       margin: 0;
-      padding: 0;
       background: linear-gradient(#ffe4e1, #fff0f5);
       font-family: Arial, sans-serif;
       overflow: hidden;
@@ -34,43 +33,44 @@
       font-size: 18px;
     }
 
-    .groom {
-      background-color: #4169e1;
-    }
+    .groom { background-color: #4169e1; }
+    .bride { background-color: #ff69b4; }
 
-    .bride {
-      background-color: #ff69b4;
-    }
-
-    .dance {
-      animation: wiggle 0.5s infinite alternate;
-    }
+    .dance { animation: wiggle 0.5s infinite alternate; }
 
     @keyframes wiggle {
       from { transform: rotate(-5deg); }
       to { transform: rotate(5deg); }
     }
 
-    .button {
+    .button-bar {
       position: absolute;
-      top: 20px;
-      left: 20px;
-      padding: 10px 20px;
-      background-color: #ff1493;
+      top: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    button {
+      padding: 10px 16px;
+      background: #ff1493;
       color: white;
-      font-size: 16px;
       border: none;
       border-radius: 10px;
       cursor: pointer;
+      font-weight: bold;
       box-shadow: 0 4px 6px rgba(0,0,0,0.2);
     }
 
     .banner {
       position: absolute;
-      top: 10%;
+      top: 60px;
       width: 100%;
       text-align: center;
-      font-size: 32px;
+      font-size: 28px;
       font-weight: bold;
       color: #b22222;
       text-shadow: 1px 1px white;
@@ -91,6 +91,25 @@
       100% { transform: translateY(100vh); opacity: 0; }
     }
 
+    .event-box {
+      position: absolute;
+      bottom: 20%;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(255,255,255,0.9);
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+      display: none;
+      font-size: 18px;
+      text-align: center;
+    }
+
+    .cake, .money, .halay {
+      font-size: 32px;
+      margin-top: 10px;
+    }
+
     audio {
       display: none;
     }
@@ -98,25 +117,50 @@
 </head>
 <body>
 
-<div class="banner">🎉 Helin & Deniz'in Düğününe Hoşgeldiniz 🎉</div>
+<div class="banner">💍 Helin & Deniz'in Süper Düğünü 💍</div>
 
 <div class="scene">
   <div class="character groom" id="deniz">Deniz</div>
   <div class="character bride" id="helin">Helin</div>
 </div>
 
-<button class="button" onclick="startParty()">Dans Başlasın!</button>
+<div class="button-bar">
+  <button onclick="startDance()">Dans</button>
+  <button onclick="cutCake()">Pasta Kes</button>
+  <button onclick="throwGold()">Takı Töreni</button>
+  <button onclick="startHalay()">Halay</button>
+  <button onclick="kidnapGroom()">Damat Kaçır</button>
+</div>
+
+<div class="event-box" id="eventBox"></div>
 
 <audio id="music" loop>
   <source src="https://cdn.pixabay.com/download/audio/2023/03/06/audio_b512849c02.mp3?filename=wedding-march-139217.mp3" type="audio/mpeg">
 </audio>
 
 <script>
-  function startParty() {
-    const helin = document.getElementById('helin');
-    const deniz = document.getElementById('deniz');
-    const music = document.getElementById('music');
+  const helin = document.getElementById('helin');
+  const deniz = document.getElementById('deniz');
+  const music = document.getElementById('music');
+  const eventBox = document.getElementById('eventBox');
 
+  function showEvent(text, emoji) {
+    eventBox.innerHTML = `<strong>${text}</strong><div class="${emoji}">${emojiIcon(emoji)}</div>`;
+    eventBox.style.display = 'block';
+    setTimeout(() => { eventBox.style.display = 'none'; }, 3000);
+  }
+
+  function emojiIcon(type) {
+    switch(type) {
+      case 'cake': return '🎂';
+      case 'money': return '💰💍🎁';
+      case 'halay': return '🕺🕺🕺';
+      case 'kidnap': return '🚗💨';
+      default: return '';
+    }
+  }
+
+  function startDance() {
     helin.classList.add('dance');
     deniz.classList.add('dance');
     music.play();
@@ -129,6 +173,25 @@
       confetti.style.animationDuration = (2 + Math.random() * 2) + 's';
       document.body.appendChild(confetti);
     }
+    showEvent('Dans Başladı!', '💃');
+  }
+
+  function cutCake() {
+    showEvent('Pasta Kesildi!', 'cake');
+  }
+
+  function throwGold() {
+    showEvent('Takılar Takıldı!', 'money');
+  }
+
+  function startHalay() {
+    showEvent('Halay Başladı!', 'halay');
+  }
+
+  function kidnapGroom() {
+    deniz.style.transition = 'all 1s ease-in-out';
+    deniz.style.transform = 'translateX(500px)';
+    showEvent('Damat Kaçırıldı! 😂', 'kidnap');
   }
 </script>
 
