@@ -881,48 +881,124 @@
         </div>
     </div>
     
-    <!-- Mini Game Popup -->
-    <div class="mini-game-container" id="mini-game-container">
-        <div class="mini-game">
-            <div class="close-game" id="close-game">&times;</div>
-            <div class="mini-game-title" id="mini-game-title">Pasta Kesme Oyunu</div>
-            <div class="game-canvas" id="game-canvas"></div>
-            <div class="game-instructions" id="game-instructions">
-                Düğün pastasını mükemmel şekilde kesmeye çalış! Fareyle ekrana tıkla ve pasta dilimlerini kes. Her başarılı kesimde puan kazanacaksın.
-            </div>
-            <button class="game-button" id="start-game">Oyuna Başla</button>
+   <!-- Mini Game Popup -->
+<div class="mini-game-container" id="mini-game-container">
+    <div class="mini-game">
+        <div class="close-game" id="close-game">&times;</div>
+        <div class="mini-game-title" id="mini-game-title">Pasta Kesme Oyunu</div>
+        <div class="game-canvas" id="game-canvas">
+            <div id="cake" style="width:150px;height:150px;background:radial-gradient(circle, #ff9a9e, #fad0c4);border-radius:50%;position:absolute;top:50%;left:50%;transform:translate(-50%, -50%);cursor:pointer;box-shadow:0 5px 15px rgba(0,0,0,0.2);"></div>
         </div>
+        <div class="game-instructions" id="game-instructions">
+            Düğün pastasını mükemmel şekilde kesmeye çalış! Fareyle ekrana tıkla ve pasta dilimlerini kes. Her başarılı kesimde puan kazanacaksın.
+        </div>
+        <button class="game-button" id="start-game">Oyuna Başla</button>
     </div>
+</div>
+
+<script>
+    // Mini oyun fonksiyonları
+    function openMiniGame() {
+        miniGameContainer.classList.add('active');
+        document.getElementById('mini-game-title').textContent = "Pasta Kesme Oyunu";
+        document.getElementById('game-instructions').textContent = 
+            "Düğün pastasını mükemmel şekilde kesmeye çalış! Fareyle ekrana tıkla ve pasta dilimlerini kes. Her başarılı kesimde puan kazanacaksın.";
+        resetCakeGame();
+    }
+
+    function resetCakeGame() {
+        gameCanvas.innerHTML = '<div id="cake" style="width:150px;height:150px;background:radial-gradient(circle, #ff9a9e, #fad0c4);border-radius:50%;position:absolute;top:50%;left:50%;transform:translate(-50%, -50%);cursor:pointer;box-shadow:0 5px 15px rgba(0,0,0,0.2);"></div>';
+        gameState.miniGameScore = 0;
+    }
+
+    function startCakeGame() {
+        resetCakeGame();
+        const cake = document.getElementById('cake');
+        
+        cake.addEventListener('click', function() {
+            gameState.miniGameScore++;
+            
+            // Create slice effect
+            const slice = document.createElement('div');
+            slice.style.position = 'absolute';
+            slice.style.width = '150px';
+            slice.style.height = '5px';
+            slice.style.background = '#fff';
+            slice.style.top = '50%';
+            slice.style.left = '50%';
+            slice.style.transform = `translate(-50%, -50%) rotate(${gameState.miniGameScore * 30}deg)`;
+            slice.style.transformOrigin = 'left center';
+            gameCanvas.appendChild(slice);
+            
+            // Rotate cake
+            cake.style.transform = `translate(-50%, -50%) rotate(${gameState.miniGameScore * 30}deg)`;
+            
+            // Update score display
+            const scoreDisplay = document.createElement('div');
+            scoreDisplay.style.position = 'absolute';
+            scoreDisplay.style.top = '10px';
+            scoreDisplay.style.left = '10px';
+            scoreDisplay.style.fontWeight = 'bold';
+            scoreDisplay.textContent = `Puan: ${gameState.miniGameScore}`;
+            
+            // Clear previous score display
+            const oldScore = gameCanvas.querySelector('.score-display');
+            if (oldScore) oldScore.remove();
+            
+            gameCanvas.appendChild(scoreDisplay);
+            scoreDisplay.classList.add('score-display');
+            
+            // Create hearts animation
+            createHearts(3);
+            
+            // End game after 12 slices (full cake)
+            if (gameState.miniGameScore >= 12) {
+                endMiniGame(gameState.miniGameScore);
+                cake.removeEventListener('click', arguments.callee);
+            }
+        });
+    }
     
-    <script>
-        // Oyun durumu
-        const gameState = {
-            bride: {
-                happiness: 100,
-                stress: 0
-            },
-            groom: {
-                happiness: 100,
-                stress: 0
-            },
-            budget: 50000,
-            progress: {
-                dress: 10,
-                suit: 10,
-                venue: 10,
-                invitation: 10,
-                honeymoon: 0
-            },
-            events: [
-                {
-                    type: "wedding",
-                    time: "Sistem",
-                    message: "Oyun başladı! Deniz ve Helin'in düğün hazırlıklarına hoş geldiniz."
-                }
-            ],
-            miniGameActive: false,
-            miniGameScore: 0
-        };
+    function endMiniGame(score) {
+        // Calculate rewards based on score
+        const happinessBoost = Math.min(score * 2, 20);
+        const budgetBoost = Math.min(score * 500, 5000);
+        
+        // Update game state
+        gameState.bride.happiness = Math.min(100, gameState.bride.happiness + happinessBoost);
+        gameState.groom.happiness = Math.min(100, gameState.groom.happiness + happinessBoost);
+        gameState.budget += budgetBoost;
+        
+        // Add event
+        addEvent('mini-game', `Mini oyun tamamlandı! ${score} dilim pasta kestiniz. Mutluluk +${happinessBoost}%, Bütçe +${budgetBoost}TL`);
+        
+        // Update UI
+        updateStats();
+        
+        // Show completion message
+        gameCanvas.innerHTML = `
+            <div style="width:100%;height:100%;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;">
+                <h3 style="color:#d6336c;margin-bottom:15px;">Tebrikler!</h3>
+                <p>Pastayı mükemmel şekilde kestin!</p>
+                <p>Mutluluk +${happinessBoost}%</p>
+                <p>Bütçe +${budgetBoost}TL</p>
+                <button style="margin-top:20px;padding:8px 20px;background:#d6336c;color:white;border:none;border-radius:20px;cursor:pointer;" onclick="miniGameContainer.classList.remove('active')">Tamam</button>
+            </div>
+        `;
+        
+        // Create confetti effect
+        createConfetti();
+    }
+
+    // Event listeners
+    closeGameBtn.addEventListener('click', () => {
+        miniGameContainer.classList.remove('active');
+    });
+
+    startGameBtn.addEventListener('click', () => {
+        startCakeGame();
+    });
+</script>
 
         // DOM Elementleri
         const tabs = document.querySelectorAll('.tab');
