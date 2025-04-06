@@ -988,3 +988,349 @@
             cake.style.transform = 'translate(-50%, -50%)';
             cake.style.cursor = 'pointer';
             cake.style.boxShadow = '0 5px 15px rgba(0,0,0,0.2
+
+                        cake.style.boxShadow = '0 5px 15px rgba(0,0,0,0.2)';
+            
+            cake.addEventListener('click', () => {
+                score++;
+                createHearts(3);
+                cake.style.transform = `translate(-50%, -50%) rotate(${score * 30}deg)`;
+                
+                // Create slice effect
+                const slice = document.createElement('div');
+                slice.style.position = 'absolute';
+                slice.style.width = '150px';
+                slice.style.height = '5px';
+                slice.style.background = '#fff';
+                slice.style.top = '50%';
+                slice.style.left = '50%';
+                slice.style.transform = `translate(-50%, -50%) rotate(${score * 30}deg)`;
+                slice.style.transformOrigin = 'left center';
+                gameCanvas.appendChild(slice);
+                
+                // Update score display
+                gameCanvas.innerHTML = '';
+                gameCanvas.appendChild(cake);
+                const scoreDisplay = document.createElement('div');
+                scoreDisplay.style.position = 'absolute';
+                scoreDisplay.style.top = '10px';
+                scoreDisplay.style.left = '10px';
+                scoreDisplay.style.fontWeight = 'bold';
+                scoreDisplay.textContent = `Puan: ${score}`;
+                gameCanvas.appendChild(scoreDisplay);
+                
+                // Add all slices back
+                for (let i = 0; i < score; i++) {
+                    const existingSlice = document.createElement('div');
+                    existingSlice.style.position = 'absolute';
+                    existingSlice.style.width = '150px';
+                    existingSlice.style.height = '5px';
+                    existingSlice.style.background = '#fff';
+                    existingSlice.style.top = '50%';
+                    existingSlice.style.left = '50%';
+                    existingSlice.style.transform = `translate(-50%, -50%) rotate(${i * 30}deg)`;
+                    existingSlice.style.transformOrigin = 'left center';
+                    gameCanvas.appendChild(existingSlice);
+                }
+                
+                // End game after 12 slices (full cake)
+                if (score >= 12) {
+                    endMiniGame(score);
+                }
+            });
+            
+            gameCanvas.innerHTML = '';
+            gameCanvas.appendChild(cake);
+        }
+        
+        function endMiniGame(score) {
+            // Calculate rewards based on score
+            const happinessBoost = Math.min(score * 2, 20);
+            const budgetBoost = Math.min(score * 500, 5000);
+            
+            // Update game state
+            gameState.bride.happiness = Math.min(100, gameState.bride.happiness + happinessBoost);
+            gameState.groom.happiness = Math.min(100, gameState.groom.happiness + happinessBoost);
+            gameState.budget += budgetBoost;
+            
+            // Add event
+            addEvent('mini-game', `Mini oyun tamamlandı! ${score} dilim pasta kestiniz. Mutluluk +${happinessBoost}%, Bütçe +${budgetBoost}TL`);
+            
+            // Update UI
+            updateStats();
+            
+            // Show completion message
+            gameCanvas.innerHTML = `
+                <div style="width:100%;height:100%;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;">
+                    <h3 style="color:#d6336c;margin-bottom:15px;">Tebrikler!</h3>
+                    <p>Pastayı mükemmel şekilde kestin!</p>
+                    <p>Mutluluk +${happinessBoost}%</p>
+                    <p>Bütçe +${budgetBoost}TL</p>
+                    <button style="margin-top:20px;padding:8px 20px;background:#d6336c;color:white;border:none;border-radius:20px;cursor:pointer;" onclick="miniGameContainer.classList.remove('active')">Tamam</button>
+                </div>
+            `;
+            
+            // Create confetti effect
+            createConfetti();
+        }
+        
+        // Create floating hearts effect
+        function createHearts(count) {
+            for (let i = 0; i < count; i++) {
+                const heart = document.createElement('div');
+                heart.classList.add('heart');
+                
+                // Random position
+                const xPos = Math.random() * window.innerWidth;
+                heart.style.left = `${xPos}px`;
+                heart.style.bottom = '-20px';
+                
+                // Random size
+                const size = Math.random() * 15 + 10;
+                heart.style.width = `${size}px`;
+                heart.style.height = `${size}px`;
+                
+                // Random color
+                const colors = ['#ff6b9d', '#4dabf7', '#ffd700', '#d6336c'];
+                const color = colors[Math.floor(Math.random() * colors.length)];
+                heart.style.background = color;
+                heart.querySelector('::before').style.background = color;
+                heart.querySelector('::after').style.background = color;
+                
+                // Add to container
+                heartsContainer.appendChild(heart);
+                
+                // Animate
+                const duration = Math.random() * 3 + 2;
+                heart.style.animation = `floatHeart ${duration}s linear forwards`;
+                
+                // Remove after animation
+                setTimeout(() => {
+                    heart.remove();
+                }, duration * 1000);
+            }
+        }
+        
+        // Create confetti effect
+        function createConfetti() {
+            const colors = ['#ff6b9d', '#4dabf7', '#ffd700', '#d6336c'];
+            
+            for (let i = 0; i < 100; i++) {
+                const confetti = document.createElement('div');
+                confetti.classList.add('confetti');
+                
+                // Random position
+                confetti.style.left = `${Math.random() * 100}%`;
+                confetti.style.top = `${Math.random() * 100}%`;
+                
+                // Random size
+                const size = Math.random() * 10 + 5;
+                confetti.style.width = `${size}px`;
+                confetti.style.height = `${size}px`;
+                
+                // Random color
+                confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
+                
+                // Random shape
+                if (Math.random() > 0.5) {
+                    confetti.style.borderRadius = '50%';
+                } else {
+                    confetti.style.transform = `rotate(${Math.random() * 360}deg)`;
+                }
+                
+                // Add to container
+                miniGameContainer.appendChild(confetti);
+                
+                // Animate
+                const duration = Math.random() * 3 + 2;
+                confetti.style.animation = `float ${duration}s ease-out forwards`;
+                confetti.style.opacity = '1';
+                
+                // Remove after animation
+                setTimeout(() => {
+                    confetti.remove();
+                }, duration * 1000);
+            }
+        }
+        
+        // Trigger random action
+        function triggerAction(actionType) {
+            const actions = {
+                bride: [
+                    { message: "Helin mükemmel bir gelinlik buldu! Mutluluğu arttı.", happiness: 15, stress: -5, budget: -5000, progress: 20 },
+                    { message: "Helin'in makyaj denemesi kötü geçti. Stresi arttı.", happiness: -5, stress: 15, budget: 0, progress: 5 },
+                    { message: "Helin düğün dansı provalarına başladı. Mutluluğu arttı.", happiness: 10, stress: -5, budget: -1000, progress: 10 },
+                    { message: "Helin'in gelinliğinde son dakika değişikliği yapılması gerekti. Stres ve bütçe arttı.", happiness: -5, stress: 10, budget: -3000, progress: 15 }
+                ],
+                groom: [
+                    { message: "Deniz harika bir takım elbise buldu! Mutluluğu arttı.", happiness: 15, stress: -5, budget: -3000, progress: 20 },
+                    { message: "Deniz'in saç kesimi istediği gibi olmadı. Stresi arttı.", happiness: -5, stress: 10, budget: 0, progress: 5 },
+                    { message: "Deniz nikah konuşmasını hazırladı. Mutluluğu arttı.", happiness: 10, stress: -5, budget: 0, progress: 10 },
+                    { message: "Deniz'in gömlekleri düğüne yetişmeyecek. Stres arttı.", happiness: -5, stress: 15, budget: -2000, progress: 5 }
+                ],
+                wedding: [
+                    { message: "Düğün mekanı mükemmel seçildi! İkisi de mutlu.", happiness: 10, stress: -10, budget: -15000, progress: 25 },
+                    { message: "DJ iptal etti! Stres seviyeleri yükseldi.", happiness: -10, stress: 20, budget: 0, progress: -10 },
+                    { message: "Menü seçimi harika geçti. Mutluluk arttı.", happiness: 15, stress: -5, budget: -8000, progress: 15 },
+                    { message: "Çiçekçi yanlış çiçek getirdi. Stres arttı.", happiness: -10, stress: 15, budget: -5000, progress: 5 }
+                ],
+                invitation: [
+                    { message: "Davetiyeler başarıyla gönderildi. Misafirler çok beğendi.", happiness: 10, stress: -5, budget: -1000, progress: 20 },
+                    { message: "Davetiye tasarımında hata çıktı. Yeniden basılması gerekiyor.", happiness: -5, stress: 10, budget: -500, progress: 5 },
+                    { message: "Önemli bir misafir davetiyeyi almadığını söylüyor. Stres arttı.", happiness: -10, stress: 15, budget: 0, progress: -5 }
+                ],
+                honeymoon: [
+                    { message: "Harika bir balayı destinasyonu bulundu! İkisi de çok mutlu.", happiness: 20, stress: -10, budget: -10000, progress: 30 },
+                    { message: "Balayı otelinde sorun çıktı. Alternatif aranıyor.", happiness: -10, stress: 15, budget: -5000, progress: 10 },
+                    { message: "Uçak biletleri çok pahalı. Bütçe aşılıyor.", happiness: -5, stress: 10, budget: -8000, progress: 15 }
+                ]
+            };
+            
+            const possibleActions = actions[actionType];
+            const selectedAction = possibleActions[Math.floor(Math.random() * possibleActions.length)];
+            
+            // Update game state
+            gameState.bride.happiness = Math.max(0, Math.min(100, gameState.bride.happiness + selectedAction.happiness));
+            gameState.bride.stress = Math.max(0, Math.min(100, gameState.bride.stress + selectedAction.stress));
+            gameState.groom.happiness = Math.max(0, Math.min(100, gameState.groom.happiness + selectedAction.happiness));
+            gameState.groom.stress = Math.max(0, Math.min(100, gameState.groom.stress + selectedAction.stress));
+            gameState.budget = Math.max(0, gameState.budget + selectedAction.budget);
+            
+            // Update progress
+            if (actionType === 'bride') {
+                gameState.progress.dress = Math.min(100, gameState.progress.dress + selectedAction.progress);
+            } else if (actionType === 'groom') {
+                gameState.progress.suit = Math.min(100, gameState.progress.suit + selectedAction.progress);
+            } else if (actionType === 'wedding') {
+                gameState.progress.venue = Math.min(100, gameState.progress.venue + selectedAction.progress);
+            } else if (actionType === 'invitation') {
+                gameState.progress.invitation = Math.min(100, gameState.progress.invitation + selectedAction.progress);
+            } else if (actionType === 'honeymoon') {
+                gameState.progress.honeymoon = Math.min(100, gameState.progress.honeymoon + selectedAction.progress);
+            }
+            
+            // Add event
+            addEvent(actionType, selectedAction.message);
+            
+            // Update UI
+            updateStats();
+            updateProgressBars();
+            
+            // Create floating hearts
+            if (selectedAction.happiness > 0) {
+                createHearts(Math.min(5, selectedAction.happiness));
+            }
+            
+            // Check if all preparations are complete
+            checkWeddingCompletion();
+        }
+        
+        // Add event to log
+        function addEvent(type, message) {
+            const now = new Date();
+            const timeString = now.toLocaleTimeString();
+            
+            const eventTypes = {
+                'bride': { class: 'bride-event', text: 'Gelin' },
+                'groom': { class: 'groom-event', text: 'Damat' },
+                'wedding': { class: 'wedding-event', text: 'Düğün' },
+                'invitation': { class: 'wedding-event', text: 'Davetiye' },
+                'honeymoon': { class: 'wedding-event', text: 'Balayı' },
+                'mini-game': { class: 'wedding-event', text: 'Oyun' }
+            };
+            
+            const eventType = eventTypes[type] || eventTypes['wedding'];
+            
+            const eventCard = document.createElement('div');
+            eventCard.className = 'event-card';
+            eventCard.innerHTML = `
+                <div class="event-header">
+                    <span class="event-time">[${timeString}]</span>
+                    <span class="event-type ${eventType.class}">${eventType.text}</span>
+                </div>
+                <div class="event-message">${message}</div>
+            `;
+            
+            document.getElementById('events-container').prepend(eventCard);
+            
+            // Add to game state
+            gameState.events.unshift({
+                type,
+                time: timeString,
+                message
+            });
+        }
+        
+        // Update stats display
+        function updateStats() {
+            // Bride stats
+            document.getElementById('bride-happiness').textContent = `${gameState.bride.happiness}%`;
+            document.getElementById('bride-happiness-bar').style.width = `${gameState.bride.happiness}%`;
+            document.getElementById('bride-stress').textContent = `${gameState.bride.stress}%`;
+            document.getElementById('bride-stress-bar').style.width = `${gameState.bride.stress}%`;
+            
+            // Groom stats
+            document.getElementById('groom-happiness').textContent = `${gameState.groom.happiness}%`;
+            document.getElementById('groom-happiness-bar').style.width = `${gameState.groom.happiness}%`;
+            document.getElementById('groom-stress').textContent = `${gameState.groom.stress}%`;
+            document.getElementById('groom-stress-bar').style.width = `${gameState.groom.stress}%`;
+            
+            // Budget
+            document.getElementById('budget-amount').textContent = `${gameState.budget.toLocaleString('tr-TR')} TL`;
+            const budgetPercent = (gameState.budget / 100000) * 100;
+            document.getElementById('budget-fill').style.width = `${budgetPercent}%`;
+            
+            // Change color based on budget level
+            if (gameState.budget < 20000) {
+                document.getElementById('budget-fill').style.background = 'linear-gradient(90deg, #ff7675, #d63031)';
+            } else if (gameState.budget < 40000) {
+                document.getElementById('budget-fill').style.background = 'linear-gradient(90deg, #fdcb6e, #e17055)';
+            } else {
+                document.getElementById('budget-fill').style.background = 'linear-gradient(90deg, #ff9a9e, #fad0c4)';
+            }
+        }
+        
+        // Update progress bars
+        function updateProgressBars() {
+            document.getElementById('dress-bar').style.width = `${gameState.progress.dress}%`;
+            document.getElementById('dress-progress').textContent = `${gameState.progress.dress}%`;
+            
+            document.getElementById('suit-bar').style.width = `${gameState.progress.suit}%`;
+            document.getElementById('suit-progress').textContent = `${gameState.progress.suit}%`;
+            
+            document.getElementById('venue-bar').style.width = `${gameState.progress.venue}%`;
+            document.getElementById('venue-progress').textContent = `${gameState.progress.venue}%`;
+            
+            document.getElementById('invitation-bar').style.width = `${gameState.progress.invitation}%`;
+            document.getElementById('invitation-progress').textContent = `${gameState.progress.invitation}%`;
+            
+            document.getElementById('honeymoon-bar').style.width = `${gameState.progress.honeymoon}%`;
+            document.getElementById('honeymoon-progress').textContent = `${gameState.progress.honeymoon}%`;
+        }
+        
+        // Check if wedding preparations are complete
+        function checkWeddingCompletion() {
+            const { dress, suit, venue, invitation, honeymoon } = gameState.progress;
+            
+            if (dress >= 100 && suit >= 100 && venue >= 100 && invitation >= 100 && honeymoon >= 100) {
+                // Wedding is ready!
+                addEvent('wedding', 'Tüm hazırlıklar tamamlandı! Deniz ve Helin mükemmel bir düğün geçirdi!');
+                
+                // Show celebration
+                createConfetti();
+                createHearts(20);
+                
+                // Disable action buttons
+                actionCards.forEach(card => {
+                    card.style.opacity = '0.5';
+                    card.style.pointerEvents = 'none';
+                });
+            }
+        }
+        
+        // Initialize game
+        updateStats();
+        updateProgressBars();
+    </script>
+</body>
+</html>
