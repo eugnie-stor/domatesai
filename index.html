@@ -999,6 +999,34 @@
         startCakeGame();
     });
 </script>
+        // Oyun durumu
+        const gameState = {
+            bride: {
+                happiness: 100,
+                stress: 0
+            },
+            groom: {
+                happiness: 100,
+                stress: 0
+            },
+            budget: 50000,
+            progress: {
+                dress: 10,
+                suit: 10,
+                venue: 10,
+                invitation: 10,
+                honeymoon: 0
+            },
+            events: [
+                {
+                    type: "wedding",
+                    time: "Sistem",
+                    message: "Oyun başladı! Deniz ve Helin'in düğün hazırlıklarına hoş geldiniz."
+                }
+            ],
+            miniGameActive: false,
+            miniGameScore: 0
+        };
 
         // DOM Elementleri
         const tabs = document.querySelectorAll('.tab');
@@ -1408,4 +1436,3 @@
     </script>
 </body>
 </html>
-    
