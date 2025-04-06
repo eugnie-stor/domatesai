@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <title>Deniz & Helin Düğünü</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(#ffe4e1, #fff0f5);
+      font-family: Arial, sans-serif;
+      overflow: hidden;
+    }
+
+    .scene {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: flex-end;
+    }
+
+    .character {
+      width: 100px;
+      height: 180px;
+      margin: 20px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      color: white;
+      font-size: 18px;
+    }
+
+    .groom {
+      background-color: #4169e1;
+    }
+
+    .bride {
+      background-color: #ff69b4;
+    }
+
+    .dance {
+      animation: wiggle 0.5s infinite alternate;
+    }
+
+    @keyframes wiggle {
+      from { transform: rotate(-5deg); }
+      to { transform: rotate(5deg); }
+    }
+
+    .button {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      padding: 10px 20px;
+      background-color: #ff1493;
+      color: white;
+      font-size: 16px;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+    }
+
+    .banner {
+      position: absolute;
+      top: 10%;
+      width: 100%;
+      text-align: center;
+      font-size: 32px;
+      font-weight: bold;
+      color: #b22222;
+      text-shadow: 1px 1px white;
+    }
+
+    .confetti {
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      background: pink;
+      border-radius: 50%;
+      animation: fall 3s linear infinite;
+      z-index: 10;
+    }
+
+    @keyframes fall {
+      0% { transform: translateY(0); opacity: 1; }
+      100% { transform: translateY(100vh); opacity: 0; }
+    }
+
+    audio {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+
+<div class="banner">🎉 Helin & Deniz'in Düğününe Hoşgeldiniz 🎉</div>
+
+<div class="scene">
+  <div class="character groom" id="deniz">Deniz</div>
+  <div class="character bride" id="helin">Helin</div>
+</div>
+
+<button class="button" onclick="startParty()">Dans Başlasın!</button>
+
+<audio id="music" loop>
+  <source src="https://cdn.pixabay.com/download/audio/2023/03/06/audio_b512849c02.mp3?filename=wedding-march-139217.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+  function startParty() {
+    const helin = document.getElementById('helin');
+    const deniz = document.getElementById('deniz');
+    const music = document.getElementById('music');
+
+    helin.classList.add('dance');
+    deniz.classList.add('dance');
+    music.play();
+
+    for (let i = 0; i < 50; i++) {
+      const confetti = document.createElement('div');
+      confetti.classList.add('confetti');
+      confetti.style.left = Math.random() * window.innerWidth + 'px';
+      confetti.style.background = ['pink', 'red', 'hotpink', 'white'][Math.floor(Math.random() * 4)];
+      confetti.style.animationDuration = (2 + Math.random() * 2) + 's';
+      document.body.appendChild(confetti);
+    }
+  }
+</script>
+
+</body>
+</html>
