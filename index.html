@@ -1,199 +1,530 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-  <meta charset="UTF-8">
-  <title>Deniz & Helin Düğünü</title>
-  <style>
-    body {
-      margin: 0;
-      background: linear-gradient(#ffe4e1, #fff0f5);
-      font-family: Arial, sans-serif;
-      overflow: hidden;
-    }
-
-    .scene {
-      position: relative;
-      width: 100vw;
-      height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: flex-end;
-    }
-
-    .character {
-      width: 100px;
-      height: 180px;
-      margin: 20px;
-      border-radius: 10px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: bold;
-      color: white;
-      font-size: 18px;
-    }
-
-    .groom { background-color: #4169e1; }
-    .bride { background-color: #ff69b4; }
-
-    .dance { animation: wiggle 0.5s infinite alternate; }
-
-    @keyframes wiggle {
-      from { transform: rotate(-5deg); }
-      to { transform: rotate(5deg); }
-    }
-
-    .button-bar {
-      position: absolute;
-      top: 10px;
-      left: 50%;
-      transform: translateX(-50%);
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-      justify-content: center;
-    }
-
-    button {
-      padding: 10px 16px;
-      background: #ff1493;
-      color: white;
-      border: none;
-      border-radius: 10px;
-      cursor: pointer;
-      font-weight: bold;
-      box-shadow: 0 4px 6px rgba(0,0,0,0.2);
-    }
-
-    .banner {
-      position: absolute;
-      top: 60px;
-      width: 100%;
-      text-align: center;
-      font-size: 28px;
-      font-weight: bold;
-      color: #b22222;
-      text-shadow: 1px 1px white;
-    }
-
-    .confetti {
-      position: absolute;
-      width: 10px;
-      height: 10px;
-      background: pink;
-      border-radius: 50%;
-      animation: fall 3s linear infinite;
-      z-index: 10;
-    }
-
-    @keyframes fall {
-      0% { transform: translateY(0); opacity: 1; }
-      100% { transform: translateY(100vh); opacity: 0; }
-    }
-
-    .event-box {
-      position: absolute;
-      bottom: 20%;
-      left: 50%;
-      transform: translateX(-50%);
-      background: rgba(255,255,255,0.9);
-      padding: 20px;
-      border-radius: 12px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-      display: none;
-      font-size: 18px;
-      text-align: center;
-    }
-
-    .cake, .money, .halay {
-      font-size: 32px;
-      margin-top: 10px;
-    }
-
-    audio {
-      display: none;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deniz ve Helin'in Düğün Oyunu</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #ffd6e7, #c8f4ff);
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            color: #333;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            text-align: center;
+            padding: 30px 0;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 15px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        h1 {
+            color: #e91e63;
+            font-size: 3em;
+            margin: 0;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        .subtitle {
+            color: #2196f3;
+            font-size: 1.5em;
+            margin-top: 10px;
+        }
+        
+        .game-area {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .characters {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .character {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            padding: 15px;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+        
+        .character:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        }
+        
+        .groom {
+            background: linear-gradient(135deg, #e3f2fd, #bbdefb);
+            border-left: 5px solid #2196f3;
+        }
+        
+        .bride {
+            background: linear-gradient(135deg, #fce4ec, #f8bbd0);
+            border-left: 5px solid #e91e63;
+        }
+        
+        .character-img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-right: 20px;
+            border: 3px solid white;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+        }
+        
+        .character-info h3 {
+            margin: 0 0 5px 0;
+            font-size: 1.5em;
+        }
+        
+        .character-info p {
+            margin: 5px 0;
+        }
+        
+        .stats {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .stat {
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            font-weight: bold;
+        }
+        
+        .happiness {
+            background-color: #4caf50;
+            color: white;
+        }
+        
+        .stress {
+            background-color: #f44336;
+            color: white;
+        }
+        
+        .budget {
+            background-color: #ff9800;
+            color: white;
+        }
+        
+        .actions {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .action-buttons {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .action-btn {
+            padding: 15px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            min-height: 80px;
+        }
+        
+        .action-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .action-btn i {
+            margin-right: 10px;
+            font-size: 1.5em;
+        }
+        
+        .bride-btn {
+            background: linear-gradient(135deg, #f8bbd0, #f48fb1);
+            color: #880e4f;
+        }
+        
+        .groom-btn {
+            background: linear-gradient(135deg, #bbdefb, #90caf9);
+            color: #0d47a1;
+        }
+        
+        .wedding-btn {
+            background: linear-gradient(135deg, #d1c4e9, #b39ddb);
+            color: #4a148c;
+        }
+        
+        .event-btn {
+            background: linear-gradient(135deg, #c8e6c9, #a5d6a7);
+            color: #1b5e20;
+        }
+        
+        .story {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .story h2 {
+            color: #e91e63;
+            margin-top: 0;
+        }
+        
+        .story p {
+            line-height: 1.6;
+        }
+        
+        .event-log {
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            border-radius: 15px;
+            padding: 20px;
+            height: 200px;
+            overflow-y: auto;
+            font-family: 'Courier New', Courier, monospace;
+            margin-bottom: 30px;
+        }
+        
+        .log-entry {
+            margin-bottom: 10px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #444;
+        }
+        
+        .log-time {
+            color: #aaa;
+            font-size: 0.8em;
+            margin-right: 10px;
+        }
+        
+        .progress-container {
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .progress-bar {
+            height: 30px;
+            background-color: #e0e0e0;
+            border-radius: 15px;
+            margin-bottom: 15px;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            border-radius: 15px;
+            transition: width 0.5s ease;
+        }
+        
+        .progress-labels {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 5px;
+        }
+        
+        .progress-title {
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 15px;
+            margin-top: 30px;
+        }
+        
+        @media (max-width: 768px) {
+            .game-area {
+                flex-direction: column;
+            }
+            
+            .action-buttons {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
+    <div class="container">
+        <header>
+            <h1>Deniz ve Helin'in Düğün Oyunu</h1>
+            <div class="subtitle">Mutluluğa Giden Yolculuk</div>
+        </header>
+        
+        <div class="story">
+            <h2>Aşk Hikayeleri</h2>
+            <p>Deniz ve Helin, üniversite yıllarında tanışıp birbirlerine aşık olmuş iki genç. Yıllar süren arkadaşlıkları, geçen yıl nişanlanmalarıyla daha da güçlendi. Şimdi ise hayallerindeki düğün için hazırlıklar yapıyorlar. Onlara bu özel günlerinde yardımcı olmak ister misiniz?</p>
+        </div>
+        
+        <div class="game-area">
+            <div class="characters">
+                <h2>Karakterler</h2>
+                
+                <div class="character bride">
+                    <img src="https://i.pinimg.com/564x/3a/9b/85/3a9b85c5a9a4a8d0f8e4e4a4f4e4e4e4.jpg" alt="Helin" class="character-img">
+                    <div class="character-info">
+                        <h3>Helin</h3>
+                        <p>25 yaşında, mimar</p>
+                        <div class="stats">
+                            <div class="stat happiness">Mutluluk: <span id="bride-happiness">100</span>%</div>
+                            <div class="stat stress">Stres: <span id="bride-stress">0</span>%</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="character groom">
+                    <img src="https://i.pinimg.com/564x/3a/9b/85/3a9b85c5a9a4a8d0f8e4e4a4f4e4e4e4.jpg" alt="Deniz" class="character-img">
+                    <div class="character-info">
+                        <h3>Deniz</h3>
+                        <p>27 yaşında, yazılım mühendisi</p>
+                        <div class="stats">
+                            <div class="stat happiness">Mutluluk: <span id="groom-happiness">100</span>%</div>
+                            <div class="stat stress">Stres: <span id="groom-stress">0</span>%</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="progress-container">
+                    <div class="progress-title">Düğün Bütçesi</div>
+                    <div class="progress-labels">
+                        <span>0 TL</span>
+                        <span id="budget-amount">50,000 TL</span>
+                        <span>100,000 TL</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="budget-bar" style="width: 50%; background-color: #4caf50;"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="actions">
+                <h2>Yapılacaklar</h2>
+                <p>Deniz ve Helin'in düğün hazırlıklarını yönetmek için aşağıdaki seçenekleri kullanın.</p>
+                
+                <div class="action-buttons">
+                    <button class="action-btn bride-btn" onclick="brideAction()">
+                        <i class="fas fa-female"></i> Gelin Hazırlıkları
+                    </button>
+                    
+                    <button class="action-btn groom-btn" onclick="groomAction()">
+                        <i class="fas fa-male"></i> Damat Hazırlıkları
+                    </button>
+                    
+                    <button class="action-btn wedding-btn" onclick="weddingAction()">
+                        <i class="fas fa-ring"></i> Düğün Organizasyonu
+                    </button>
+                    
+                    <button class="action-btn event-btn" onclick="weddingDayAction()">
+                        <i class="fas fa-calendar-alt"></i> Düğün Günü
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="event-log">
+            <h2 style="color: white; margin-top: 0;">Olay Kaydı</h2>
+            <div id="log-container">
+                <div class="log-entry">
+                    <span class="log-time">[Sistem]:</span> Oyun başladı! Deniz ve Helin'in düğün hazırlıklarına hoş geldiniz.
+                </div>
+            </div>
+        </div>
+        
+        <div class="progress-container">
+            <h2>Düğün Hazırlık Durumu</h2>
+            
+            <div class="progress-title">Gelinlik Seçimi</div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="dress-bar" style="width: 10%; background-color: #e91e63;"></div>
+            </div>
+            
+            <div class="progress-title">Takım Elbise Seçimi</div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="suit-bar" style="width: 10%; background-color: #2196f3;"></div>
+            </div>
+            
+            <div class="progress-title">Mekan Hazırlıkları</div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="venue-bar" style="width: 10%; background-color: #9c27b0;"></div>
+            </div>
+            
+            <div class="progress-title">Davetiye Gönderimi</div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="invitation-bar" style="width: 10%; background-color: #ff9800;"></div>
+            </div>
+        </div>
+        
+        <footer>
+            <p>© 2023 Deniz ve Helin'in Düğün Oyunu | Tüm hakları saklıdır</p>
+        </footer>
+    </div>
 
-<div class="banner">💍 Helin & Deniz'in Süper Düğünü 💍</div>
+    <script>
+        // Oyun durumu
+        const gameState = {
+            bride: {
+                happiness: 100,
+                stress: 0
+            },
+            groom: {
+                happiness: 100,
+                stress: 0
+            },
+            budget: 50000,
+            progress: {
+                dress: 10,
+                suit: 10,
+                venue: 10,
+                invitation: 10
+            }
+        };
 
-<div class="scene">
-  <div class="character groom" id="deniz">Deniz</div>
-  <div class="character bride" id="helin">Helin</div>
-</div>
+        // Olay kaydına yaz
+        function logEvent(message) {
+            const now = new Date();
+            const timeString = `[${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}:${now.getSeconds().toString().padStart(2, '0')}]`;
+            
+            const logEntry = document.createElement('div');
+            logEntry.className = 'log-entry';
+            logEntry.innerHTML = `<span class="log-time">${timeString}</span> ${message}`;
+            
+            document.getElementById('log-container').prepend(logEntry);
+        }
 
-<div class="button-bar">
-  <button onclick="startDance()">Dans</button>
-  <button onclick="cutCake()">Pasta Kes</button>
-  <button onclick="throwGold()">Takı Töreni</button>
-  <button onclick="startHalay()">Halay</button>
-  <button onclick="kidnapGroom()">Damat Kaçır</button>
-</div>
+        // İlerleme çubuklarını güncelle
+        function updateProgressBars() {
+            document.getElementById('dress-bar').style.width = `${gameState.progress.dress}%`;
+            document.getElementById('suit-bar').style.width = `${gameState.progress.suit}%`;
+            document.getElementById('venue-bar').style.width = `${gameState.progress.venue}%`;
+            document.getElementById('invitation-bar').style.width = `${gameState.progress.invitation}%`;
+        }
 
-<div class="event-box" id="eventBox"></div>
+        // Durum göstergelerini güncelle
+        function updateStats() {
+            document.getElementById('bride-happiness').textContent = gameState.bride.happiness;
+            document.getElementById('bride-stress').textContent = gameState.bride.stress;
+            document.getElementById('groom-happiness').textContent = gameState.groom.happiness;
+            document.getElementById('groom-stress').textContent = gameState.groom.stress;
+            
+            document.getElementById('budget-amount').textContent = new Intl.NumberFormat('tr-TR').format(gameState.budget) + ' TL';
+            document.getElementById('budget-bar').style.width = `${(gameState.budget / 100000) * 100}%`;
+            
+            // Bütçe azaldıkça renk değiştir
+            if (gameState.budget < 20000) {
+                document.getElementById('budget-bar').style.backgroundColor = '#f44336';
+            } else if (gameState.budget < 40000) {
+                document.getElementById('budget-bar').style.backgroundColor = '#ff9800';
+            } else {
+                document.getElementById('budget-bar').style.backgroundColor = '#4caf50';
+            }
+        }
 
-<audio id="music" loop>
-  <source src="https://cdn.pixabay.com/download/audio/2023/03/06/audio_b512849c02.mp3?filename=wedding-march-139217.mp3" type="audio/mpeg">
-</audio>
+        // Rastgele olay üret
+        function randomEvent(category) {
+            const events = {
+                bride: [
+                    { message: "Helin mükemmel bir gelinlik buldu! Mutluluğu arttı.", happiness: 15, stress: -5, budget: -5000, progress: 20 },
+                    { message: "Helin'in makyaj denemesi kötü geçti. Stresi arttı.", happiness: -5, stress: 15, budget: 0, progress: 5 },
+                    { message: "Helin düğün dansı provalarına başladı. Mutluluğu arttı.", happiness: 10, stress: -5, budget: -1000, progress: 10 },
+                    { message: "Helin'in gelinliğinde son dakika değişikliği yapılması gerekti. Stres ve bütçe arttı.", happiness: -5, stress: 10, budget: -3000, progress: 15 }
+                ],
+                groom: [
+                    { message: "Deniz harika bir takım elbise buldu! Mutluluğu arttı.", happiness: 15, stress: -5, budget: -3000, progress: 20 },
+                    { message: "Deniz'in saç kesimi istediği gibi olmadı. Stresi arttı.", happiness: -5, stress: 10, budget: 0, progress: 5 },
+                    { message: "Deniz nikah konuşmasını hazırladı. Mutluluğu arttı.", happiness: 10, stress: -5, budget: 0, progress: 10 },
+                    { message: "Deniz'in gömlekleri düğüne yetişmeyecek. Stres arttı.", happiness: -5, stress: 15, budget: -2000, progress: 5 }
+                ],
+                wedding: [
+                    { message: "Düğün mekanı mükemmel seçildi! İkisi de mutlu.", happiness: 10, stress: -10, budget: -15000, progress: 25 },
+                    { message: "DJ iptal etti! Stres seviyeleri yükseldi.", happiness: -10, stress: 20, budget: 0, progress: -10 },
+                    { message: "Menü seçimi harika geçti. Mutluluk arttı.", happiness: 15, stress: -5, budget: -8000, progress: 15 },
+                    { message: "Çiçekçi yanlış çiçek getirdi. Stres arttı.", happiness: -10, stress: 15, budget: -5000, progress: 5 }
+                ],
+                day: [
+                    { message: "Düğün mükemmel geçti! Deniz ve Helin çok mutlu!", happiness: 30, stress: -20, budget: -10000, progress: 40 },
+                    { message: "Gelinin pastası düştü! Helin çok üzüldü.", happiness: -20, stress: 25, budget: -5000, progress: -5 },
+                    { message: "Damat dans ederken düştü! Deniz utandı.", happiness: -15, stress: 20, budget: 0, progress: -5 },
+                    { message: "Sürpriz havai fişek gösterisi! Helin çok mutlu oldu.", happiness: 25, stress: -15, budget: -8000, progress: 20 }
+                ]
+            };
 
-<script>
-  const helin = document.getElementById('helin');
-  const deniz = document.getElementById('deniz');
-  const music = document.getElementById('music');
-  const eventBox = document.getElementById('eventBox');
+            const possibleEvents = events[category];
+            const selectedEvent = possibleEvents[Math.floor(Math.random() * possibleEvents.length)];
+            
+            // Durumu güncelle
+            gameState.bride.happiness = Math.max(0, Math.min(100, gameState.bride.happiness + selectedEvent.happiness));
+            gameState.bride.stress = Math.max(0, Math.min(100, gameState.bride.stress + selectedEvent.stress));
+            
+            gameState.groom.happiness = Math.max(0, Math.min(100, gameState.groom.happiness + selectedEvent.happiness));
+            gameState.groom.stress = Math.max(0, Math.min(100, gameState.groom.stress + selectedEvent.stress));
+            
+            gameState.budget = Math.max(0, gameState.budget + selectedEvent.budget);
+            
+            // İlerlemeyi güncelle (tüm kategorilere dağıt)
+            for (const key in gameState.progress) {
+                gameState.progress[key] = Math.max(0, Math.min(100, gameState.progress[key] + (selectedEvent.progress / 4)));
+            }
+            
+            logEvent(selectedEvent.message);
+            updateStats();
+            updateProgressBars();
+        }
 
-  function showEvent(text, emoji) {
-    eventBox.innerHTML = `<strong>${text}</strong><div class="${emoji}">${emojiIcon(emoji)}</div>`;
-    eventBox.style.display = 'block';
-    setTimeout(() => { eventBox.style.display = 'none'; }, 3000);
-  }
+        // Buton fonksiyonları
+        function brideAction() {
+            randomEvent('bride');
+        }
 
-  function emojiIcon(type) {
-    switch(type) {
-      case 'cake': return '🎂';
-      case 'money': return '💰💍🎁';
-      case 'halay': return '🕺🕺🕺';
-      case 'kidnap': return '🚗💨';
-      default: return '';
-    }
-  }
+        function groomAction() {
+            randomEvent('groom');
+        }
 
-  function startDance() {
-    helin.classList.add('dance');
-    deniz.classList.add('dance');
-    music.play();
+        function weddingAction() {
+            randomEvent('wedding');
+        }
 
-    for (let i = 0; i < 50; i++) {
-      const confetti = document.createElement('div');
-      confetti.classList.add('confetti');
-      confetti.style.left = Math.random() * window.innerWidth + 'px';
-      confetti.style.background = ['pink', 'red', 'hotpink', 'white'][Math.floor(Math.random() * 4)];
-      confetti.style.animationDuration = (2 + Math.random() * 2) + 's';
-      document.body.appendChild(confetti);
-    }
-    showEvent('Dans Başladı!', '💃');
-  }
+        function weddingDayAction() {
+            randomEvent('day');
+        }
 
-  function cutCake() {
-    showEvent('Pasta Kesildi!', 'cake');
-  }
-
-  function throwGold() {
-    showEvent('Takılar Takıldı!', 'money');
-  }
-
-  function startHalay() {
-    showEvent('Halay Başladı!', 'halay');
-  }
-
-  function kidnapGroom() {
-    deniz.style.transition = 'all 1s ease-in-out';
-    deniz.style.transform = 'translateX(500px)';
-    showEvent('Damat Kaçırıldı! 😂', 'kidnap');
-  }
-</script>
-
+        // Başlangıç durumunu ayarla
+        updateStats();
+        updateProgressBars();
+    </script>
 </body>
 </html>
