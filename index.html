@@ -16,18 +16,19 @@
             --shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
             --border-radius: 12px;
             --navbar-width: 70px;
+            --transition: all 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55);
         }
         
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            transition: all 0.3s ease;
+            transition: var(--transition);
         }
         
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #1a1a1a;
+            background-color: var(--dark-color);
             color: var(--text-color);
             display: flex;
             min-height: 100vh;
@@ -62,7 +63,6 @@
             background-color: rgba(255, 255, 255, 0.1);
             color: white;
             font-size: 20px;
-            transition: all 0.3s ease;
         }
         
         .nav-item:hover {
@@ -81,17 +81,18 @@
             background-color: var(--dark-color);
             color: white;
             padding: 8px 12px;
-            border-radius: 6px;
+            border-radius: var(--border-radius);
             font-size: 14px;
             white-space: nowrap;
             opacity: 0;
             pointer-events: none;
-            transition: opacity 0.3s;
+            transition: var(--transition);
             box-shadow: var(--shadow);
         }
         
         .nav-item:hover .tooltip {
             opacity: 1;
+            transform: translateX(0);
         }
         
         /* Ana İçerik */
@@ -328,7 +329,7 @@
             box-shadow: var(--shadow);
             opacity: 0;
             transform: translateY(10px);
-            transition: all 0.3s ease;
+            transition: var(--transition);
             z-index: 5;
         }
         
@@ -414,7 +415,7 @@
             z-index: 1000;
             opacity: 0;
             visibility: hidden;
-            transition: all 0.3s ease;
+            transition: var(--transition);
         }
         
         .modal.active {
@@ -430,7 +431,7 @@
             padding: 25px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
             transform: translateY(-20px);
-            transition: transform 0.3s ease;
+            transition: var(--transition);
         }
         
         .modal.active .modal-content {
@@ -550,7 +551,7 @@
             border: none;
             cursor: pointer;
             font-weight: 500;
-            transition: all 0.3s;
+            transition: var(--transition);
         }
         
         .btn-primary {
@@ -573,6 +574,116 @@
             background-color: rgba(255, 255, 255, 0.2);
         }
         
+        /* History Sidebar */
+        .history-sidebar {
+            position: fixed;
+            top: 0;
+            right: var(--navbar-width);
+            width: 300px;
+            height: 100vh;
+            background-color: var(--dark-color);
+            box-shadow: var(--shadow);
+            transform: translateX(100%);
+            transition: var(--transition);
+            z-index: 9;
+            padding: 20px;
+            overflow-y: auto;
+        }
+        
+        .history-sidebar.active {
+            transform: translateX(0);
+        }
+        
+        .history-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .history-title {
+            font-size: 18px;
+            color: var(--primary-color);
+        }
+        
+        .close-history {
+            background: none;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+            color: var(--text-color);
+        }
+        
+        .history-item {
+            padding: 12px;
+            margin-bottom: 10px;
+            background-color: rgba(255, 255, 255, 0.05);
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: var(--transition);
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        
+        .history-item:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        .history-item.active {
+            background-color: var(--primary-color);
+        }
+        
+        /* Light Theme */
+        body.light-theme {
+            --dark-color: #f5f5f5;
+            --light-color: #ffffff;
+            --text-color: #333333;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            background-color: #eaeaea;
+        }
+        
+        body.light-theme .ai-message {
+            background-color: rgba(0, 0, 0, 0.05);
+        }
+        
+        body.light-theme .input-area,
+        body.light-theme .chat-messages,
+        body.light-theme .header {
+            background-color: var(--light-color);
+        }
+        
+        body.light-theme .right-navbar,
+        body.light-theme .history-sidebar {
+            background-color: #e0e0e0;
+        }
+        
+        body.light-theme .nav-item {
+            background-color: rgba(0, 0, 0, 0.1);
+            color: #333;
+        }
+        
+        body.light-theme .nav-item:hover {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        body.light-theme .nav-item .tooltip {
+            background-color: #333;
+            color: white;
+        }
+        
+        body.light-theme .history-item {
+            background-color: rgba(0, 0, 0, 0.05);
+            color: #333;
+        }
+        
+        body.light-theme .history-item:hover {
+            background-color: rgba(0, 0, 0, 0.1);
+        }
+        
         /* Responsive */
         @media (max-width: 768px) {
             .right-navbar {
@@ -589,6 +700,10 @@
             
             .header-title i {
                 font-size: 24px;
+            }
+            
+            .history-sidebar {
+                width: 250px;
             }
         }
         
@@ -619,6 +734,11 @@
             
             #user-input {
                 padding: 10px 15px;
+            }
+            
+            .history-sidebar {
+                width: 100%;
+                right: 0;
             }
         }
     </style>
@@ -656,7 +776,7 @@
                 <div class="message ai-message">
                     Selam hacı! Ben Domates AI Hacılar'ın en gelişmiş sürümüyüm. Bana:
                     <br><br>
-                    - Matematik problemleri çözdürebilirsin<br>
+                    - Matematik problemleri çözdürebilirsin (100x100'e kadar)<br>
                     - Hikaye yazdırabilirsin<br>
                     - Resim yükleyip analiz ettirebilirsin<br>
                     - Ses kaydı gönderebilirsin<br>
@@ -731,6 +851,19 @@
         </div>
     </div>
 
+    <!-- Sohbet Geçmişi Sidebar -->
+    <div class="history-sidebar" id="history-sidebar">
+        <div class="history-header">
+            <h3 class="history-title">Sohbet Geçmişi</h3>
+            <button class="close-history" id="close-history">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div id="history-list">
+            <!-- Geçmiş sohbetler buraya eklenecek -->
+        </div>
+    </div>
+
     <!-- Resim Yükleme Modal -->
     <div class="modal" id="image-modal">
         <div class="modal-content">
@@ -785,7 +918,7 @@
             </div>
             <div class="modal-body">
                 <div class="form-group">
-                    <label for="math-problem">Matematik Problemi</label>
+                    <label for="math-problem">Matematik Problemi (100x100'e kadar işlemler)</label>
                     <textarea id="math-problem" class="form-control" rows="3" placeholder="Örneğin: 2x + 5 = 15 denklemini çöz"></textarea>
                 </div>
                 <div id="math-result" style="margin-top: 20px; display: none;">
@@ -885,6 +1018,11 @@
             const navStory = document.getElementById('nav-story');
             const navVoice = document.getElementById('nav-voice');
             
+            // History sidebar elements
+            const historySidebar = document.getElementById('history-sidebar');
+            const closeHistory = document.getElementById('close-history');
+            const historyList = document.getElementById('history-list');
+            
             // Image modal elements
             const imageModal = document.getElementById('image-modal');
             const closeImageModal = document.getElementById('close-image-modal');
@@ -934,9 +1072,13 @@
             let mediaRecorder;
             let recordingStartTime;
             let recordingTimerInterval;
+            let currentChatId = generateChatId();
+            let chats = JSON.parse(localStorage.getItem('domatesAI_chats')) || {};
             
             // Initialize
             initializeEventListeners();
+            loadChatHistory();
+            loadChat(currentChatId);
             
             function initializeEventListeners() {
                 // Input area events
@@ -976,7 +1118,7 @@
                 });
                 
                 navHistory.addEventListener('click', function() {
-                    alert('Sohbet geçmişi özelliği yakında gelecek!');
+                    historySidebar.classList.toggle('active');
                 });
                 
                 navSettings.addEventListener('click', function() {
@@ -999,6 +1141,11 @@
                 
                 navVoice.addEventListener('click', function() {
                     voiceModal.classList.add('active');
+                });
+                
+                // History sidebar events
+                closeHistory.addEventListener('click', function() {
+                    historySidebar.classList.remove('active');
                 });
                 
                 // Input action buttons
@@ -1175,20 +1322,95 @@
 
             function toggleTheme() {
                 document.body.classList.toggle('dark-theme');
+                document.body.classList.toggle('light-theme');
                 const isDark = document.body.classList.contains('dark-theme');
                 themeToggle.innerHTML = isDark ? '<i class="fas fa-moon"></i>' : '<i class="fas fa-sun"></i>';
                 localStorage.setItem('domatesAI_theme', isDark ? 'dark' : 'light');
+                
+                // Add transition effect
+                document.body.style.transition = 'background-color 0.5s ease, color 0.5s ease';
+                setTimeout(() => {
+                    document.body.style.transition = '';
+                }, 500);
+            }
+
+            function generateChatId() {
+                return 'chat-' + Date.now();
+            }
+
+            function loadChatHistory() {
+                historyList.innerHTML = '';
+                
+                if (Object.keys(chats).length === 0) {
+                    historyList.innerHTML = '<p style="text-align: center; opacity: 0.7;">Henüz sohbet geçmişi yok</p>';
+                    return;
+                }
+                
+                Object.keys(chats).forEach(chatId => {
+                    const chat = chats[chatId];
+                    const firstMessage = chat.messages.find(msg => msg.isUser)?.content || 'Yeni Sohbet';
+                    
+                    const historyItem = document.createElement('div');
+                    historyItem.classList.add('history-item');
+                    historyItem.textContent = firstMessage.length > 50 ? firstMessage.substring(0, 50) + '...' : firstMessage;
+                    historyItem.addEventListener('click', () => {
+                        loadChat(chatId);
+                        historySidebar.classList.remove('active');
+                    });
+                    
+                    if (chatId === currentChatId) {
+                        historyItem.classList.add('active');
+                    }
+                    
+                    historyList.appendChild(historyItem);
+                });
+            }
+
+            function loadChat(chatId) {
+                currentChatId = chatId;
+                
+                // Clear chat messages except the welcome message
+                const messagesToKeep = Array.from(chatMessages.querySelectorAll('.message')).slice(0, 1);
+                Array.from(chatMessages.querySelectorAll('.message')).forEach(msg => {
+                    if (!messagesToKeep.includes(msg)) {
+                        msg.remove();
+                    }
+                });
+                
+                // Load chat messages if exists
+                if (chats[chatId]) {
+                    chats[chatId].messages.forEach(msg => {
+                        addMessage(msg.content, msg.isUser);
+                    });
+                } else {
+                    // Add default AI message for new chats
+                    addMessage('Yeni sohbet başlatıldı hacı! Ne yapmamı istersin?', false);
+                }
+                
+                // Update history sidebar
+                loadChatHistory();
+            }
+
+            function saveChat() {
+                const messages = Array.from(chatMessages.querySelectorAll('.message')).slice(1); // Skip welcome message
+                
+                chats[currentChatId] = {
+                    id: currentChatId,
+                    timestamp: Date.now(),
+                    messages: messages.map(msg => ({
+                        content: msg.textContent.trim(),
+                        isUser: msg.classList.contains('user-message'),
+                        timestamp: Date.now()
+                    }))
+                };
+                
+                localStorage.setItem('domatesAI_chats', JSON.stringify(chats));
+                loadChatHistory();
             }
 
             function startNewChat() {
-                // Clear chat messages except the welcome message and first AI message
-                const messages = Array.from(chatMessages.querySelectorAll('.message')).slice(2);
-                messages.forEach(msg => msg.remove());
-                
-                // Add new chat message
-                setTimeout(() => {
-                    addMessage('Yeni sohbet başlatıldı hacı! Ne yapmamı istersin?', false);
-                }, 500);
+                currentChatId = generateChatId();
+                loadChat(currentChatId);
             }
 
             function getCurrentTime() {
@@ -1220,6 +1442,9 @@
                 
                 chatMessages.insertBefore(messageDiv, typingIndicator);
                 chatMessages.scrollTop = chatMessages.scrollHeight;
+                
+                // Save chat after adding message
+                saveChat();
             }
 
             function simulateTyping() {
@@ -1320,45 +1545,77 @@
             function solveMathProblem(problem, showInModal = true) {
                 let solution;
                 
-                // Basic math solutions
-                if (problem.includes('+')) {
-                    const numbers = problem.split('+').map(num => parseFloat(num.trim()));
-                    const result = numbers.reduce((a, b) => a + b, 0);
-                    solution = `Toplama sonucu: ${numbers.join(' + ')} = ${result}`;
-                } else if (problem.includes('-')) {
-                    const numbers = problem.split('-').map(num => parseFloat(num.trim()));
-                    const result = numbers.reduce((a, b) => a - b);
-                    solution = `Çıkarma sonucu: ${numbers.join(' - ')} = ${result}`;
-                } else if (problem.includes('*') || problem.includes('x')) {
-                    const numbers = problem.split(/[\*x]/).map(num => parseFloat(num.trim()));
-                    const result = numbers.reduce((a, b) => a * b, 1);
-                    solution = `Çarpma sonucu: ${numbers.join(' × ')} = ${result}`;
-                } else if (problem.includes('/')) {
-                    const numbers = problem.split('/').map(num => parseFloat(num.trim()));
-                    if (numbers[1] === 0) {
-                        solution = "Hacı, sıfıra bölme yapamazsın! Domatesler bile bunu bilir!";
+                try {
+                    // Basic math solutions
+                    if (problem.includes('+')) {
+                        const numbers = problem.split('+').map(num => parseFloat(num.trim()));
+                        if (numbers.some(num => num > 100)) {
+                            solution = "Hacı, 100'den büyük sayıları toplayamam! Domateslerim yetmez!";
+                        } else {
+                            const result = numbers.reduce((a, b) => a + b, 0);
+                            solution = `Toplama sonucu: ${numbers.join(' + ')} = ${result}`;
+                        }
+                    } else if (problem.includes('-')) {
+                        const numbers = problem.split('-').map(num => parseFloat(num.trim()));
+                        if (numbers.some(num => num > 100)) {
+                            solution = "Hacı, 100'den büyük sayıları çıkaramam! Domateslerim yetmez!";
+                        } else {
+                            const result = numbers.reduce((a, b) => a - b);
+                            solution = `Çıkarma sonucu: ${numbers.join(' - ')} = ${result}`;
+                        }
+                    } else if (problem.includes('*') || problem.includes('x')) {
+                        const numbers = problem.split(/[\*x]/).map(num => parseFloat(num.trim()));
+                        if (numbers.some(num => num > 100)) {
+                            solution = "Hacı, 100'den büyük sayıları çarpamam! Domateslerim patlar!";
+                        } else {
+                            const result = numbers.reduce((a, b) => a * b, 1);
+                            solution = `Çarpma sonucu: ${numbers.join(' × ')} = ${result}`;
+                        }
+                    } else if (problem.includes('/')) {
+                        const numbers = problem.split('/').map(num => parseFloat(num.trim()));
+                        if (numbers.some(num => num > 100)) {
+                            solution = "Hacı, 100'den büyük sayıları bölemem! Domateslerim yetmez!";
+                        } else if (numbers[1] === 0) {
+                            solution = "Hacı, sıfıra bölme yapamazsın! Domatesler bile bunu bilir!";
+                        } else {
+                            const result = numbers[0] / numbers[1];
+                            solution = `Bölme sonucu: ${numbers[0]} ÷ ${numbers[1]} = ${result.toFixed(2)}`;
+                        }
+                    } else if (problem.toLowerCase().includes('karekök')) {
+                        const number = parseFloat(problem.replace(/[^\d.]/g, ''));
+                        if (number > 10000) {
+                            solution = "Hacı, 10000'den büyük sayıların karekökünü alamam! Domateslerim yetmez!";
+                        } else if (number >= 0) {
+                            solution = `Karekök sonucu: √${number} = ${Math.sqrt(number).toFixed(2)}`;
+                        } else {
+                            solution = "Hacı, negatif sayıların karekökü olmaz! Domatesler bile reel sayıları sever!";
+                        }
+                    } else if (problem.includes('=') && problem.includes('x')) {
+                        // Simple linear equation
+                        const equationParts = problem.split('=');
+                        const leftSide = equationParts[0].trim();
+                        const rightSide = equationParts[1].trim();
+                        
+                        if (leftSide.includes('x')) {
+                            const coefficient = parseFloat(leftSide.replace(/[^\d.-]/g, '')) || 1;
+                            const constant = parseFloat(rightSide);
+                            
+                            if (coefficient > 100 || constant > 100) {
+                                solution = "Hacı, 100'den büyük katsayıları işleyemem! Domateslerim yetmez!";
+                            } else {
+                                solution = "Denklem çözümü:\n";
+                                solution += `1. Adım: ${leftSide} = ${rightSide}\n`;
+                                solution += `2. Adım: ${coefficient}x = ${rightSide}\n`;
+                                solution += `3. Adım: x = ${rightSide} / ${coefficient}\n`;
+                                solution += `4. Adım: x = ${(constant / coefficient).toFixed(2)}\n`;
+                                solution += `\nSonuç: x = ${(constant / coefficient).toFixed(2)}`;
+                            }
+                        }
                     } else {
-                        const result = numbers[0] / numbers[1];
-                        solution = `Bölme sonucu: ${numbers[0]} ÷ ${numbers[1]} = ${result.toFixed(2)}`;
+                        solution = "Hacı, bu matematik problemini tam anlayamadım. Domates yetiştirmek daha kolay geliyor bana!";
                     }
-                } else if (problem.toLowerCase().includes('karekök')) {
-                    const number = parseFloat(problem.replace(/[^\d.]/g, ''));
-                    if (number >= 0) {
-                        solution = `Karekök sonucu: √${number} = ${Math.sqrt(number).toFixed(2)}`;
-                    } else {
-                        solution = "Hacı, negatif sayıların karekökü olmaz! Domatesler bile reel sayıları sever!";
-                    }
-                } else if (problem.includes('=') && problem.includes('x')) {
-                    // Simple linear equation
-                    solution = "Denklem çözümü:\n";
-                    solution += "1. Adım: 2x + 5 = 15\n";
-                    solution += "2. Adım: 2x = 15 - 5\n";
-                    solution += "3. Adım: 2x = 10\n";
-                    solution += "4. Adım: x = 10 / 2\n";
-                    solution += "5. Adım: x = 5\n";
-                    solution += "\nSonuç: x = 5";
-                } else {
-                    solution = "Hacı, bu matematik problemini tam anlayamadım. Domates yetiştirmek daha kolay geliyor bana!";
+                } catch (e) {
+                    solution = "Hacı, bu işlemi yapamadım! Belki daha basit bir problem sorsan?";
                 }
                 
                 if (showInModal) {
@@ -1474,6 +1731,14 @@
             setTimeout(() => {
                 document.querySelector('.welcome-animation').style.opacity = '1';
             }, 500);
+            
+            // Load saved theme
+            const savedTheme = localStorage.getItem('domatesAI_theme') || 'dark';
+            if (savedTheme === 'light') {
+                document.body.classList.remove('dark-theme');
+                document.body.classList.add('light-theme');
+                themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+            }
         });
     </script>
 </body>
