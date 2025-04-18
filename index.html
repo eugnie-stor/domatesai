@@ -3,487 +3,401 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Derin Studios - Roblox Admin Paneli</title>
+    <title>Domates AI Hacılar Pro Max</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            --primary: #6e00ff;
-            --secondary: #ff00aa;
-            --dark: #1a1a2e;
-            --darker: #16213e;
-            --light: #f1f1f1;
-            --danger: #ff3860;
-            --success: #00d1b2;
-            --warning: #ffdd57;
+            --primary-color: #e74c3c;
+            --secondary-color: #c0392b;
+            --accent-color: #f1c40f;
+            --dark-color: #1e1e1e;
+            --light-color: #2d2d2d;
+            --text-color: #f0f0f0;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            --border-radius: 12px;
+            --navbar-width: 70px;
         }
         
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            transition: all 0.3s ease;
         }
         
         body {
-            background-color: var(--dark);
-            color: var(--light);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #1a1a1a;
+            color: var(--text-color);
+            display: flex;
             min-height: 100vh;
+            overflow-x: hidden;
         }
         
-        /* Quick Ban Panel */
-        .quick-ban-panel {
-            background: linear-gradient(135deg, var(--darker), var(--primary));
-            padding: 1rem;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 1rem;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-        }
-        
-        .quick-ban-title {
-            font-weight: bold;
-            font-size: 1.2rem;
-        }
-        
-        .quick-ban-input {
-            padding: 0.8rem 1rem;
-            border-radius: 50px;
-            border: none;
-            width: 300px;
-            background-color: rgba(255, 255, 255, 0.2);
-            color: white;
-            outline: none;
-        }
-        
-        .quick-ban-btn {
-            background-color: var(--danger);
-            color: white;
-            border: none;
-            padding: 0.8rem 1.5rem;
-            border-radius: 50px;
-            cursor: pointer;
-            font-weight: bold;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            transition: all 0.3s;
-        }
-        
-        .quick-ban-btn:hover {
-            background-color: #e00000;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 15px rgba(255, 0, 0, 0.5);
-        }
-        
-        /* Navbar */
-        .navbar {
-            background: linear-gradient(135deg, var(--primary), var(--darker));
-            padding: 1rem 2rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-        }
-        
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-        
-        .logo img {
-            height: 40px;
-        }
-        
-        .logo-text {
-            font-size: 1.8rem;
-            font-weight: bold;
-            background: linear-gradient(to right, #fff, #00ffff);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        
-        .nav-links {
-            display: flex;
-            gap: 2rem;
-        }
-        
-        .nav-links a {
-            color: var(--light);
-            text-decoration: none;
-            font-weight: 500;
-            transition: all 0.3s;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-        
-        .nav-links a:hover {
-            color: var(--secondary);
-            transform: translateY(-2px);
-        }
-        
-        .user-info {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-        
-        .avatar {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background-color: var(--secondary);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-        }
-        
-        /* Main Content */
-        .container {
-            display: flex;
-            min-height: calc(100vh - 120px);
-        }
-        
-        /* Sidebar */
-        .sidebar {
-            width: 250px;
-            background-color: var(--darker);
-            padding: 1.5rem;
+        /* Sağ Navbar */
+        .right-navbar {
+            width: var(--navbar-width);
+            background-color: var(--dark-color);
+            height: 100vh;
             display: flex;
             flex-direction: column;
-            gap: 1rem;
-            border-right: 1px solid rgba(255, 255, 255, 0.1);
+            align-items: center;
+            padding: 20px 0;
+            box-shadow: var(--shadow);
+            z-index: 10;
+            position: fixed;
+            right: 0;
         }
         
-        .sidebar-title {
-            font-size: 1.2rem;
-            margin-bottom: 1rem;
-            color: var(--secondary);
+        .nav-item {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
             display: flex;
             align-items: center;
-            gap: 0.5rem;
-        }
-        
-        .sidebar-item {
-            padding: 0.8rem 1rem;
-            border-radius: 6px;
+            justify-content: center;
+            margin: 12px 0;
             cursor: pointer;
-            transition: all 0.3s;
-            display: flex;
-            align-items: center;
-            gap: 0.8rem;
-        }
-        
-        .sidebar-item:hover {
-            background-color: rgba(110, 0, 255, 0.2);
-        }
-        
-        .sidebar-item.active {
-            background-color: var(--primary);
-            font-weight: bold;
-        }
-        
-        /* Main Panel */
-        .main-panel {
-            flex: 1;
-            padding: 2rem;
-            background-color: rgba(10, 10, 20, 0.7);
-        }
-        
-        .panel-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 2rem;
-        }
-        
-        .panel-title {
-            font-size: 1.8rem;
-            background: linear-gradient(to right, var(--primary), var(--secondary));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        
-        .search-bar {
-            display: flex;
-            align-items: center;
+            position: relative;
             background-color: rgba(255, 255, 255, 0.1);
-            border-radius: 50px;
-            padding: 0.5rem 1rem;
-            width: 300px;
-        }
-        
-        .search-bar input {
-            background: transparent;
-            border: none;
             color: white;
-            padding: 0.5rem;
-            width: 100%;
-            outline: none;
+            font-size: 20px;
+            transition: all 0.3s ease;
         }
         
-        /* Stats Cards */
-        .stats-container {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 1.5rem;
-            margin-bottom: 2rem;
+        .nav-item:hover {
+            background-color: var(--primary-color);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
         }
         
-        .stat-card {
-            background: linear-gradient(135deg, rgba(110, 0, 255, 0.2), rgba(255, 0, 170, 0.2));
-            border-radius: 10px;
-            padding: 1.5rem;
+        .nav-item.active {
+            background-color: var(--primary-color);
+        }
+        
+        .nav-item .tooltip {
+            position: absolute;
+            right: 60px;
+            background-color: var(--dark-color);
+            color: white;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 14px;
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s;
+            box-shadow: var(--shadow);
+        }
+        
+        .nav-item:hover .tooltip {
+            opacity: 1;
+        }
+        
+        /* Ana İçerik */
+        .main-content {
+            flex: 1;
+            margin-right: var(--navbar-width);
             display: flex;
             flex-direction: column;
-            gap: 0.5rem;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            transition: all 0.3s;
+            height: 100vh;
         }
         
-        .stat-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+        /* Header */
+        .header {
+            background-color: var(--light-color);
+            padding: 15px 25px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: var(--shadow);
+            z-index: 5;
+            position: relative;
         }
         
-        .stat-title {
-            font-size: 0.9rem;
-            color: rgba(255, 255, 255, 0.7);
-        }
-        
-        .stat-value {
-            font-size: 1.8rem;
+        .header-title {
+            font-size: 20px;
             font-weight: bold;
-        }
-        
-        .stat-change {
+            color: var(--primary-color);
             display: flex;
             align-items: center;
-            gap: 0.3rem;
-            font-size: 0.9rem;
+            gap: 10px;
         }
         
-        .stat-change.positive {
-            color: var(--success);
+        .header-title i {
+            color: var(--accent-color);
         }
         
-        .stat-change.negative {
-            color: var(--danger);
-        }
-        
-        /* User Management */
-        .user-management {
-            background-color: rgba(26, 26, 46, 0.5);
-            border-radius: 10px;
-            padding: 1.5rem;
-            margin-top: 2rem;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        
-        .section-title {
-            font-size: 1.4rem;
-            margin-bottom: 1.5rem;
+        .header-actions {
             display: flex;
-            align-items: center;
-            gap: 0.8rem;
+            gap: 15px;
         }
         
-        .action-buttons {
-            display: flex;
-            gap: 1rem;
-            margin-bottom: 1.5rem;
-        }
-        
-        .btn {
-            padding: 0.7rem 1.5rem;
-            border-radius: 6px;
-            border: none;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-        
-        .btn-primary {
-            background-color: var(--primary);
-            color: white;
-        }
-        
-        .btn-danger {
-            background-color: var(--danger);
-            color: white;
-        }
-        
-        .btn-warning {
-            background-color: var(--warning);
-            color: #333;
-        }
-        
-        .btn-success {
-            background-color: var(--success);
-            color: white;
-        }
-        
-        .btn:hover {
-            opacity: 0.9;
-            transform: translateY(-2px);
-        }
-        
-        /* User Table */
-        .user-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 1rem;
-        }
-        
-        .user-table th {
-            text-align: left;
-            padding: 1rem;
-            background-color: rgba(110, 0, 255, 0.2);
-            color: rgba(255, 255, 255, 0.9);
-        }
-        
-        .user-table td {
-            padding: 1rem;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-        }
-        
-        .user-table tr:hover {
-            background-color: rgba(110, 0, 255, 0.1);
-        }
-        
-        .user-avatar {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background-color: var(--secondary);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            color: white;
-        }
-        
-        .user-name {
-            display: flex;
-            align-items: center;
-            gap: 0.8rem;
-        }
-        
-        .badge {
-            padding: 0.3rem 0.6rem;
-            border-radius: 50px;
-            font-size: 0.8rem;
-            font-weight: bold;
-        }
-        
-        .badge-admin {
-            background-color: var(--primary);
-            color: white;
-        }
-        
-        .badge-moderator {
-            background-color: var(--success);
-            color: white;
-        }
-        
-        .badge-user {
-            background-color: #444;
-            color: white;
-        }
-        
-        .badge-banned {
-            background-color: var(--danger);
-            color: white;
-        }
-        
-        .action-btn {
-            padding: 0.5rem;
-            border-radius: 6px;
+        .header-btn {
             background: none;
             border: none;
+            font-size: 18px;
             cursor: pointer;
-            transition: all 0.3s;
-            color: white;
-        }
-        
-        .action-btn:hover {
-            background-color: rgba(255, 255, 255, 0.1);
-        }
-        
-        /* Player Viewer */
-        .player-viewer {
-            background-color: rgba(26, 26, 46, 0.5);
-            border-radius: 10px;
-            padding: 1.5rem;
-            margin-top: 2rem;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            display: none;
-        }
-        
-        .player-viewer.active {
-            display: block;
-        }
-        
-        .player-info {
-            display: flex;
-            gap: 2rem;
-            margin-bottom: 1.5rem;
-        }
-        
-        .player-avatar {
-            width: 100px;
-            height: 100px;
-            border-radius: 50%;
-            background-color: var(--secondary);
+            color: var(--text-color);
+            position: relative;
+            width: 40px;
+            height: 40px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 2.5rem;
-            font-weight: bold;
+            border-radius: 50%;
+        }
+        
+        .header-btn:hover {
+            background-color: rgba(0, 0, 0, 0.2);
+        }
+        
+        /* Chat Container */
+        .chat-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+            height: calc(100vh - 70px);
+        }
+        
+        .chat-messages {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            background-color: var(--light-color);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            margin-bottom: 15px;
+            scroll-behavior: smooth;
+        }
+        
+        .message {
+            margin-bottom: 20px;
+            max-width: 85%;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.5s forwards;
+        }
+        
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .user-message {
+            margin-left: auto;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 12px 18px;
+            border-radius: 18px 18px 0 18px;
+            box-shadow: var(--shadow);
+            position: relative;
+        }
+        
+        .user-message .message-actions {
+            position: absolute;
+            top: -15px;
+            right: 0;
+            display: none;
+            gap: 5px;
+        }
+        
+        .user-message:hover .message-actions {
+            display: flex;
+        }
+        
+        .message-action-btn {
+            background-color: white;
+            border: none;
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: var(--shadow);
+            color: var(--dark-color);
+            font-size: 12px;
+        }
+        
+        .message-action-btn:hover {
+            background-color: var(--accent-color);
             color: white;
         }
         
-        .player-details {
-            flex: 1;
-        }
-        
-        .player-username {
-            font-size: 1.8rem;
-            margin-bottom: 0.5rem;
-        }
-        
-        .player-stats {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 1.5rem;
-            margin-top: 1.5rem;
-        }
-        
-        .player-stat {
+        .ai-message {
+            margin-right: auto;
             background-color: rgba(255, 255, 255, 0.1);
-            padding: 1rem;
-            border-radius: 8px;
+            padding: 12px 18px;
+            border-radius: 18px 18px 18px 0;
+            box-shadow: var(--shadow);
+            position: relative;
+        }
+        
+        .message-time {
+            display: block;
+            font-size: 11px;
+            margin-top: 5px;
+            opacity: 0.7;
+            text-align: right;
+        }
+        
+        .typing-indicator {
+            display: none;
+            padding: 12px 18px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 18px 18px 18px 0;
+            width: fit-content;
+            margin-bottom: 15px;
+            box-shadow: var(--shadow);
+        }
+        
+        .typing-dot {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color: var(--text-color);
+            margin: 0 3px;
+            animation: typingAnimation 1.4s infinite ease-in-out;
+        }
+        
+        .typing-dot:nth-child(1) {
+            animation-delay: 0s;
+        }
+        
+        .typing-dot:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+        
+        .typing-dot:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+        
+        @keyframes typingAnimation {
+            0%, 60%, 100% { transform: translateY(0); background-color: var(--text-color); }
+            30% { transform: translateY(-5px); background-color: var(--primary-color); }
+        }
+        
+        /* Input Area */
+        .input-area {
+            display: flex;
+            gap: 10px;
+            background-color: var(--light-color);
+            padding: 15px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            position: relative;
+        }
+        
+        #user-input {
+            flex: 1;
+            padding: 12px 20px;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 30px;
+            font-size: 16px;
+            outline: none;
+            min-height: 50px;
+            max-height: 150px;
+            resize: none;
+            overflow-y: auto;
+            background-color: rgba(255, 255, 255, 0.05);
+            color: var(--text-color);
+        }
+        
+        #user-input:focus {
+            border-color: var(--primary-color);
+        }
+        
+        .input-actions {
+            position: absolute;
+            bottom: 70px;
+            left: 15px;
+            display: flex;
+            gap: 10px;
+            background-color: var(--light-color);
+            padding: 10px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            opacity: 0;
+            transform: translateY(10px);
+            transition: all 0.3s ease;
+            z-index: 5;
+        }
+        
+        .input-actions.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .input-action-btn {
+            background-color: rgba(255, 255, 255, 0.1);
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: var(--text-color);
+        }
+        
+        .input-action-btn:hover {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        #send-button {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: var(--shadow);
+            flex-shrink: 0;
+        }
+        
+        #send-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+        }
+        
+        /* Welcome Animation */
+        .welcome-animation {
             text-align: center;
+            margin: 30px 0;
+            opacity: 0;
+            animation: fadeIn 1s 0.5s forwards;
         }
         
-        .player-stat-value {
-            font-size: 1.5rem;
-            font-weight: bold;
-            margin-bottom: 0.3rem;
+        @keyframes fadeIn {
+            to { opacity: 1; }
         }
         
-        .player-stat-label {
-            font-size: 0.9rem;
-            color: rgba(255, 255, 255, 0.7);
+        .tomato-icon {
+            font-size: 60px;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            animation: bounce 2s infinite;
+        }
+        
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
         }
         
         /* Modal */
@@ -495,28 +409,28 @@
             height: 100%;
             background-color: rgba(0, 0, 0, 0.7);
             display: flex;
-            justify-content: center;
             align-items: center;
+            justify-content: center;
             z-index: 1000;
             opacity: 0;
-            pointer-events: none;
-            transition: all 0.3s;
+            visibility: hidden;
+            transition: all 0.3s ease;
         }
         
         .modal.active {
             opacity: 1;
-            pointer-events: all;
+            visibility: visible;
         }
         
         .modal-content {
-            background-color: var(--darker);
-            border-radius: 10px;
-            width: 500px;
-            max-width: 90%;
-            padding: 2rem;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-            transform: translateY(-50px);
-            transition: all 0.3s;
+            background-color: var(--light-color);
+            border-radius: var(--border-radius);
+            width: 90%;
+            max-width: 500px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+            transform: translateY(-20px);
+            transition: transform 0.3s ease;
         }
         
         .modal.active .modal-content {
@@ -527,686 +441,1040 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 1.5rem;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         }
         
         .modal-title {
-            font-size: 1.5rem;
-            color: var(--secondary);
+            font-size: 20px;
+            color: var(--primary-color);
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
         
         .close-modal {
             background: none;
             border: none;
-            font-size: 1.5rem;
-            color: white;
+            font-size: 20px;
             cursor: pointer;
+            color: var(--text-color);
         }
         
-        .form-group {
-            margin-bottom: 1.5rem;
-        }
-        
-        .form-group label {
-            display: block;
-            margin-bottom: 0.5rem;
-            color: rgba(255, 255, 255, 0.8);
-        }
-        
-        .form-control {
-            width: 100%;
-            padding: 0.8rem;
-            background-color: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 6px;
-            color: white;
-            outline: none;
-        }
-        
-        .form-control:focus {
-            border-color: var(--primary);
+        .modal-body {
+            margin-bottom: 25px;
         }
         
         .modal-footer {
             display: flex;
             justify-content: flex-end;
-            gap: 1rem;
-            margin-top: 2rem;
+            gap: 10px;
         }
         
-        /* Animations */
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-            100% { transform: scale(1); }
+        /* File Upload */
+        .file-upload-container {
+            border: 2px dashed rgba(255, 255, 255, 0.2);
+            border-radius: var(--border-radius);
+            padding: 30px;
+            text-align: center;
+            cursor: pointer;
+            margin-bottom: 20px;
         }
         
-        .pulse {
-            animation: pulse 2s infinite;
+        .file-upload-container:hover {
+            border-color: var(--primary-color);
+        }
+        
+        .file-upload-icon {
+            font-size: 40px;
+            color: var(--primary-color);
+            margin-bottom: 10px;
+        }
+        
+        .file-upload-text {
+            margin-bottom: 10px;
+        }
+        
+        .file-upload-btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 500;
+        }
+        
+        .file-upload-btn:hover {
+            background-color: var(--secondary-color);
+        }
+        
+        .uploaded-file {
+            display: flex;
+            align-items: center;
+            background-color: rgba(255, 255, 255, 0.1);
+            padding: 10px;
+            border-radius: var(--border-radius);
+            margin-top: 15px;
+        }
+        
+        .uploaded-file-icon {
+            margin-right: 10px;
+            color: var(--primary-color);
+        }
+        
+        .uploaded-file-info {
+            flex: 1;
+        }
+        
+        .uploaded-file-name {
+            font-weight: 500;
+            margin-bottom: 3px;
+        }
+        
+        .uploaded-file-size {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.6);
+        }
+        
+        .uploaded-file-remove {
+            color: var(--text-color);
+            cursor: pointer;
+        }
+        
+        /* Buttons */
+        .btn {
+            padding: 10px 20px;
+            border-radius: var(--border-radius);
+            border: none;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--secondary-color);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .btn-secondary {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: var(--text-color);
+        }
+        
+        .btn-secondary:hover {
+            background-color: rgba(255, 255, 255, 0.2);
         }
         
         /* Responsive */
-        @media (max-width: 1200px) {
-            .stats-container {
-                grid-template-columns: repeat(2, 1fr);
+        @media (max-width: 768px) {
+            .right-navbar {
+                width: 60px;
             }
             
-            .quick-ban-panel {
-                flex-direction: column;
-                padding: 1rem;
+            .main-content {
+                margin-right: 60px;
             }
             
-            .quick-ban-input {
-                width: 100%;
+            .header-title span {
+                display: none;
+            }
+            
+            .header-title i {
+                font-size: 24px;
             }
         }
         
-        @media (max-width: 768px) {
-            .container {
-                flex-direction: column;
-            }
-            
-            .sidebar {
-                width: 100%;
-                flex-direction: row;
-                overflow-x: auto;
-                padding: 1rem;
-            }
-            
-            .sidebar-title {
+        @media (max-width: 576px) {
+            .right-navbar {
                 display: none;
             }
             
-            .nav-links {
-                display: none;
+            .main-content {
+                margin-right: 0;
             }
             
-            .stats-container {
-                grid-template-columns: 1fr;
+            .header {
+                padding: 15px;
             }
             
-            .panel-header {
-                flex-direction: column;
-                gap: 1rem;
-                align-items: flex-start;
+            .chat-container {
+                padding: 10px;
             }
             
-            .search-bar {
-                width: 100%;
+            .chat-messages {
+                padding: 15px;
             }
             
-            .action-buttons {
-                flex-wrap: wrap;
+            .input-area {
+                padding: 10px;
             }
             
-            .player-info {
-                flex-direction: column;
+            #user-input {
+                padding: 10px 15px;
             }
         }
     </style>
 </head>
-<body>
-    <!-- Quick Ban Panel -->
-    <div class="quick-ban-panel">
-        <span class="quick-ban-title"><i class="fas fa-ban"></i> Hızlı Ban:</span>
-        <input type="text" class="quick-ban-input" id="quickBanInput" placeholder="Kullanıcı adı girin (Örnek: DerinStudios)">
-        <button class="quick-ban-btn" id="quickBanBtn"><i class="fas fa-gavel"></i> BANLA</button>
+<body class="dark-theme">
+    <!-- Ana İçerik -->
+    <div class="main-content">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-title">
+                <i class="fas fa-apple-alt"></i>
+                <span>Domates AI Hacılar Pro Max</span>
+            </div>
+            <div class="header-actions">
+                <button class="header-btn" id="theme-toggle">
+                    <i class="fas fa-moon"></i>
+                </button>
+                <button class="header-btn" id="new-chat-btn">
+                    <i class="fas fa-plus"></i>
+                </button>
+            </div>
+        </header>
+
+        <!-- Chat Container -->
+        <div class="chat-container">
+            <div class="chat-messages" id="chat-messages">
+                <div class="welcome-animation">
+                    <div class="tomato-icon">
+                        <i class="fas fa-apple-alt"></i>
+                    </div>
+                    <h2>Domates AI Hacılar Pro Max</h2>
+                    <p>Matematik çözer, hikaye yazar, resim analiz ederim! Ne istersen sor hacı!</p>
+                </div>
+                
+                <div class="message ai-message">
+                    Selam hacı! Ben Domates AI Hacılar'ın en gelişmiş sürümüyüm. Bana:
+                    <br><br>
+                    - Matematik problemleri çözdürebilirsin<br>
+                    - Hikaye yazdırabilirsin<br>
+                    - Resim yükleyip analiz ettirebilirsin<br>
+                    - Ses kaydı gönderebilirsin<br>
+                    <br>
+                    Ne yapmamı istersin?
+                    <span class="message-time">Şimdi</span>
+                </div>
+                
+                <div class="typing-indicator" id="typing-indicator">
+                    <span class="typing-dot"></span>
+                    <span class="typing-dot"></span>
+                    <span class="typing-dot"></span>
+                </div>
+            </div>
+            
+            <div class="input-area">
+                <div class="input-actions" id="input-actions">
+                    <button class="input-action-btn" id="attach-image" title="Resim Ekle">
+                        <i class="fas fa-image"></i>
+                    </button>
+                    <button class="input-action-btn" id="attach-file" title="Dosya Ekle">
+                        <i class="fas fa-paperclip"></i>
+                    </button>
+                    <button class="input-action-btn" id="record-audio" title="Ses Kaydı">
+                        <i class="fas fa-microphone"></i>
+                    </button>
+                    <button class="input-action-btn" id="math-solver" title="Matematik Çözücü">
+                        <i class="fas fa-square-root-alt"></i>
+                    </button>
+                    <button class="input-action-btn" id="story-writer" title="Hikaye Yaz">
+                        <i class="fas fa-book"></i>
+                    </button>
+                </div>
+                
+                <textarea id="user-input" placeholder="Domates gibi bir soru yaz hacı..." rows="1" autofocus></textarea>
+                <button id="send-button">
+                    <i class="fas fa-paper-plane"></i>
+                </button>
+            </div>
+        </div>
     </div>
-    
-    <!-- Navbar -->
-    <nav class="navbar">
-        <div class="logo">
-            <img src="https://via.placeholder.com/40" alt="Logo">
-            <span class="logo-text">Derin Studios</span>
+
+    <!-- Sağ Navbar -->
+    <div class="right-navbar">
+        <div class="nav-item" id="nav-home" title="Ana Sayfa">
+            <i class="fas fa-home"></i>
+            <span class="tooltip">Ana Sayfa</span>
         </div>
-        
-        <div class="nav-links">
-            <a href="#"><i class="fas fa-home"></i> Ana Sayfa</a>
-            <a href="#"><i class="fas fa-users"></i> Kullanıcılar</a>
-            <a href="#"><i class="fas fa-chart-line"></i> İstatistikler</a>
-            <a href="#"><i class="fas fa-cog"></i> Ayarlar</a>
+        <div class="nav-item" id="nav-history" title="Sohbet Geçmişi">
+            <i class="fas fa-history"></i>
+            <span class="tooltip">Geçmiş</span>
         </div>
-        
-        <div class="user-info">
-            <div class="avatar">AD</div>
-            <span>Admin</span>
+        <div class="nav-item" id="nav-settings" title="Ayarlar">
+            <i class="fas fa-cog"></i>
+            <span class="tooltip">Ayarlar</span>
         </div>
-    </nav>
-    
-    <div class="container">
-        <!-- Sidebar -->
-        <aside class="sidebar">
-            <h3 class="sidebar-title"><i class="fas fa-tachometer-alt"></i> Yönetim Paneli</h3>
-            
-            <div class="sidebar-item active" data-panel="dashboard">
-                <i class="fas fa-home"></i>
-                <span>Genel Bakış</span>
-            </div>
-            
-            <div class="sidebar-item" data-panel="users">
-                <i class="fas fa-users"></i>
-                <span>Kullanıcı Yönetimi</span>
-            </div>
-            
-            <div class="sidebar-item" data-panel="chat">
-                <i class="fas fa-comments"></i>
-                <span>Sohbet Moderasoyn</span>
-            </div>
-            
-            <div class="sidebar-item" data-panel="bans">
-                <i class="fas fa-ban"></i>
-                <span>Yasaklamalar</span>
-            </div>
-            
-            <div class="sidebar-item" data-panel="reports">
-                <i class="fas fa-flag"></i>
-                <span>Raporlar</span>
-            </div>
-            
-            <div class="sidebar-item" data-panel="watch">
-                <i class="fas fa-eye"></i>
-                <span>Oyuncu İzleme</span>
-            </div>
-            
-            <div class="sidebar-item" data-panel="settings">
-                <i class="fas fa-cog"></i>
-                <span>Ayarlar</span>
-            </div>
-            
-            <div class="sidebar-item">
-                <i class="fas fa-sign-out-alt"></i>
-                <span>Çıkış Yap</span>
-            </div>
-        </aside>
-        
-        <!-- Main Panel -->
-        <main class="main-panel">
-            <div class="panel-header">
-                <h1 class="panel-title"><i class="fas fa-gamepad"></i> Roblox Türk Sohbet Oyunu Yönetim Paneli</h1>
-                
-                <div class="search-bar">
-                    <i class="fas fa-search"></i>
-                    <input type="text" placeholder="Kullanıcı ara..." id="searchInput">
-                </div>
-            </div>
-            
-            <!-- Dashboard Panel -->
-            <div class="dashboard-panel" id="dashboardPanel">
-                <!-- Stats Cards -->
-                <div class="stats-container">
-                    <div class="stat-card">
-                        <span class="stat-title">Aktif Kullanıcı</span>
-                        <span class="stat-value">1,245</span>
-                        <span class="stat-change positive">
-                            <i class="fas fa-arrow-up"></i> 12.5%
-                        </span>
-                    </div>
-                    
-                    <div class="stat-card">
-                        <span class="stat-title">Bugünkü Mesaj</span>
-                        <span class="stat-value">8,752</span>
-                        <span class="stat-change positive">
-                            <i class="fas fa-arrow-up"></i> 5.3%
-                        </span>
-                    </div>
-                    
-                    <div class="stat-card">
-                        <span class="stat-title">Yeni Üye</span>
-                        <span class="stat-value">87</span>
-                        <span class="stat-change negative">
-                            <i class="fas fa-arrow-down"></i> 2.1%
-                        </span>
-                    </div>
-                    
-                    <div class="stat-card">
-                        <span class="stat-title">Yasaklı Kullanıcı</span>
-                        <span class="stat-value">32</span>
-                        <span class="stat-change positive">
-                            <i class="fas fa-arrow-up"></i> 8.7%
-                        </span>
-                    </div>
-                </div>
-                
-                <!-- User Management -->
-                <div class="user-management">
-                    <h2 class="section-title"><i class="fas fa-users"></i> Son Aktiviteler</h2>
-                    
-                    <table class="user-table">
-                        <thead>
-                            <tr>
-                                <th width="40px"></th>
-                                <th>Kullanıcı Adı</th>
-                                <th>Rol</th>
-                                <th>Aktivite</th>
-                                <th>Durum</th>
-                                <th>İşlemler</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr class="user-row" data-username="EfeKral">
-                                <td>
-                                    <div class="user-avatar">EK</div>
-                                </td>
-                                <td>
-                                    <div class="user-name">
-                                        <span>EfeKral</span>
-                                        <i class="fas fa-crown" style="color: gold;"></i>
-                                    </div>
-                                </td>
-                                <td><span class="badge badge-admin">Admin</span></td>
-                                <td>"Merhaba arkadaşlar!"</td>
-                                <td><span class="badge badge-success">Aktif</span></td>
-                                <td>
-                                    <button class="action-btn watch-btn"><i class="fas fa-eye"></i></button>
-                                    <button class="action-btn ban-btn"><i class="fas fa-ban"></i></button>
-                                </td>
-                            </tr>
-                            <tr class="user-row" data-username="AyşeMod">
-                                <td>
-                                    <div class="user-avatar">AM</div>
-                                </td>
-                                <td>
-                                    <div class="user-name">
-                                        <span>AyşeMod</span>
-                                        <i class="fas fa-shield-alt" style="color: lightblue;"></i>
-                                    </div>
-                                </td>
-                                <td><span class="badge badge-moderator">Moderatör</span></td>
-                                <td>"Küfür etmeyin lütfen"</td>
-                                <td><span class="badge badge-success">Aktif</span></td>
-                                <td>
-                                    <button class="action-btn watch-btn"><i class="fas fa-eye"></i></button>
-                                    <button class="action-btn ban-btn"><i class="fas fa-ban"></i></button>
-                                </td>
-                            </tr>
-                            <tr class="user-row" data-username="TürkUser123">
-                                <td>
-                                    <div class="user-avatar">TU</div>
-                                </td>
-                                <td>
-                                    <div class="user-name">
-                                        <span>TürkUser123</span>
-                                    </div>
-                                </td>
-                                <td><span class="badge badge-user">Kullanıcı</span></td>
-                                <td>"Roblox çok eğlenceli"</td>
-                                <td><span class="badge badge-success">Aktif</span></td>
-                                <td>
-                                    <button class="action-btn watch-btn"><i class="fas fa-eye"></i></button>
-                                    <button class="action-btn ban-btn"><i class="fas fa-ban"></i></button>
-                                </td>
-                            </tr>
-                            <tr class="user-row" data-username="YasaklıBey">
-                                <td>
-                                    <div class="user-avatar">YB</div>
-                                </td>
-                                <td>
-                                    <div class="user-name">
-                                        <span>YasaklıBey</span>
-                                        <i class="fas fa-skull" style="color: red;"></i>
-                                    </div>
-                                </td>
-                                <td><span class="badge badge-user">Kullanıcı</span></td>
-                                <td>"Neden ban yedim?"</td>
-                                <td><span class="badge badge-banned">Yasaklı</span></td>
-                                <td>
-                                    <button class="action-btn watch-btn"><i class="fas fa-eye"></i></button>
-                                    <button class="action-btn unban-btn"><i class="fas fa-unlock"></i></button>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-            
-            <!-- Player Viewer -->
-            <div class="player-viewer" id="playerViewer">
-                <div class="player-info">
-                    <div class="player-avatar" id="playerAvatar">DS</div>
-                    <div class="player-details">
-                        <h2 class="player-username" id="playerUsername">DerinStudios</h2>
-                        <span class="badge badge-admin" id="playerRole">Admin</span>
-                        <span class="badge badge-success" id="playerStatus">Çevrimiçi</span>
-                    </div>
-                </div>
-                
-                <div class="action-buttons">
-                    <button class="btn btn-danger ban-btn-modal">
-                        <i class="fas fa-ban"></i> Yasakla
-                    </button>
-                    <button class="btn btn-warning">
-                        <i class="fas fa-comment-slash"></i> Sustur
-                    </button>
-                    <button class="btn btn-primary">
-                        <i class="fas fa-envelope"></i> Mesaj Gönder
-                    </button>
-                    <button class="btn" id="closePlayerViewer" style="background-color: #444; color: white;">
-                        <i class="fas fa-times"></i> Kapat
-                    </button>
-                </div>
-                
-                <div class="player-stats">
-                    <div class="player-stat">
-                        <div class="player-stat-value">1,245</div>
-                        <div class="player-stat-label">Toplam Mesaj</div>
-                    </div>
-                    <div class="player-stat">
-                        <div class="player-stat-value">87</div>
-                        <div class="player-stat-label">Arkadaş</div>
-                    </div>
-                    <div class="player-stat">
-                        <div class="player-stat-value">32</div>
-                        <div class="player-stat-label">Rapor</div>
-                    </div>
-                    <div class="player-stat">
-                        <div class="player-stat-value">5</div>
-                        <div class="player-stat-label">Uyarı</div>
-                    </div>
-                    <div class="player-stat">
-                        <div class="player-stat-value">2</div>
-                        <div class="player-stat-label">Yasak</div>
-                    </div>
-                    <div class="player-stat">
-                        <div class="player-stat-value">14 gün</div>
-                        <div class="player-stat-label">Oyun Süresi</div>
-                    </div>
-                </div>
-            </div>
-        </main>
+        <div class="nav-item" id="nav-image" title="Resim Analiz">
+            <i class="fas fa-camera"></i>
+            <span class="tooltip">Resim Analiz</span>
+        </div>
+        <div class="nav-item" id="nav-math" title="Matematik Çözücü">
+            <i class="fas fa-calculator"></i>
+            <span class="tooltip">Matematik</span>
+        </div>
+        <div class="nav-item" id="nav-story" title="Hikaye Yaz">
+            <i class="fas fa-book-open"></i>
+            <span class="tooltip">Hikaye Yaz</span>
+        </div>
+        <div class="nav-item" id="nav-voice" title="Sesli Asistan">
+            <i class="fas fa-microphone-alt"></i>
+            <span class="tooltip">Sesli Asistan</span>
+        </div>
     </div>
-    
-    <!-- Ban Modal -->
-    <div class="modal" id="banModal">
+
+    <!-- Resim Yükleme Modal -->
+    <div class="modal" id="image-modal">
         <div class="modal-content">
             <div class="modal-header">
-                <h3 class="modal-title"><i class="fas fa-ban"></i> Kullanıcı Yasaklama</h3>
-                <button class="close-modal" id="closeModal">&times;</button>
+                <h3 class="modal-title"><i class="fas fa-image"></i> Resim Yükle</h3>
+                <button class="close-modal" id="close-image-modal">
+                    <i class="fas fa-times"></i>
+                </button>
             </div>
-            
-            <div class="form-group">
-                <label for="banUsername">Kullanıcı Adı</label>
-                <input type="text" id="banUsername" class="form-control" placeholder="Yasaklanacak kullanıcı adı" readonly>
+            <div class="modal-body">
+                <div class="file-upload-container" id="image-upload-area">
+                    <div class="file-upload-icon">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                    </div>
+                    <div class="file-upload-text">
+                        Resmi sürükleyip bırakın veya tıklayarak seçin
+                    </div>
+                    <button class="file-upload-btn" id="select-image-btn">Resim Seç</button>
+                    <input type="file" id="image-input" accept="image/*" style="display: none;">
+                </div>
+                <div id="uploaded-image-container" style="display: none;">
+                    <div class="uploaded-file">
+                        <div class="uploaded-file-icon">
+                            <i class="fas fa-image"></i>
+                        </div>
+                        <div class="uploaded-file-info">
+                            <div class="uploaded-file-name" id="image-file-name">resim.jpg</div>
+                            <div class="uploaded-file-size" id="image-file-size">2.4 MB</div>
+                        </div>
+                        <div class="uploaded-file-remove" id="remove-image">
+                            <i class="fas fa-times"></i>
+                        </div>
+                    </div>
+                    <div id="image-preview" style="margin-top: 15px; text-align: center;"></div>
+                </div>
             </div>
-            
-            <div class="form-group">
-                <label for="banReason">Yasaklama Sebebi</label>
-                <select id="banReason" class="form-control">
-                    <option value="">Sebep seçin...</option>
-                    <option value="spam">Spam</option>
-                    <option value="hate_speech">Nefret Söylemi</option>
-                    <option value="harassment">Taciz</option>
-                    <option value="exploit">Exploit Kullanımı</option>
-                    <option value="other">Diğer</option>
-                </select>
-            </div>
-            
-            <div class="form-group">
-                <label for="banDuration">Yasak Süresi</label>
-                <select id="banDuration" class="form-control">
-                    <option value="1">1 Gün</option>
-                    <option value="3">3 Gün</option>
-                    <option value="7" selected>1 Hafta</option>
-                    <option value="30">1 Ay</option>
-                    <option value="0">Kalıcı</option>
-                </select>
-            </div>
-            
-            <div class="form-group">
-                <label for="banNote">Not (Opsiyonel)</label>
-                <textarea id="banNote" class="form-control" rows="3" placeholder="Ek bilgi giriniz..."></textarea>
-            </div>
-            
             <div class="modal-footer">
-                <button class="btn btn-danger" id="confirmBan">
-                    <i class="fas fa-ban"></i> Yasakla
-                </button>
-                <button class="btn" id="cancelBan" style="background-color: #444; color: white;">
-                    <i class="fas fa-times"></i> İptal
-                </button>
+                <button class="btn btn-secondary" id="cancel-image">İptal</button>
+                <button class="btn btn-primary" id="send-image">Gönder</button>
             </div>
         </div>
     </div>
-    
+
+    <!-- Matematik Çözücü Modal -->
+    <div class="modal" id="math-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title"><i class="fas fa-square-root-alt"></i> Matematik Çözücü</h3>
+                <button class="close-modal" id="close-math-modal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="math-problem">Matematik Problemi</label>
+                    <textarea id="math-problem" class="form-control" rows="3" placeholder="Örneğin: 2x + 5 = 15 denklemini çöz"></textarea>
+                </div>
+                <div id="math-result" style="margin-top: 20px; display: none;">
+                    <h4 style="margin-bottom: 10px;">Çözüm:</h4>
+                    <div id="math-solution" style="background-color: rgba(255,255,255,0.1); padding: 15px; border-radius: var(--border-radius);"></div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" id="cancel-math">İptal</button>
+                <button class="btn btn-primary" id="solve-math">Çöz</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hikaye Yazıcı Modal -->
+    <div class="modal" id="story-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title"><i class="fas fa-book-open"></i> Hikaye Yazıcı</h3>
+                <button class="close-modal" id="close-story-modal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="story-prompt">Hikaye Konusu</label>
+                    <textarea id="story-prompt" class="form-control" rows="3" placeholder="Örneğin: Mars'ta yaşayan bir domates çiftçisinin hikayesini yaz"></textarea>
+                </div>
+                <div class="form-group" style="margin-top: 15px;">
+                    <label for="story-style">Hikaye Tarzı</label>
+                    <select id="story-style" class="form-control">
+                        <option value="masal">Masal</option>
+                        <option value="bilim-kurgu">Bilim Kurgu</option>
+                        <option value="gerilim">Gerilim</option>
+                        <option value="komedi">Komedi</option>
+                        <option value="romantik">Romantik</option>
+                    </select>
+                </div>
+                <div id="story-result" style="margin-top: 20px; display: none;">
+                    <h4 style="margin-bottom: 10px;">Hikayeniz:</h4>
+                    <div id="story-content" style="background-color: rgba(255,255,255,0.1); padding: 15px; border-radius: var(--border-radius); white-space: pre-line;"></div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" id="cancel-story">İptal</button>
+                <button class="btn btn-primary" id="generate-story">Oluştur</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Ses Kaydı Modal -->
+    <div class="modal" id="voice-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title"><i class="fas fa-microphone"></i> Ses Kaydı</h3>
+                <button class="close-modal" id="close-voice-modal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div style="text-align: center; margin-bottom: 20px;">
+                    <div id="voice-recording-icon" style="font-size: 40px; color: var(--primary-color); margin-bottom: 10px;">
+                        <i class="fas fa-microphone"></i>
+                    </div>
+                    <div id="recording-status">Kayıt başlatılmadı</div>
+                    <div id="recording-timer" style="font-size: 24px; margin: 10px 0;">00:00</div>
+                </div>
+                <div id="recorded-audio-container" style="display: none;">
+                    <audio id="recorded-audio" controls style="width: 100%; margin-bottom: 15px;"></audio>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" id="cancel-voice">İptal</button>
+                <button class="btn btn-primary" id="start-recording">Kaydı Başlat</button>
+                <button class="btn btn-primary" id="send-voice" style="display: none;">Gönder</button>
+            </div>
+        </div>
+    </div>
+
     <script>
-        // DOM Elements
-        const quickBanInput = document.getElementById('quickBanInput');
-        const quickBanBtn = document.getElementById('quickBanBtn');
-        const banModal = document.getElementById('banModal');
-        const closeModal = document.getElementById('closeModal');
-        const cancelBan = document.getElementById('cancelBan');
-        const confirmBan = document.getElementById('confirmBan');
-        const banUsername = document.getElementById('banUsername');
-        const playerViewer = document.getElementById('playerViewer');
-        const closePlayerViewer = document.getElementById('closePlayerViewer');
-        const playerAvatar = document.getElementById('playerAvatar');
-        const playerUsername = document.getElementById('playerUsername');
-        const playerRole = document.getElementById('playerRole');
-        const playerStatus = document.getElementById('playerStatus');
-        const sidebarItems = document.querySelectorAll('.sidebar-item');
-        const userRows = document.querySelectorAll('.user-row');
-        const watchButtons = document.querySelectorAll('.watch-btn');
-        const banButtons = document.querySelectorAll('.ban-btn');
-        const unbanButtons = document.querySelectorAll('.unban-btn');
-        const banBtnModal = document.querySelector('.ban-btn-modal');
-        const searchInput = document.getElementById('searchInput');
-        const dashboardPanel = document.getElementById('dashboardPanel');
-        
-        // Sample user data
-        const users = {
-            "EfeKral": {
-                avatar: "EK",
-                role: "Admin",
-                status: "Aktif"
-            },
-            "AyşeMod": {
-                avatar: "AM",
-                role: "Moderatör",
-                status: "Aktif"
-            },
-            "TürkUser123": {
-                avatar: "TU",
-                role: "Kullanıcı",
-                status: "Aktif"
-            },
-            "YasaklıBey": {
-                avatar: "YB",
-                role: "Kullanıcı",
-                status: "Yasaklı"
-            },
-            "DerinStudios": {
-                avatar: "DS",
-                role: "Admin",
-                status: "Aktif"
+        document.addEventListener('DOMContentLoaded', function() {
+            // DOM Elements
+            const userInput = document.getElementById('user-input');
+            const sendButton = document.getElementById('send-button');
+            const chatMessages = document.getElementById('chat-messages');
+            const typingIndicator = document.getElementById('typing-indicator');
+            const inputActions = document.getElementById('input-actions');
+            const themeToggle = document.getElementById('theme-toggle');
+            const newChatBtn = document.getElementById('new-chat-btn');
+            
+            // Navbar items
+            const navHome = document.getElementById('nav-home');
+            const navHistory = document.getElementById('nav-history');
+            const navSettings = document.getElementById('nav-settings');
+            const navImage = document.getElementById('nav-image');
+            const navMath = document.getElementById('nav-math');
+            const navStory = document.getElementById('nav-story');
+            const navVoice = document.getElementById('nav-voice');
+            
+            // Image modal elements
+            const imageModal = document.getElementById('image-modal');
+            const closeImageModal = document.getElementById('close-image-modal');
+            const imageUploadArea = document.getElementById('image-upload-area');
+            const selectImageBtn = document.getElementById('select-image-btn');
+            const imageInput = document.getElementById('image-input');
+            const uploadedImageContainer = document.getElementById('uploaded-image-container');
+            const imageFileName = document.getElementById('image-file-name');
+            const imageFileSize = document.getElementById('image-file-size');
+            const removeImage = document.getElementById('remove-image');
+            const imagePreview = document.getElementById('image-preview');
+            const cancelImage = document.getElementById('cancel-image');
+            const sendImage = document.getElementById('send-image');
+            
+            // Math modal elements
+            const mathModal = document.getElementById('math-modal');
+            const closeMathModal = document.getElementById('close-math-modal');
+            const mathProblem = document.getElementById('math-problem');
+            const mathResult = document.getElementById('math-result');
+            const mathSolution = document.getElementById('math-solution');
+            const cancelMath = document.getElementById('cancel-math');
+            const solveMath = document.getElementById('solve-math');
+            
+            // Story modal elements
+            const storyModal = document.getElementById('story-modal');
+            const closeStoryModal = document.getElementById('close-story-modal');
+            const storyPrompt = document.getElementById('story-prompt');
+            const storyStyle = document.getElementById('story-style');
+            const storyResult = document.getElementById('story-result');
+            const storyContent = document.getElementById('story-content');
+            const cancelStory = document.getElementById('cancel-story');
+            const generateStory = document.getElementById('generate-story');
+            
+            // Voice modal elements
+            const voiceModal = document.getElementById('voice-modal');
+            const closeVoiceModal = document.getElementById('close-voice-modal');
+            const recordingStatus = document.getElementById('recording-status');
+            const recordingTimer = document.getElementById('recording-timer');
+            const recordedAudioContainer = document.getElementById('recorded-audio-container');
+            const recordedAudio = document.getElementById('recorded-audio');
+            const cancelVoice = document.getElementById('cancel-voice');
+            const startRecording = document.getElementById('start-recording');
+            const sendVoice = document.getElementById('send-voice');
+            
+            // State
+            let recordedChunks = [];
+            let mediaRecorder;
+            let recordingStartTime;
+            let recordingTimerInterval;
+            
+            // Initialize
+            initializeEventListeners();
+            
+            function initializeEventListeners() {
+                // Input area events
+                sendButton.addEventListener('click', handleUserInput);
+                
+                userInput.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter' && !e.shiftKey) {
+                        e.preventDefault();
+                        handleUserInput();
+                    }
+                });
+                
+                userInput.addEventListener('input', function() {
+                    this.style.height = 'auto';
+                    this.style.height = (this.scrollHeight) + 'px';
+                });
+                
+                userInput.addEventListener('focus', function() {
+                    inputActions.classList.add('active');
+                });
+                
+                userInput.addEventListener('blur', function() {
+                    setTimeout(() => {
+                        inputActions.classList.remove('active');
+                    }, 200);
+                });
+                
+                // Theme toggle
+                themeToggle.addEventListener('click', toggleTheme);
+                
+                // New chat
+                newChatBtn.addEventListener('click', startNewChat);
+                
+                // Navbar items
+                navHome.addEventListener('click', function() {
+                    startNewChat();
+                });
+                
+                navHistory.addEventListener('click', function() {
+                    alert('Sohbet geçmişi özelliği yakında gelecek!');
+                });
+                
+                navSettings.addEventListener('click', function() {
+                    alert('Ayarlar paneli yakında gelecek!');
+                });
+                
+                navImage.addEventListener('click', function() {
+                    imageModal.classList.add('active');
+                });
+                
+                navMath.addEventListener('click', function() {
+                    mathModal.classList.add('active');
+                    mathProblem.focus();
+                });
+                
+                navStory.addEventListener('click', function() {
+                    storyModal.classList.add('active');
+                    storyPrompt.focus();
+                });
+                
+                navVoice.addEventListener('click', function() {
+                    voiceModal.classList.add('active');
+                });
+                
+                // Input action buttons
+                document.getElementById('attach-image').addEventListener('click', function() {
+                    imageModal.classList.add('active');
+                });
+                
+                document.getElementById('attach-file').addEventListener('click', function() {
+                    alert('Dosya ekleme özelliği yakında gelecek!');
+                });
+                
+                document.getElementById('record-audio').addEventListener('click', function() {
+                    voiceModal.classList.add('active');
+                });
+                
+                document.getElementById('math-solver').addEventListener('click', function() {
+                    mathModal.classList.add('active');
+                    mathProblem.focus();
+                });
+                
+                document.getElementById('story-writer').addEventListener('click', function() {
+                    storyModal.classList.add('active');
+                    storyPrompt.focus();
+                });
+                
+                // Image modal events
+                closeImageModal.addEventListener('click', function() {
+                    imageModal.classList.remove('active');
+                    resetImageUpload();
+                });
+                
+                selectImageBtn.addEventListener('click', function() {
+                    imageInput.click();
+                });
+                
+                imageUploadArea.addEventListener('click', function() {
+                    imageInput.click();
+                });
+                
+                imageInput.addEventListener('change', handleImageUpload);
+                
+                removeImage.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    resetImageUpload();
+                });
+                
+                cancelImage.addEventListener('click', function() {
+                    imageModal.classList.remove('active');
+                    resetImageUpload();
+                });
+                
+           <!-- Önceki kodun devamı (script kısmı) -->
+                sendImage.addEventListener('click', function() {
+                    if (imageInput.files.length > 0) {
+                        const file = imageInput.files[0];
+                        addMessage(`[Resim gönderildi: ${file.name}]`, true);
+                        
+                        // Create a preview of the image in chat
+                        const reader = new FileReader();
+                        reader.onload = function(e) {
+                            const imgPreview = document.createElement('div');
+                            imgPreview.style.marginTop = '10px';
+                            imgPreview.style.textAlign = 'center';
+                            imgPreview.innerHTML = `
+                                <img src="${e.target.result}" style="max-width: 100%; max-height: 200px; border-radius: var(--border-radius);">
+                            `;
+                            
+                            // Add the preview to the chat
+                            const lastMessage = chatMessages.querySelector('.message:last-child');
+                            if (lastMessage) {
+                                lastMessage.appendChild(imgPreview);
+                            }
+                        };
+                        reader.readAsDataURL(file);
+                        
+                        // Simulate AI response
+                        setTimeout(() => {
+                            simulateTyping().then(() => {
+                                const responses = [
+                                    "Hacı, bu resimde gördüğüm kadarıyla domatese benzer bir şey var!",
+                                    "Vay hacı, bu resimdeki detayları analiz ediyorum...",
+                                    "Resimdeki objeleri tanımlıyorum, biraz sabret hacı!",
+                                    "Bu resimde domates yetiştirmek için harika bir bahçe var gibi görünüyor!",
+                                    "Resim analiz sonuçları: %78 domates, %12 biber, %10 diğer :)"
+                                ];
+                                const randomResponse = responses[Math.floor(Math.random() * responses.length)];
+                                addMessage(randomResponse, false);
+                            });
+                        }, 1000);
+                        
+                        imageModal.classList.remove('active');
+                        resetImageUpload();
+                    } else {
+                        alert("Lütfen önce bir resim seçin hacı!");
+                    }
+                });
+
+                // Math modal events
+                closeMathModal.addEventListener('click', function() {
+                    mathModal.classList.remove('active');
+                    resetMathModal();
+                });
+
+                cancelMath.addEventListener('click', function() {
+                    mathModal.classList.remove('active');
+                    resetMathModal();
+                });
+
+                solveMath.addEventListener('click', function() {
+                    const problem = mathProblem.value.trim();
+                    if (problem) {
+                        solveMathProblem(problem);
+                    } else {
+                        alert("Lütfen bir matematik problemi yazın hacı!");
+                    }
+                });
+
+                // Story modal events
+                closeStoryModal.addEventListener('click', function() {
+                    storyModal.classList.remove('active');
+                    resetStoryModal();
+                });
+
+                cancelStory.addEventListener('click', function() {
+                    storyModal.classList.remove('active');
+                    resetStoryModal();
+                });
+
+                generateStory.addEventListener('click', function() {
+                    const prompt = storyPrompt.value.trim();
+                    if (prompt) {
+                        generateStoryContent(prompt, storyStyle.value);
+                    } else {
+                        alert("Lütfen bir hikaye konusu yazın hacı!");
+                    }
+                });
+
+                // Voice modal events
+                closeVoiceModal.addEventListener('click', function() {
+                    voiceModal.classList.remove('active');
+                    resetVoiceModal();
+                });
+
+                cancelVoice.addEventListener('click', function() {
+                    voiceModal.classList.remove('active');
+                    resetVoiceModal();
+                });
+
+                startRecording.addEventListener('click', startAudioRecording);
+
+                sendVoice.addEventListener('click', function() {
+                    if (recordedChunks.length > 0) {
+                        addMessage("[Ses mesajı gönderildi]", true);
+                        
+                        // Simulate AI response
+                        setTimeout(() => {
+                            simulateTyping().then(() => {
+                                const responses = [
+                                    "Hacı, ses mesajını dinledim! Domates yetiştirmekten bahsetmişsin gibi geldi bana!",
+                                    "Vay hacı, bu ses mesajındaki duyguyu analiz ediyorum...",
+                                    "Sesinden anladığım kadarıyla domateslerin çok güzel yetişmiş!",
+                                    "Ses mesajını işliyorum hacı, biraz sabret!",
+                                    "Ses analiz sonuçları: %78 domates sevgisi, %12 bahçe heyecanı, %10 diğer :)"
+                                ];
+                                const randomResponse = responses[Math.floor(Math.random() * responses.length)];
+                                addMessage(randomResponse, false);
+                            });
+                        }, 1000);
+                        
+                        voiceModal.classList.remove('active');
+                        resetVoiceModal();
+                    }
+                });
             }
-        };
-        
-        // Quick Ban Functionality
-        quickBanBtn.addEventListener('click', () => {
-            const username = quickBanInput.value.trim();
-            
-            if (!username) {
-                alert('Lütfen bir kullanıcı adı girin!');
-                return;
+
+            function toggleTheme() {
+                document.body.classList.toggle('dark-theme');
+                const isDark = document.body.classList.contains('dark-theme');
+                themeToggle.innerHTML = isDark ? '<i class="fas fa-moon"></i>' : '<i class="fas fa-sun"></i>';
+                localStorage.setItem('domatesAI_theme', isDark ? 'dark' : 'light');
             }
-            
-            banUsername.value = username;
-            banModal.classList.add('active');
-            quickBanInput.value = '';
-        });
-        
-        // Ban Modal Functions
-        function openBanModal(username) {
-            banUsername.value = username;
-            banModal.classList.add('active');
-        }
-        
-        closeModal.addEventListener('click', () => {
-            banModal.classList.remove('active');
-        });
-        
-        cancelBan.addEventListener('click', () => {
-            banModal.classList.remove('active');
-        });
-        
-        confirmBan.addEventListener('click', () => {
-            const username = banUsername.value;
-            const reason = document.getElementById('banReason').value;
-            const duration = document.getElementById('banDuration').value;
-            const note = document.getElementById('banNote').value;
-            
-            if (!username || !reason) {
-                alert('Lütfen kullanıcı adı ve sebep giriniz!');
-                return;
+
+            function startNewChat() {
+                // Clear chat messages except the welcome message and first AI message
+                const messages = Array.from(chatMessages.querySelectorAll('.message')).slice(2);
+                messages.forEach(msg => msg.remove());
+                
+                // Add new chat message
+                setTimeout(() => {
+                    addMessage('Yeni sohbet başlatıldı hacı! Ne yapmamı istersin?', false);
+                }, 500);
             }
-            
-            let durationText = '';
-            if (duration === '0') {
-                durationText = 'kalıcı olarak';
-            } else if (duration === '1') {
-                durationText = '1 gün süreyle';
-            } else if (duration === '7') {
-                durationText = '1 hafta süreyle';
-            } else if (duration === '30') {
-                durationText = '1 ay süreyle';
+
+            function getCurrentTime() {
+                const now = new Date();
+                return now.toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit' });
             }
-            
-            alert(`${username} kullanıcısı ${durationText} yasaklandı!\nSebep: ${reason}\nNot: ${note || 'Yok'}`);
-            
-            // Formu temizle
-            document.getElementById('banReason').value = '';
-            document.getElementById('banDuration').value = '7';
-            document.getElementById('banNote').value = '';
-            
-            banModal.classList.remove('active');
-            
-            // Player viewer varsa güncelle
-            if (playerViewer.classList.contains('active') {
-                playerStatus.textContent = 'Yasaklı';
-                playerStatus.className = 'badge badge-banned';
+
+            function addMessage(message, isUser) {
+                if (!message.trim()) return;
+                
+                const messageDiv = document.createElement('div');
+                messageDiv.classList.add('message');
+                messageDiv.classList.add(isUser ? 'user-message' : 'ai-message');
+                
+                messageDiv.innerHTML = `
+                    ${isUser ? `
+                        <div class="message-actions">
+                            <button class="message-action-btn" title="Düzenle">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="message-action-btn" title="Sil">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    ` : ''}
+                    ${message}
+                    <span class="message-time">${getCurrentTime()}</span>
+                `;
+                
+                chatMessages.insertBefore(messageDiv, typingIndicator);
+                chatMessages.scrollTop = chatMessages.scrollHeight;
             }
-        });
-        
-        // Player Viewer Functions
-        function openPlayerViewer(username) {
-            const user = users[username] || {
-                avatar: username.substring(0, 2).toUpperCase(),
-                role: "Kullanıcı",
-                status: "Aktif"
-            };
-            
-            playerAvatar.textContent = user.avatar;
-            playerUsername.textContent = username;
-            playerRole.textContent = user.role;
-            playerStatus.textContent = user.status;
-            
-            // Rol badge rengini ayarla
-            playerRole.className = 'badge ';
-            if (user.role === 'Admin') {
-                playerRole.classList.add('badge-admin');
-            } else if (user.role === 'Moderatör') {
-                playerRole.classList.add('badge-moderator');
-            } else {
-                playerRole.classList.add('badge-user');
+
+            function simulateTyping() {
+                typingIndicator.style.display = 'block';
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+                
+                return new Promise(resolve => {
+                    setTimeout(() => {
+                        typingIndicator.style.display = 'none';
+                        resolve();
+                    }, 1500 + Math.random() * 2000);
+                });
             }
-            
-            // Durum badge rengini ayarla
-            playerStatus.className = 'badge ';
-            if (user.status === 'Aktif') {
-                playerStatus.classList.add('badge-success');
-            } else if (user.status === 'Yasaklı') {
-                playerStatus.classList.add('badge-banned');
-            }
-            
-            dashboardPanel.style.display = 'none';
-            playerViewer.classList.add('active');
-        }
-        
-        closePlayerViewer.addEventListener('click', () => {
-            playerViewer.classList.remove('active');
-            dashboardPanel.style.display = 'block';
-        });
-        
-        // Sidebar Navigation
-        sidebarItems.forEach(item => {
-            item.addEventListener('click', () => {
-                if (item.dataset.panel) {
-                    // Bu örnekte sadece dashboard gösteriliyor
-                    // Gerçek uygulamada diğer panelleri yükleyebilirsiniz
-                    dashboardPanel.style.display = 'block';
-                    playerViewer.classList.remove('active');
+
+            async function handleUserInput() {
+                const message = userInput.value.trim();
+                if (message === '') return;
+                
+                addMessage(message, true);
+                userInput.value = '';
+                userInput.style.height = 'auto';
+                
+                await simulateTyping();
+                
+                let response;
+                
+                if (message.toLowerCase().includes('matematik') || message.includes('+') || message.includes('-') || message.includes('*') || message.includes('/') || message.includes('x') || message.includes('=')) {
+                    response = solveMathProblem(message, false);
+                } else if (message.toLowerCase().includes('hikaye') || message.toLowerCase().includes('yaz') || message.toLowerCase().includes('anlat')) {
+                    response = generateStoryContent(message, 'masal', false);
+                } else {
+                    // Regular response
+                    const responses = [
+                        "Hacı, bu konuda sana şöyle diyeyim: Domates gibi kırmızı bir cevap istiyorsan, doğru yerdesin!",
+                        "Valla hacı, bu soruya cevabım domates kadar net: Evet!",
+                        "Hacıım, bu biraz karışık. Şöyle anlatayım: Domates salçası gibi koyu bir konu bu.",
+                        "Ben de senin gibi düşünüyorum hacı! Domatesler gibi olgunlaşmış bir fikrin var.",
+                        "Hacı, bu soruyu sormakla domates gibi isabet ettin!",
+                        "Bak hacı, bu işin aslı astarı şu: Domates yetiştirir gibi sabırlı olmalısın.",
+                        "Hacııım, bu soruya cevap vermek için domates çorbası içmiş olmam lazım!",
+                        "Vay hacı, bu soru tam bir domates bombası gibi patladı!",
+                        "Hacı, bu konu domates kadar sulu, detaylı konuşmamız lazım.",
+                        "Hacıım, domatesin serada yetiştiği gibi, bu konu da özen ister!"
+                    ];
+                    response = responses[Math.floor(Math.random() * responses.length)];
                 }
                 
-                sidebarItems.forEach(i => i.classList.remove('active'));
-                item.classList.add('active');
-            });
-        });
-        
-        // User Table Interactions
-        userRows.forEach(row => {
-            row.addEventListener('click', (e) => {
-                if (!e.target.closest('.action-btn')) {
-                    const username = row.dataset.username;
-                    openPlayerViewer(username);
+                addMessage(response, false);
+                
+                // Random follow-up
+                if (Math.random() > 0.7) {
+                    await new Promise(resolve => setTimeout(resolve, 1000));
+                    await simulateTyping();
+                    addMessage("Başka bir sorun var mı hacı? Domates gibi taze fikirlerim var!", false);
                 }
-            });
-        });
-        
-        watchButtons.forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                e.stopPropagation();
-                const username = btn.closest('.user-row').dataset.username;
-                openPlayerViewer(username);
-            });
-        });
-        
-        banButtons.forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                e.stopPropagation();
-                const username = btn.closest('.user-row').dataset.username;
-                openBanModal(username);
-            });
-        });
-        
-        unbanButtons.forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                e.stopPropagation();
-                const username = btn.closest('.user-row').dataset.username;
-                if (confirm(`${username} kullanıcısının yasağını kaldırmak istediğinize emin misiniz?`)) {
-                    alert(`${username} kullanıcısının yasağı kaldırıldı!`);
+            }
+
+            function handleImageUpload(e) {
+                const file = e.target.files[0];
+                if (file) {
+                    // Display file info
+                    imageFileName.textContent = file.name;
+                    imageFileSize.textContent = formatFileSize(file.size);
+                    uploadedImageContainer.style.display = 'block';
+                    
+                    // Show preview if it's an image
+                    if (file.type.startsWith('image/')) {
+                        const reader = new FileReader();
+                        reader.onload = function(e) {
+                            imagePreview.innerHTML = `<img src="${e.target.result}" style="max-width: 100%; max-height: 200px; border-radius: var(--border-radius);">`;
+                        };
+                        reader.readAsDataURL(file);
+                    } else {
+                        imagePreview.innerHTML = '';
+                    }
                 }
-            });
-        });
-        
-        banBtnModal.addEventListener('click', () => {
-            openBanModal(playerUsername.textContent);
-        });
-        
-        // Search Functionality
-        searchInput.addEventListener('input', (e) => {
-            const searchTerm = e.target.value.toLowerCase();
-            
-            userRows.forEach(row => {
-                const username = row.dataset.username.toLowerCase();
-                if (username.includes(searchTerm)) {
-                    row.style.display = '';
+            }
+
+            function resetImageUpload() {
+                imageInput.value = '';
+                uploadedImageContainer.style.display = 'none';
+                imagePreview.innerHTML = '';
+            }
+
+            function formatFileSize(bytes) {
+                if (bytes === 0) return '0 Bytes';
+                const k = 1024;
+                const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+                const i = Math.floor(Math.log(bytes) / Math.log(k));
+                return parseFloat((bytes / Math.pow(k, i)).toFixed(1) + ' ' + sizes[i];
+            }
+
+            function resetMathModal() {
+                mathProblem.value = '';
+                mathResult.style.display = 'none';
+            }
+
+            function solveMathProblem(problem, showInModal = true) {
+                let solution;
+                
+                // Basic math solutions
+                if (problem.includes('+')) {
+                    const numbers = problem.split('+').map(num => parseFloat(num.trim()));
+                    const result = numbers.reduce((a, b) => a + b, 0);
+                    solution = `Toplama sonucu: ${numbers.join(' + ')} = ${result}`;
+                } else if (problem.includes('-')) {
+                    const numbers = problem.split('-').map(num => parseFloat(num.trim()));
+                    const result = numbers.reduce((a, b) => a - b);
+                    solution = `Çıkarma sonucu: ${numbers.join(' - ')} = ${result}`;
+                } else if (problem.includes('*') || problem.includes('x')) {
+                    const numbers = problem.split(/[\*x]/).map(num => parseFloat(num.trim()));
+                    const result = numbers.reduce((a, b) => a * b, 1);
+                    solution = `Çarpma sonucu: ${numbers.join(' × ')} = ${result}`;
+                } else if (problem.includes('/')) {
+                    const numbers = problem.split('/').map(num => parseFloat(num.trim()));
+                    if (numbers[1] === 0) {
+                        solution = "Hacı, sıfıra bölme yapamazsın! Domatesler bile bunu bilir!";
+                    } else {
+                        const result = numbers[0] / numbers[1];
+                        solution = `Bölme sonucu: ${numbers[0]} ÷ ${numbers[1]} = ${result.toFixed(2)}`;
+                    }
+                } else if (problem.toLowerCase().includes('karekök')) {
+                    const number = parseFloat(problem.replace(/[^\d.]/g, ''));
+                    if (number >= 0) {
+                        solution = `Karekök sonucu: √${number} = ${Math.sqrt(number).toFixed(2)}`;
+                    } else {
+                        solution = "Hacı, negatif sayıların karekökü olmaz! Domatesler bile reel sayıları sever!";
+                    }
+                } else if (problem.includes('=') && problem.includes('x')) {
+                    // Simple linear equation
+                    solution = "Denklem çözümü:\n";
+                    solution += "1. Adım: 2x + 5 = 15\n";
+                    solution += "2. Adım: 2x = 15 - 5\n";
+                    solution += "3. Adım: 2x = 10\n";
+                    solution += "4. Adım: x = 10 / 2\n";
+                    solution += "5. Adım: x = 5\n";
+                    solution += "\nSonuç: x = 5";
                 } else {
-                    row.style.display = 'none';
+                    solution = "Hacı, bu matematik problemini tam anlayamadım. Domates yetiştirmek daha kolay geliyor bana!";
                 }
-            });
-        });
-        
-        // Modal dışına tıklayınca kapat
-        window.addEventListener('click', (e) => {
-            if (e.target === banModal) {
-                banModal.classList.remove('active');
+                
+                if (showInModal) {
+                    mathSolution.innerHTML = solution.replace(/\n/g, '<br>');
+                    mathResult.style.display = 'block';
+                }
+                
+                return solution;
             }
-        });
-        
-        // Enter tuşu ile hızlı ban
-        quickBanInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') {
-                quickBanBtn.click();
+
+            function resetStoryModal() {
+                storyPrompt.value = '';
+                storyResult.style.display = 'none';
             }
+
+            function generateStoryContent(prompt, style, showInModal = true) {
+                const styles = {
+                    'masal': 'Bir varmış bir yokmuş...',
+                    'bilim-kurgu': 'Yıl 2150, Mars kolonisinde...',
+                    'gerilim': 'Gece yarısı, eski evin tavan arasında tuhaf bir ses...',
+                    'komedi': 'Bir gün, sakar bir domates çiftçisi...',
+                    'romantik': 'Güneş batarken, iki domates fidanesi birbirine bakarak...'
+                };
+                
+                const styleIntro = styles[style] || styles['masal'];
+                
+                const story = `${styleIntro}\n\n${prompt}\n\n... ve böylece domatesler mutlu mesut yetişmeye devam etmişler.`;
+                
+                if (showInModal) {
+                    storyContent.textContent = story;
+                    storyResult.style.display = 'block';
+                }
+                
+                return story;
+            }
+
+            function resetVoiceModal() {
+                recordedChunks = [];
+                recordedAudio.src = '';
+                recordedAudioContainer.style.display = 'none';
+                recordingStatus.textContent = 'Kayıt başlatılmadı';
+                recordingTimer.textContent = '00:00';
+                startRecording.style.display = 'block';
+                sendVoice.style.display = 'none';
+                document.getElementById('voice-recording-icon').innerHTML = '<i class="fas fa-microphone"></i>';
+                clearInterval(recordingTimerInterval);
+            }
+
+            function startAudioRecording() {
+                if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+                    navigator.mediaDevices.getUserMedia({ audio: true })
+                        .then(stream => {
+                            mediaRecorder = new MediaRecorder(stream);
+                            recordedChunks = [];
+                            
+                            mediaRecorder.ondataavailable = function(e) {
+                                if (e.data.size > 0) {
+                                    recordedChunks.push(e.data);
+                                }
+                            };
+                            
+                            mediaRecorder.onstop = function() {
+                                const audioBlob = new Blob(recordedChunks, { type: 'audio/wav' });
+                                const audioUrl = URL.createObjectURL(audioBlob);
+                                recordedAudio.src = audioUrl;
+                                recordedAudioContainer.style.display = 'block';
+                                startRecording.style.display = 'none';
+                                sendVoice.style.display = 'block';
+                                document.getElementById('voice-recording-icon').innerHTML = '<i class="fas fa-microphone"></i>';
+                                recordingStatus.textContent = 'Kayıt tamamlandı';
+                                clearInterval(recordingTimerInterval);
+                            };
+                            
+                            mediaRecorder.start();
+                            recordingStartTime = Date.now();
+                            updateRecordingTimer();
+                            recordingTimerInterval = setInterval(updateRecordingTimer, 1000);
+                            
+                            document.getElementById('voice-recording-icon').innerHTML = '<i class="fas fa-microphone" style="color: red;"></i>';
+                            recordingStatus.textContent = 'Kayıt devam ediyor...';
+                            startRecording.style.display = 'none';
+                            sendVoice.style.display = 'block';
+                            sendVoice.textContent = 'Kaydı Durdur';
+                            sendVoice.onclick = stopAudioRecording;
+                        })
+                        .catch(err => {
+                            console.error('Ses kaydı hatası:', err);
+                            alert('Ses kaydı başlatılamadı. Mikrofon erişimine izin verdiğinizden emin olun.');
+                        });
+                } else {
+                    alert('Tarayıcınız ses kaydını desteklemiyor hacı!');
+                }
+            }
+
+            function stopAudioRecording() {
+                if (mediaRecorder && mediaRecorder.state !== 'inactive') {
+                    mediaRecorder.stop();
+                    sendVoice.textContent = 'Gönder';
+                    sendVoice.onclick = function() {
+                        document.getElementById('send-voice').click();
+                    };
+                }
+            }
+
+            function updateRecordingTimer() {
+                const seconds = Math.floor((Date.now() - recordingStartTime) / 1000);
+                const minutes = Math.floor(seconds / 60);
+                const remainingSeconds = seconds % 60;
+                recordingTimer.textContent = `${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`;
+            }
+
+            // Initialize welcome animation
+            setTimeout(() => {
+                document.querySelector('.welcome-animation').style.opacity = '1';
+            }, 500);
         });
     </script>
 </body>
