@@ -636,6 +636,123 @@
             background-color: var(--primary-color);
         }
         
+        /* Settings Sidebar */
+        .settings-sidebar {
+            position: fixed;
+            top: 0;
+            right: var(--navbar-width);
+            width: 300px;
+            height: 100vh;
+            background-color: var(--dark-color);
+            box-shadow: var(--shadow);
+            transform: translateX(100%);
+            transition: var(--transition);
+            z-index: 9;
+            padding: 20px;
+            overflow-y: auto;
+        }
+        
+        .settings-sidebar.active {
+            transform: translateX(0);
+        }
+        
+        .settings-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .settings-title {
+            font-size: 18px;
+            color: var(--primary-color);
+        }
+        
+        .close-settings {
+            background: none;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+            color: var(--text-color);
+        }
+        
+        .settings-group {
+            margin-bottom: 25px;
+        }
+        
+        .settings-group-title {
+            font-size: 16px;
+            margin-bottom: 15px;
+            color: var(--primary-color);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .settings-option {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .settings-label {
+            font-size: 14px;
+        }
+        
+        .settings-control {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 24px;
+        }
+        
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(255, 255, 255, 0.1);
+            transition: var(--transition);
+            border-radius: 34px;
+        }
+        
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 16px;
+            width: 16px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: var(--transition);
+            border-radius: 50%;
+        }
+        
+        input:checked + .slider {
+            background-color: var(--primary-color);
+        }
+        
+        input:checked + .slider:before {
+            transform: translateX(26px);
+        }
+        
         /* Light Theme */
         body.light-theme {
             --dark-color: #f5f5f5;
@@ -656,7 +773,8 @@
         }
         
         body.light-theme .right-navbar,
-        body.light-theme .history-sidebar {
+        body.light-theme .history-sidebar,
+        body.light-theme .settings-sidebar {
             background-color: #e0e0e0;
         }
         
@@ -675,12 +793,14 @@
             color: white;
         }
         
-        body.light-theme .history-item {
+        body.light-theme .history-item,
+        body.light-theme .settings-option {
             background-color: rgba(0, 0, 0, 0.05);
             color: #333;
         }
         
-        body.light-theme .history-item:hover {
+        body.light-theme .history-item:hover,
+        body.light-theme .settings-option:hover {
             background-color: rgba(0, 0, 0, 0.1);
         }
         
@@ -702,7 +822,8 @@
                 font-size: 24px;
             }
             
-            .history-sidebar {
+            .history-sidebar,
+            .settings-sidebar {
                 width: 250px;
             }
         }
@@ -736,7 +857,8 @@
                 padding: 10px 15px;
             }
             
-            .history-sidebar {
+            .history-sidebar,
+            .settings-sidebar {
                 width: 100%;
                 right: 0;
             }
@@ -864,6 +986,96 @@
         </div>
     </div>
 
+    <!-- Ayarlar Sidebar -->
+    <div class="settings-sidebar" id="settings-sidebar">
+        <div class="settings-header">
+            <h3 class="settings-title"><i class="fas fa-cog"></i> Ayarlar</h3>
+            <button class="close-settings" id="close-settings">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        
+        <div class="settings-group">
+            <h4 class="settings-group-title"><i class="fas fa-paint-brush"></i> Görünüm</h4>
+            
+            <div class="settings-option">
+                <span class="settings-label">Koyu Tema</span>
+                <div class="settings-control">
+                    <label class="switch">
+                        <input type="checkbox" id="dark-mode-toggle" checked>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+            </div>
+            
+            <div class="settings-option">
+                <span class="settings-label">Animasyonlar</span>
+                <div class="settings-control">
+                    <label class="switch">
+                        <input type="checkbox" id="animations-toggle" checked>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+            </div>
+        </div>
+        
+        <div class="settings-group">
+            <h4 class="settings-group-title"><i class="fas fa-bell"></i> Bildirimler</h4>
+            
+            <div class="settings-option">
+                <span class="settings-label">Ses Efektleri</span>
+                <div class="settings-control">
+                    <label class="switch">
+                        <input type="checkbox" id="sound-effects-toggle">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+            </div>
+        </div>
+        
+        <div class="settings-group">
+            <h4 class="settings-group-title"><i class="fas fa-robot"></i> AI Ayarları</h4>
+            
+            <div class="settings-option">
+                <span class="settings-label">Yaratıcılık Seviyesi</span>
+                <div class="settings-control">
+                    <select id="creativity-level" class="form-control">
+                        <option value="low">Düşük</option>
+                        <option value="medium" selected>Orta</option>
+                        <option value="high">Yüksek</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="settings-option">
+                <span class="settings-label">Yanıt Uzunluğu</span>
+                <div class="settings-control">
+                    <select id="response-length" class="form-control">
+                        <option value="short">Kısa</option>
+                        <option value="medium" selected>Orta</option>
+                        <option value="long">Uzun</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        
+        <div class="settings-group">
+            <h4 class="settings-group-title"><i class="fas fa-database"></i> Veri Yönetimi</h4>
+            
+            <button class="btn btn-secondary" id="clear-history" style="width: 100%; margin-bottom: 10px;">
+                <i class="fas fa-trash"></i> Geçmişi Temizle
+            </button>
+            
+            <button class="btn btn-secondary" id="export-data" style="width: 100%; margin-bottom: 10px;">
+                <i class="fas fa-file-export"></i> Verileri Dışa Aktar
+            </button>
+            
+            <button class="btn btn-secondary" id="import-data" style="width: 100%;">
+                <i class="fas fa-file-import"></i> Verileri İçe Aktar
+            </button>
+        </div>
+    </div>
+
     <!-- Resim Yükleme Modal -->
     <div class="modal" id="image-modal">
         <div class="modal-content">
@@ -955,6 +1167,17 @@
                         <option value="gerilim">Gerilim</option>
                         <option value="komedi">Komedi</option>
                         <option value="romantik">Romantik</option>
+                        <option value="macera">Macera</option>
+                        <option value="korku">Korku</option>
+                        <option value="fantastik">Fantastik</option>
+                    </select>
+                </div>
+                <div class="form-group" style="margin-top: 15px;">
+                    <label for="story-length">Hikaye Uzunluğu</label>
+                    <select id="story-length" class="form-control">
+                        <option value="short">Kısa (1-2 paragraf)</option>
+                        <option value="medium" selected>Orta (3-5 paragraf)</option>
+                        <option value="long">Uzun (5+ paragraf)</option>
                     </select>
                 </div>
                 <div id="story-result" style="margin-top: 20px; display: none;">
@@ -1023,6 +1246,18 @@
             const closeHistory = document.getElementById('close-history');
             const historyList = document.getElementById('history-list');
             
+            // Settings sidebar elements
+            const settingsSidebar = document.getElementById('settings-sidebar');
+            const closeSettings = document.getElementById('close-settings');
+            const darkModeToggle = document.getElementById('dark-mode-toggle');
+            const animationsToggle = document.getElementById('animations-toggle');
+            const soundEffectsToggle = document.getElementById('sound-effects-toggle');
+            const creativityLevel = document.getElementById('creativity-level');
+            const responseLength = document.getElementById('response-length');
+            const clearHistoryBtn = document.getElementById('clear-history');
+            const exportDataBtn = document.getElementById('export-data');
+            const importDataBtn = document.getElementById('import-data');
+            
             // Image modal elements
             const imageModal = document.getElementById('image-modal');
             const closeImageModal = document.getElementById('close-image-modal');
@@ -1051,6 +1286,7 @@
             const closeStoryModal = document.getElementById('close-story-modal');
             const storyPrompt = document.getElementById('story-prompt');
             const storyStyle = document.getElementById('story-style');
+            const storyLength = document.getElementById('story-length');
             const storyResult = document.getElementById('story-result');
             const storyContent = document.getElementById('story-content');
             const cancelStory = document.getElementById('cancel-story');
@@ -1074,9 +1310,17 @@
             let recordingTimerInterval;
             let currentChatId = generateChatId();
             let chats = JSON.parse(localStorage.getItem('domatesAI_chats')) || {};
+            let settings = JSON.parse(localStorage.getItem('domatesAI_settings')) || {
+                darkMode: true,
+                animations: true,
+                soundEffects: false,
+                creativityLevel: 'medium',
+                responseLength: 'medium'
+            };
             
             // Initialize
             initializeEventListeners();
+            loadSettings();
             loadChatHistory();
             loadChat(currentChatId);
             
@@ -1119,10 +1363,12 @@
                 
                 navHistory.addEventListener('click', function() {
                     historySidebar.classList.toggle('active');
+                    settingsSidebar.classList.remove('active');
                 });
                 
                 navSettings.addEventListener('click', function() {
-                    alert('Ayarlar paneli yakında gelecek!');
+                    settingsSidebar.classList.toggle('active');
+                    historySidebar.classList.remove('active');
                 });
                 
                 navImage.addEventListener('click', function() {
@@ -1146,6 +1392,103 @@
                 // History sidebar events
                 closeHistory.addEventListener('click', function() {
                     historySidebar.classList.remove('active');
+                });
+                
+                // Settings sidebar events
+                closeSettings.addEventListener('click', function() {
+                    settingsSidebar.classList.remove('active');
+                });
+                
+                darkModeToggle.addEventListener('change', function() {
+                    settings.darkMode = this.checked;
+                    saveSettings();
+                    applyTheme();
+                });
+                
+                animationsToggle.addEventListener('change', function() {
+                    settings.animations = this.checked;
+                    saveSettings();
+                });
+                
+                soundEffectsToggle.addEventListener('change', function() {
+                    settings.soundEffects = this.checked;
+                    saveSettings();
+                });
+                
+                creativityLevel.addEventListener('change', function() {
+                    settings.creativityLevel = this.value;
+                    saveSettings();
+                });
+                
+                responseLength.addEventListener('change', function() {
+                    settings.responseLength = this.value;
+                    saveSettings();
+                });
+                
+                clearHistoryBtn.addEventListener('click', function() {
+                    if (confirm('Tüm sohbet geçmişini silmek istediğinize emin misiniz? Bu işlem geri alınamaz!')) {
+                        chats = {};
+                        localStorage.removeItem('domatesAI_chats');
+                        currentChatId = generateChatId();
+                        loadChat(currentChatId);
+                    }
+                });
+                
+                exportDataBtn.addEventListener('click', function() {
+                    const data = {
+                        chats: chats,
+                        settings: settings
+                    };
+                    const dataStr = JSON.stringify(data);
+                    const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
+                    
+                    const exportFileDefaultName = 'domatesAI_backup.json';
+                    
+                    const linkElement = document.createElement('a');
+                    linkElement.setAttribute('href', dataUri);
+                    linkElement.setAttribute('download', exportFileDefaultName);
+                    linkElement.click();
+                });
+                
+                importDataBtn.addEventListener('click', function() {
+                    const input = document.createElement('input');
+                    input.type = 'file';
+                    input.accept = '.json';
+                    
+                    input.onchange = e => {
+                        const file = e.target.files[0];
+                        const reader = new FileReader();
+                        reader.readAsText(file,'UTF-8');
+                        
+                        reader.onload = readerEvent => {
+                            const content = readerEvent.target.result;
+                            try {
+                                const data = JSON.parse(content);
+                                
+                                if (data.chats && data.settings) {
+                                    if (confirm('Mevcut verilerin üzerine yazılacak, emin misiniz?')) {
+                                        chats = data.chats;
+                                        settings = data.settings;
+                                        
+                                        localStorage.setItem('domatesAI_chats', JSON.stringify(chats));
+                                        localStorage.setItem('domatesAI_settings', JSON.stringify(settings));
+                                        
+                                        loadSettings();
+                                        loadChatHistory();
+                                        loadChat(currentChatId);
+                                        
+                                        alert('Veriler başarıyla içe aktarıldı!');
+                                    }
+                                } else {
+                                    alert('Geçersiz veri formatı!');
+                                }
+                            } catch (e) {
+                                alert('Dosya okunurken hata oluştu: ' + e.message);
+                            }
+                        };
+                    };
+                    
+                    input.click();
                 });
                 
                 // Input action buttons
@@ -1276,7 +1619,7 @@
                 generateStory.addEventListener('click', function() {
                     const prompt = storyPrompt.value.trim();
                     if (prompt) {
-                        generateStoryContent(prompt, storyStyle.value);
+                        generateStoryContent(prompt, storyStyle.value, storyLength.value);
                     } else {
                         alert("Lütfen bir hikaye konusu yazın hacı!");
                     }
@@ -1320,12 +1663,36 @@
                 });
             }
 
+            function loadSettings() {
+                darkModeToggle.checked = settings.darkMode;
+                animationsToggle.checked = settings.animations;
+                soundEffectsToggle.checked = settings.soundEffects;
+                creativityLevel.value = settings.creativityLevel;
+                responseLength.value = settings.responseLength;
+                
+                applyTheme();
+            }
+
+            function saveSettings() {
+                localStorage.setItem('domatesAI_settings', JSON.stringify(settings));
+            }
+
+            function applyTheme() {
+                if (settings.darkMode) {
+                    document.body.classList.remove('light-theme');
+                    document.body.classList.add('dark-theme');
+                    themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
+                } else {
+                    document.body.classList.remove('dark-theme');
+                    document.body.classList.add('light-theme');
+                    themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+                }
+            }
+
             function toggleTheme() {
-                document.body.classList.toggle('dark-theme');
-                document.body.classList.toggle('light-theme');
-                const isDark = document.body.classList.contains('dark-theme');
-                themeToggle.innerHTML = isDark ? '<i class="fas fa-moon"></i>' : '<i class="fas fa-sun"></i>';
-                localStorage.setItem('domatesAI_theme', isDark ? 'dark' : 'light');
+                settings.darkMode = !settings.darkMode;
+                saveSettings();
+                applyTheme();
                 
                 // Add transition effect
                 document.body.style.transition = 'background-color 0.5s ease, color 0.5s ease';
@@ -1346,7 +1713,10 @@
                     return;
                 }
                 
-                Object.keys(chats).forEach(chatId => {
+                // Sort chats by timestamp (newest first)
+                const sortedChatIds = Object.keys(chats).sort((a, b) => chats[b].timestamp - chats[a].timestamp);
+                
+                sortedChatIds.forEach(chatId => {
                     const chat = chats[chatId];
                     const firstMessage = chat.messages.find(msg => msg.isUser)?.content || 'Yeni Sohbet';
                     
@@ -1448,6 +1818,10 @@
             }
 
             function simulateTyping() {
+                if (!settings.animations) {
+                    return Promise.resolve();
+                }
+                
                 typingIndicator.style.display = 'block';
                 chatMessages.scrollTop = chatMessages.scrollHeight;
                 
@@ -1474,7 +1848,7 @@
                 if (message.toLowerCase().includes('matematik') || message.includes('+') || message.includes('-') || message.includes('*') || message.includes('/') || message.includes('x') || message.includes('=')) {
                     response = solveMathProblem(message, false);
                 } else if (message.toLowerCase().includes('hikaye') || message.toLowerCase().includes('yaz') || message.toLowerCase().includes('anlat')) {
-                    response = generateStoryContent(message, 'masal', false);
+                    response = generateStoryContent(message, 'masal', 'medium', false);
                 } else {
                     // Regular response
                     const responses = [
@@ -1631,18 +2005,143 @@
                 storyResult.style.display = 'none';
             }
 
-            function generateStoryContent(prompt, style, showInModal = true) {
-                const styles = {
-                    'masal': 'Bir varmış bir yokmuş...',
-                    'bilim-kurgu': 'Yıl 2150, Mars kolonisinde...',
-                    'gerilim': 'Gece yarısı, eski evin tavan arasında tuhaf bir ses...',
-                    'komedi': 'Bir gün, sakar bir domates çiftçisi...',
-                    'romantik': 'Güneş batarken, iki domates fidanesi birbirine bakarak...'
+            function generateStoryContent(prompt, style, length, showInModal = true) {
+                const styleIntros = {
+                    'masal': [
+                        "Bir varmış bir yokmuş...",
+                        "Evvel zaman içinde...",
+                        "Çok eski zamanlarda..."
+                    ],
+                    'bilim-kurgu': [
+                        "Yıl 2150, Mars kolonisinde...",
+                        "Geleceğin dünyasında...",
+                        "Uzay gemisinin köşesinde..."
+                    ],
+                    'gerilim': [
+                        "Gece yarısı, eski evin tavan arasında tuhaf bir ses...",
+                        "Karanlık koridorda tek başına yürürken...",
+                        "Kapı çalındığında saat gece yarısını geçiyordu..."
+                    ],
+                    'komedi': [
+                        "Bir gün, sakar bir domates çiftçisi...",
+                        "Gülmekten kırıldığımız bir günde...",
+                        "Komik bir olay zinciri başladığında..."
+                    ],
+                    'romantik': [
+                        "Güneş batarken, iki domates fidanesi birbirine bakarak...",
+                        "Aşk dolu bir bahar gününde...",
+                        "Kalplerin birbirine yaklaştığı o an..."
+                    ],
+                    'macera': [
+                        "Tehlikeli bir yolculuk başlarken...",
+                        "Bilinmeyen diyarlara doğru yola çıktığımızda...",
+                        "Hazine haritasını bulduğumuz gün..."
+                    ],
+                    'korku': [
+                        "Karanlık basmıştı ve tek başınaydım...",
+                        "Garip sesler duyduğum o gece...",
+                        "Kapılar kendi kendine açılıyordu..."
+                    ],
+                    'fantastik': [
+                        "Büyülü krallığın son kalesinde...",
+                        "Ejderhaların özgürce uçtuğu diyarda...",
+                        "Sihirli asayı elime aldığım an..."
+                    ]
                 };
                 
-                const styleIntro = styles[style] || styles['masal'];
+                const styleOutros = {
+                    'masal': "ve onlar ermiş muradına, biz çıkalım kerevetine!",
+                    'bilim-kurgu': "ve böylece galaksinin kaderi değişti...",
+                    'gerilim': "ve asla ne olduğunu tam olarak öğrenemedik...",
+                    'komedi': "ve böylece gülmekten yerlere yattık!",
+                    'romantik': "ve aşkları domatesler gibi kırmızı ve tatlı kaldı...",
+                    'macera': "ve macera dolu yolculuk devam etti...",
+                    'korku': "ve o geceden sonra hiçbir şey eskisi gibi olmadı...",
+                    'fantastik': "ve büyülü diyarlarda maceraları devam etti..."
+                };
                 
-                const story = `${styleIntro}\n\n${prompt}\n\n... ve böylece domatesler mutlu mesut yetişmeye devam etmişler.`;
+                const lengthSettings = {
+                    'short': {
+                        paragraphs: 1,
+                        sentences: 3
+                    },
+                    'medium': {
+                        paragraphs: 3,
+                        sentences: 5
+                    },
+                    'long': {
+                        paragraphs: 5,
+                        sentences: 8
+                    }
+                };
+                
+                const selectedStyle = styleIntros[style] || styleIntros['masal'];
+                const styleIntro = selectedStyle[Math.floor(Math.random() * selectedStyle.length)];
+                const styleOutro = styleOutros[style] || styleOutros['masal'];
+                const lengthConfig = lengthSettings[length] || lengthSettings['medium'];
+                
+                let story = `${styleIntro}\n\n${prompt}\n\n`;
+                
+                // Generate story based on creativity level
+                const creativity = settings.creativityLevel;
+                const creativityFactors = {
+                    'low': { twists: 0, details: 1, characters: 1 },
+                    'medium': { twists: 1, details: 2, characters: 2 },
+                    'high': { twists: 2, details: 3, characters: 3 }
+                };
+                
+                const factors = creativityFactors[creativity];
+                
+                // Generate paragraphs
+                for (let p = 0; p < lengthConfig.paragraphs; p++) {
+                    let paragraph = "";
+                    
+                    // Generate sentences
+                    for (let s = 0; s < lengthConfig.sentences; s++) {
+                        let sentence = "";
+                        
+                        // Add some variety based on creativity
+                        if (s === 0 && p === 0) {
+                            sentence = `"${prompt}" diye başladı hikaye. `;
+                        } else {
+                            const sentenceTypes = [
+                                `Domatesler ${['şarkı söylüyordu', 'gizemli bir şekilde parlıyordu', 'sessizce büyüyordu'][Math.floor(Math.random() * 3)]}. `,
+                                `Bir ${['çiftçi', 'şövalye', 'bilim insanı', 'cadı'][Math.floor(Math.random() * 4)]} ortaya çıktı. `,
+                                `Aniden ${['gök gürledi', 'her şey değişti', 'sıradışı bir olay oldu'][Math.floor(Math.random() * 3)]}. `,
+                                `Bu sırada ${['uzaklarda', 'komşu köyde', 'eski bir şatoda'][Math.floor(Math.random() * 3)]}... `,
+                                `Hiç kimse ${['bu kadar hızlı', 'bu kadar gizemli', 'bu kadar beklenmedik'][Math.floor(Math.random() * 3)]} olacağını tahmin edemezdi. `
+                            ];
+                            
+                            sentence = sentenceTypes[Math.floor(Math.random() * sentenceTypes.length)];
+                            
+                            // Add twists for higher creativity
+                            if (factors.twists > 0 && Math.random() > 0.7) {
+                                const twists = [
+                                    `Ama hiç kimsenin bilmediği bir sır vardı... `,
+                                    `Ancak işler göründüğü gibi değildi... `,
+                                    `Fakat beklenmedik bir gelişme oldu... `
+                                ];
+                                sentence = twists[Math.floor(Math.random() * twists.length)] + sentence;
+                            }
+                            
+                            // Add details for higher creativity
+                            if (factors.details > 0 && Math.random() > 0.5) {
+                                const details = [
+                                    `Hava ${['ağır', 'tatlı', 'gizemli'][Math.floor(Math.random() * 3)]} bir kokuydu. `,
+                                    `Etrafta ${['eski', 'tozlu', 'büyülü'][Math.floor(Math.random() * 3)]} eşyalar vardı. `,
+                                    `Her şey ${['kırmızı', 'altın', 'gümüş'][Math.floor(Math.random() * 3)]} bir ışıkla aydınlanmıştı. `
+                                ];
+                                sentence += details[Math.floor(Math.random() * details.length)];
+                            }
+                        }
+                        
+                        paragraph += sentence;
+                    }
+                    
+                    story += paragraph + "\n\n";
+                }
+                
+                story += styleOutro;
                 
                 if (showInModal) {
                     storyContent.textContent = story;
@@ -1731,14 +2230,6 @@
             setTimeout(() => {
                 document.querySelector('.welcome-animation').style.opacity = '1';
             }, 500);
-            
-            // Load saved theme
-            const savedTheme = localStorage.getItem('domatesAI_theme') || 'dark';
-            if (savedTheme === 'light') {
-                document.body.classList.remove('dark-theme');
-                document.body.classList.add('light-theme');
-                themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
-            }
         });
     </script>
 </body>
