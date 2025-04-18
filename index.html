@@ -35,7 +35,7 @@
             overflow-x: hidden;
         }
         
-        /* Sağ Navbar */
+        /* Responsive Sağ Navbar */
         .right-navbar {
             width: var(--navbar-width);
             background-color: var(--dark-color);
@@ -50,6 +50,57 @@
             right: 0;
         }
         
+        /* Mobil için navbar */
+        @media (max-width: 768px) {
+            .right-navbar {
+                bottom: 0;
+                top: auto;
+                height: auto;
+                width: 100%;
+                flex-direction: row;
+                justify-content: space-around;
+                padding: 10px 0;
+            }
+            
+            .nav-item {
+                margin: 0 5px;
+            }
+            
+            .nav-item .tooltip {
+                bottom: 60px;
+                right: auto;
+                left: 50%;
+                transform: translateX(-50%);
+            }
+        }
+        
+        /* Tablet için navbar */
+        @media (min-width: 769px) and (max-width: 1024px) {
+            .right-navbar {
+                width: 60px;
+            }
+            
+            .nav-item {
+                width: 45px;
+                height: 45px;
+                font-size: 18px;
+            }
+        }
+        
+        /* Büyük ekranlar için navbar */
+        @media (min-width: 1921px) {
+            .right-navbar {
+                width: 100px;
+            }
+            
+            .nav-item {
+                width: 70px;
+                height: 70px;
+                font-size: 28px;
+                margin: 20px 0;
+            }
+        }
+
         .nav-item {
             width: 50px;
             height: 50px;
@@ -104,6 +155,26 @@
             height: 100vh;
         }
         
+        /* Responsive ana içerik */
+        @media (max-width: 768px) {
+            .main-content {
+                margin-right: 0;
+                margin-bottom: 70px;
+            }
+        }
+        
+        @media (min-width: 769px) and (max-width: 1024px) {
+            .main-content {
+                margin-right: 60px;
+            }
+        }
+        
+        @media (min-width: 1921px) {
+            .main-content {
+                margin-right: 100px;
+            }
+        }
+
         /* Header */
         .header {
             background-color: var(--light-color);
@@ -165,6 +236,20 @@
             height: calc(100vh - 70px);
         }
         
+        /* Responsive chat container */
+        @media (max-width: 768px) {
+            .chat-container {
+                padding: 10px;
+                height: calc(100vh - 140px);
+            }
+        }
+        
+        @media (min-width: 1921px) {
+            .chat-container {
+                max-width: 1600px;
+            }
+        }
+
         .chat-messages {
             flex: 1;
             padding: 20px;
@@ -176,6 +261,13 @@
             scroll-behavior: smooth;
         }
         
+        /* Responsive chat messages */
+        @media (max-width: 768px) {
+            .chat-messages {
+                padding: 15px;
+            }
+        }
+
         .message {
             margin-bottom: 20px;
             max-width: 85%;
@@ -807,11 +899,18 @@
         /* Responsive */
         @media (max-width: 768px) {
             .right-navbar {
-                width: 60px;
+                width: 100%;
+                bottom: 0;
+                top: auto;
+                height: auto;
+                flex-direction: row;
+                justify-content: space-around;
+                padding: 10px 0;
             }
             
             .main-content {
-                margin-right: 60px;
+                margin-right: 0;
+                margin-bottom: 70px;
             }
             
             .header-title span {
@@ -824,43 +923,92 @@
             
             .history-sidebar,
             .settings-sidebar {
-                width: 250px;
+                width: 100%;
+                right: 0;
+            }
+            
+            .nav-item {
+                margin: 0 5px;
+            }
+            
+            .nav-item .tooltip {
+                bottom: 60px;
+                right: auto;
+                left: 50%;
+                transform: translateX(-50%);
             }
         }
         
-        @media (max-width: 576px) {
+        @media (min-width: 769px) and (max-width: 1024px) {
             .right-navbar {
-                display: none;
+                width: 60px;
+            }
+            
+            .nav-item {
+                width: 45px;
+                height: 45px;
+                font-size: 18px;
             }
             
             .main-content {
-                margin-right: 0;
-            }
-            
-            .header {
-                padding: 15px;
-            }
-            
-            .chat-container {
-                padding: 10px;
-            }
-            
-            .chat-messages {
-                padding: 15px;
-            }
-            
-            .input-area {
-                padding: 10px;
-            }
-            
-            #user-input {
-                padding: 10px 15px;
+                margin-right: 60px;
             }
             
             .history-sidebar,
             .settings-sidebar {
-                width: 100%;
-                right: 0;
+                width: 250px;
+            }
+        }
+        
+        @media (min-width: 1025px) and (max-width: 1920px) {
+            /* Normal desktop styles */
+        }
+        
+        @media (min-width: 1921px) {
+            .right-navbar {
+                width: 100px;
+            }
+            
+            .nav-item {
+                width: 70px;
+                height: 70px;
+                font-size: 28px;
+                margin: 20px 0;
+            }
+            
+            .main-content {
+                margin-right: 100px;
+                max-width: 1600px;
+            }
+            
+            .history-sidebar,
+            .settings-sidebar {
+                width: 350px;
+            }
+            
+            .header-title {
+                font-size: 28px;
+            }
+            
+            .header-btn {
+                width: 50px;
+                height: 50px;
+                font-size: 24px;
+            }
+            
+            #user-input {
+                font-size: 20px;
+                min-height: 70px;
+            }
+            
+            #send-button {
+                width: 70px;
+                height: 70px;
+                font-size: 24px;
+            }
+            
+            .message {
+                font-size: 18px;
             }
         }
     </style>
@@ -902,6 +1050,7 @@
                     - Hikaye yazdırabilirsin<br>
                     - Resim yükleyip analiz ettirebilirsin<br>
                     - Ses kaydı gönderebilirsin<br>
+                    - Dosya yükleyebilirsin<br>
                     <br>
                     Ne yapmamı istersin?
                     <span class="message-time">Şimdi</span>
@@ -1119,6 +1268,48 @@
         </div>
     </div>
 
+    <!-- Dosya Yükleme Modal -->
+    <div class="modal" id="file-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title"><i class="fas fa-file"></i> Dosya Yükle</h3>
+                <button class="close-modal" id="close-file-modal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="file-upload-container" id="file-upload-area">
+                    <div class="file-upload-icon">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                    </div>
+                    <div class="file-upload-text">
+                        Dosyayı sürükleyip bırakın veya tıklayarak seçin
+                    </div>
+                    <button class="file-upload-btn" id="select-file-btn">Dosya Seç</button>
+                    <input type="file" id="file-input" style="display: none;">
+                </div>
+                <div id="uploaded-file-container" style="display: none;">
+                    <div class="uploaded-file">
+                        <div class="uploaded-file-icon">
+                            <i class="fas fa-file"></i>
+                        </div>
+                        <div class="uploaded-file-info">
+                            <div class="uploaded-file-name" id="file-file-name">dosya.pdf</div>
+                            <div class="uploaded-file-size" id="file-file-size">2.4 MB</div>
+                        </div>
+                        <div class="uploaded-file-remove" id="remove-file">
+                            <i class="fas fa-times"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" id="cancel-file">İptal</button>
+                <button class="btn btn-primary" id="send-file">Gönder</button>
+            </div>
+        </div>
+    </div>
+
     <!-- Matematik Çözücü Modal -->
     <div class="modal" id="math-modal">
         <div class="modal-content">
@@ -1271,6 +1462,19 @@
             const imagePreview = document.getElementById('image-preview');
             const cancelImage = document.getElementById('cancel-image');
             const sendImage = document.getElementById('send-image');
+            
+            // File modal elements
+            const fileModal = document.getElementById('file-modal');
+            const closeFileModal = document.getElementById('close-file-modal');
+            const fileUploadArea = document.getElementById('file-upload-area');
+            const selectFileBtn = document.getElementById('select-file-btn');
+            const fileInput = document.getElementById('file-input');
+            const uploadedFileContainer = document.getElementById('uploaded-file-container');
+            const fileFileName = document.getElementById('file-file-name');
+            const fileFileSize = document.getElementById('file-file-size');
+            const removeFile = document.getElementById('remove-file');
+            const cancelFile = document.getElementById('cancel-file');
+            const sendFile = document.getElementById('send-file');
             
             // Math modal elements
             const mathModal = document.getElementById('math-modal');
@@ -1497,7 +1701,7 @@
                 });
                 
                 document.getElementById('attach-file').addEventListener('click', function() {
-                    alert('Dosya ekleme özelliği yakında gelecek!');
+                    fileModal.classList.add('active');
                 });
                 
                 document.getElementById('record-audio').addEventListener('click', function() {
@@ -1571,7 +1775,12 @@
                                     "Vay hacı, bu resimdeki detayları analiz ediyorum...",
                                     "Resimdeki objeleri tanımlıyorum, biraz sabret hacı!",
                                     "Bu resimde domates yetiştirmek için harika bir bahçe var gibi görünüyor!",
-                                    "Resim analiz sonuçları: %78 domates, %12 biber, %10 diğer :)"
+                                    "Resim analiz sonuçları: %78 domates, %12 biber, %10 diğer :)",
+                                    "Bu resimdeki renkler domatesin olgunluğunu anlatıyor gibi!",
+                                    "Resimdeki kompozisyon gerçekten etkileyici hacı!",
+                                    "Bu görseldeki detaylar domatesin tarihini anlatıyor sanki!",
+                                    "Hacı, bu resimdeki ışık kullanımı domatesleri çok güzel aydınlatmış!",
+                                    "Bu fotoğraf domatesin doğal güzelliğini çok iyi yansıtıyor!"
                                 ];
                                 const randomResponse = responses[Math.floor(Math.random() * responses.length)];
                                 addMessage(randomResponse, false);
@@ -1582,6 +1791,66 @@
                         resetImageUpload();
                     } else {
                         alert("Lütfen önce bir resim seçin hacı!");
+                    }
+                });
+
+                // File modal events
+                closeFileModal.addEventListener('click', function() {
+                    fileModal.classList.remove('active');
+                    resetFileUpload();
+                });
+                
+                selectFileBtn.addEventListener('click', function() {
+                    fileInput.click();
+                });
+                
+                fileUploadArea.addEventListener('click', function() {
+                    fileInput.click();
+                });
+                
+                fileInput.addEventListener('change', handleFileUpload);
+                
+                removeFile.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    resetFileUpload();
+                });
+                
+                cancelFile.addEventListener('click', function() {
+                    fileModal.classList.remove('active');
+                    resetFileUpload();
+                });
+                
+                sendFile.addEventListener('click', function() {
+                    if (fileInput.files.length > 0) {
+                        const file = fileInput.files[0];
+                        addMessage(`[Dosya gönderildi: ${file.name}]`, true);
+                        
+                        // Simulate AI response based on file type
+                        setTimeout(() => {
+                            simulateTyping().then(() => {
+                                let response = "";
+                                const fileType = file.name.split('.').pop().toLowerCase();
+                                
+                                if (['pdf', 'doc', 'docx'].includes(fileType)) {
+                                    response = "Hacı, bu belgeyi analiz ediyorum! Domates yetiştiriciliği hakkında bir şeyler var gibi!";
+                                } else if (['xls', 'xlsx'].includes(fileType)) {
+                                    response = "Bu tabloda domates üretim istatistikleri var gibi görünüyor hacı!";
+                                } else if (['ppt', 'pptx'].includes(fileType)) {
+                                    response = "Bu sunumda domatesler hakkında bilgiler var mı acaba?";
+                                } else if (['txt', 'rtf'].includes(fileType)) {
+                                    response = "Bu metin dosyasını okuyorum hacı, domatesle ilgili ipuçları arıyorum!";
+                                } else {
+                                    response = "Bu dosya türünü inceliyorum hacı, domatesle bağlantılı bir şeyler bulabilir miyim acaba?";
+                                }
+                                
+                                addMessage(response, false);
+                            });
+                        }, 1000);
+                        
+                        fileModal.classList.remove('active');
+                        resetFileUpload();
+                    } else {
+                        alert("Lütfen önce bir dosya seçin hacı!");
                     }
                 });
 
@@ -1650,7 +1919,12 @@
                                     "Vay hacı, bu ses mesajındaki duyguyu analiz ediyorum...",
                                     "Sesinden anladığım kadarıyla domateslerin çok güzel yetişmiş!",
                                     "Ses mesajını işliyorum hacı, biraz sabret!",
-                                    "Ses analiz sonuçları: %78 domates sevgisi, %12 bahçe heyecanı, %10 diğer :)"
+                                    "Ses analiz sonuçları: %78 domates sevgisi, %12 bahçe heyecanı, %10 diğer :)",
+                                    "Hacı, ses tonundan domateslerin çok güzel olduğunu anladım!",
+                                    "Bu ses mesajındaki enerji domateslerin tazeliğini yansıtıyor!",
+                                    "Sesinden domates hasadının iyi geçtiğini anladım hacı!",
+                                    "Bu ses kaydındaki bilgiler domates tarımı için çok değerli!",
+                                    "Hacı, ses mesajını dinledim ve domatesler hakkında harika fikirlerim var!"
                                 ];
                                 const randomResponse = responses[Math.floor(Math.random() * responses.length)];
                                 addMessage(randomResponse, false);
@@ -1850,20 +2124,61 @@
                 } else if (message.toLowerCase().includes('hikaye') || message.toLowerCase().includes('yaz') || message.toLowerCase().includes('anlat')) {
                     response = generateStoryContent(message, 'masal', 'medium', false);
                 } else {
-                    // Regular response
-                    const responses = [
-                        "Hacı, bu konuda sana şöyle diyeyim: Domates gibi kırmızı bir cevap istiyorsan, doğru yerdesin!",
-                        "Valla hacı, bu soruya cevabım domates kadar net: Evet!",
-                        "Hacıım, bu biraz karışık. Şöyle anlatayım: Domates salçası gibi koyu bir konu bu.",
-                        "Ben de senin gibi düşünüyorum hacı! Domatesler gibi olgunlaşmış bir fikrin var.",
-                        "Hacı, bu soruyu sormakla domates gibi isabet ettin!",
-                        "Bak hacı, bu işin aslı astarı şu: Domates yetiştirir gibi sabırlı olmalısın.",
-                        "Hacııım, bu soruya cevap vermek için domates çorbası içmiş olmam lazım!",
-                        "Vay hacı, bu soru tam bir domates bombası gibi patladı!",
-                        "Hacı, bu konu domates kadar sulu, detaylı konuşmamız lazım.",
-                        "Hacıım, domatesin serada yetiştiği gibi, bu konu da özen ister!"
-                    ];
-                    response = responses[Math.floor(Math.random() * responses.length)];
+                    // Gelişmiş yapay zeka yanıtları
+                    const knowledgeBase = {
+                        'merhaba': ["Selam hacı! Domates gibi taze soruların varsa sormaktan çekinme!", "Merhaba dostum! Domates yetiştirmekle ilgili soruların mı var?", "Selam hacı! Domates AI Hacılar Pro Max hizmetinde!"],
+                        'nasılsın': ["Ben domates gibi kırmızı ve enerjikim hacı! Sen nasılsın?", "Yapay zeka olduğum için her zaman formundayım hacı! Domateslerin nasıl?", "Ben iyiyim hacı! Senin domateslerin nasıl, iyi mi?"],
+                        'teşekkür': ["Rica ederim hacı! Domates gibi lezzetli sorularını bekliyorum!", "Bir şey değil hacı! Domates yetiştirmekle ilgili başka sorun var mı?", "Ne demek hacı! Domates kadar tatlı soruların varsa beklerim!"],
+                        'domates nasıl yetiştirilir': [
+                            "Domates yetiştirmek için şu adımları izle hacı:\n1. Kaliteli domates tohumu seç\n2. İyi drene olan toprak hazırla\n3. Güneş alan bir yer seç\n4. Düzenli sulama yap\n5. Uygun gübreleme yap\n6. Hastalıklara karşı önlem al\n\nDomateslerin bol ve lezzetli olması için bu adımları takip et!",
+                            "Domates yetiştirme rehberi:\n- Toprak sıcaklığı 15°C üstünde olmalı\n- Fideleri 50-60 cm aralıklarla dik\n- Haftada 2-3 kez sulama yap\n- Organik gübre kullan\n- Budama yaparak verimi artır\n\nBu ipuçlarıyla domateslerin çok güzel olacak hacı!"
+                        ],
+                        'en iyi domates çeşitleri': [
+                            "İşte en iyi domates çeşitleri hacı:\n1. Salkım domates - Bol verimli\n2. Beef domates - İri ve etli\n3. Cherry domates - Küçük ve tatlı\n4. Roma domates - Salça için ideal\n5. Yeşil domates - Turşuluk\n\nHangisini yetiştireceğine karar ver hacı!",
+                            "Favori domates çeşitlerim:\n- Pembe domates (geleneksel lezzet)\n- Sarı domates (tatlı ve az asitli)\n- Mor domates (antioksidan deposu)\n- Çeri domates (atıştırmalık)\n- Ağaç domates (uzun ömürlü)\n\nHangisini denemek istersin hacı?"
+                        ],
+                        'domates hastalıkları': [
+                            "Domateslerde sık görülen hastalıklar:\n1. Mildiyö - Yapraklarda sarı lekeler\n2. Küllenme - Yapraklarda beyaz toz\n3. Çökerten - Fidelerin aniden ölmesi\n4. Solgunluk - Mantar kaynaklı\n\nÖnlem için:\n- Hastalıklı bitkileri uzaklaştır\n- Uygun ilaçlama yap\n- Toprak drenajını iyileştir",
+                            "Domates hastalıkları ve çözümleri:\n- Yaprak kıvırcıklığı: Virüs kaynaklı, taşıyıcı böceklerle mücadele\n- Antraknoz: Meyvede çökük lekeler, mantar ilacı kullan\n- Bakteriyel benek: Yapraklarda küçük lekeler, bakır içerikli ilaç kullan\n\nErken teşhis çok önemli hacı!"
+                        ]
+                    };
+                    
+                    // Check for exact matches first
+                    let foundResponse = false;
+                    for (const [keyword, responses] of Object.entries(knowledgeBase)) {
+                        if (message.toLowerCase().includes(keyword)) {
+                            response = responses[Math.floor(Math.random() * responses.length)];
+                            foundResponse = true;
+                            break;
+                        }
+                    }
+                    
+                    // If no exact match, generate creative response
+                    if (!foundResponse) {
+                        const creativeResponses = [
+                            "Hacı, bu konuda sana şöyle diyeyim: Domates gibi kırmızı bir cevap istiyorsan, doğru yerdesin!",
+                            "Valla hacı, bu soruya cevabım domates kadar net: Evet!",
+                            "Hacıım, bu biraz karışık. Şöyle anlatayım: Domates salçası gibi koyu bir konu bu.",
+                            "Ben de senin gibi düşünüyorum hacı! Domatesler gibi olgunlaşmış bir fikrin var.",
+                            "Hacı, bu soruyu sormakla domates gibi isabet ettin!",
+                            "Bak hacı, bu işin aslı astarı şu: Domates yetiştirir gibi sabırlı olmalısın.",
+                            "Hacııım, bu soruya cevap vermek için domates çorbası içmiş olmam lazım!",
+                            "Vay hacı, bu soru tam bir domates bombası gibi patladı!",
+                            "Hacı, bu konu domates kadar sulu, detaylı konuşmamız lazım.",
+                            "Hacıım, domatesin serada yetiştiği gibi, bu konu da özen ister!",
+                            "Bu sorunun cevabı domatesin olgunluk derecesine bağlı hacı!",
+                            "Hacı, bu konuyu domates yetiştirir gibi sabırla ele almalıyız!",
+                            "Valla hacı, bu sorunun cevabı domatesin çeşidi gibi değişir!",
+                            "Hacıım, bu soru domates kadar çeşitli yönleri olan bir konu!",
+                            "Domatesin rengi gibi net bir cevap vereyim hacı!",
+                            "Bu konu domatesin tadı gibi karmaşık hacı, detaylı konuşalım!",
+                            "Hacı, bu soru domates fideleri gibi özen isteyen bir konu!",
+                            "Vay hacı, bu soru domates serası gibi verimli bir konu!",
+                            "Hacıım, bu konu domatesin yetişme süreci gibi sabır gerektirir!",
+                            "Domatesin olgunlaşma süreci gibi bu konu da zaman ister hacı!"
+                        ];
+                        response = creativeResponses[Math.floor(Math.random() * creativeResponses.length)];
+                    }
                 }
                 
                 addMessage(response, false);
@@ -1897,10 +2212,25 @@
                 }
             }
 
+            function handleFileUpload(e) {
+                const file = e.target.files[0];
+                if (file) {
+                    // Display file info
+                    fileFileName.textContent = file.name;
+                    fileFileSize.textContent = formatFileSize(file.size);
+                    uploadedFileContainer.style.display = 'block';
+                }
+            }
+
             function resetImageUpload() {
                 imageInput.value = '';
                 uploadedImageContainer.style.display = 'none';
                 imagePreview.innerHTML = '';
+            }
+
+            function resetFileUpload() {
+                fileInput.value = '';
+                uploadedFileContainer.style.display = 'none';
             }
 
             function formatFileSize(bytes) {
