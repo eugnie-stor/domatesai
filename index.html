@@ -34,7 +34,78 @@
             min-height: 100vh;
             overflow-x: hidden;
         }
-        
+        <!-- Mevcut body açılış etiketinden sonra en üste ekle -->
+<div class="profile-container">
+    <div class="profile-card">
+        <div class="profile-info" id="profile-info">
+            <div class="profile-picture">
+                <i class="fas fa-user"></i>
+            </div>
+            <div class="profile-name">Misafir</div>
+        </div>
+        <div class="profile-actions" id="profile-actions">
+            <button class="btn btn-primary" id="login-btn">Giriş Yap</button>
+            <button class="btn btn-secondary" id="register-btn">Kayıt Ol</button>
+        </div>
+    </div>
+</div>
+
+<!-- Mevcut modal'ların sonrasına bu modal'ları ekle -->
+<!-- Giriş Modal -->
+<div class="modal" id="login-modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3 class="modal-title"><i class="fas fa-sign-in-alt"></i> Giriş Yap</h3>
+            <button class="close-modal" id="close-login-modal">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="modal-body">
+            <div class="form-group">
+                <label for="login-email">E-posta</label>
+                <input type="email" id="login-email" class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="login-password">Şifre</label>
+                <input type="password" id="login-password" class="form-control">
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-secondary" id="cancel-login">İptal</button>
+            <button class="btn btn-primary" id="submit-login">Giriş Yap</button>
+        </div>
+    </div>
+</div>
+
+<!-- Kayıt Modal -->
+<div class="modal" id="register-modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3 class="modal-title"><i class="fas fa-user-plus"></i> Kayıt Ol</h3>
+            <button class="close-modal" id="close-register-modal">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="modal-body">
+            <div class="form-group">
+                <label for="register-username">Kullanıcı Adı</label>
+                <input type="text" id="register-username" class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="register-email">E-posta</label>
+                <input type="email" id="register-email" class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="register-password">Şifre</label>
+                <input type="password" id="register-password" class="form-control">
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-secondary" id="cancel-register">İptal</button>
+            <button class="btn btn-primary" id="submit-register">Kayıt Ol</button>
+        </div>
+    </div>
+</div>
         /* Responsive Sağ Navbar */
         .right-navbar {
             width: var(--navbar-width);
