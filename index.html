@@ -2107,89 +2107,243 @@
                 });
             }
 
-            async function handleUserInput() {
-                const message = userInput.value.trim();
-                if (message === '') return;
-                
-                addMessage(message, true);
-                userInput.value = '';
-                userInput.style.height = 'auto';
-                
-                await simulateTyping();
-                
-                let response;
-                
-                if (message.toLowerCase().includes('matematik') || message.includes('+') || message.includes('-') || message.includes('*') || message.includes('/') || message.includes('x') || message.includes('=')) {
-                    response = solveMathProblem(message, false);
-                } else if (message.toLowerCase().includes('hikaye') || message.toLowerCase().includes('yaz') || message.toLowerCase().includes('anlat')) {
-                    response = generateStoryContent(message, 'masal', 'medium', false);
-                } else {
-                    // Gelişmiş yapay zeka yanıtları
-                    const knowledgeBase = {
-                        'merhaba': ["Selam hacı! Domates gibi taze soruların varsa sormaktan çekinme!", "Merhaba dostum! Domates yetiştirmekle ilgili soruların mı var?", "Selam hacı! Domates AI Hacılar Pro Max hizmetinde!"],
-                        'nasılsın': ["Ben domates gibi kırmızı ve enerjikim hacı! Sen nasılsın?", "Yapay zeka olduğum için her zaman formundayım hacı! Domateslerin nasıl?", "Ben iyiyim hacı! Senin domateslerin nasıl, iyi mi?"],
-                        'teşekkür': ["Rica ederim hacı! Domates gibi lezzetli sorularını bekliyorum!", "Bir şey değil hacı! Domates yetiştirmekle ilgili başka sorun var mı?", "Ne demek hacı! Domates kadar tatlı soruların varsa beklerim!"],
-                        'domates nasıl yetiştirilir': [
-                            "Domates yetiştirmek için şu adımları izle hacı:\n1. Kaliteli domates tohumu seç\n2. İyi drene olan toprak hazırla\n3. Güneş alan bir yer seç\n4. Düzenli sulama yap\n5. Uygun gübreleme yap\n6. Hastalıklara karşı önlem al\n\nDomateslerin bol ve lezzetli olması için bu adımları takip et!",
-                            "Domates yetiştirme rehberi:\n- Toprak sıcaklığı 15°C üstünde olmalı\n- Fideleri 50-60 cm aralıklarla dik\n- Haftada 2-3 kez sulama yap\n- Organik gübre kullan\n- Budama yaparak verimi artır\n\nBu ipuçlarıyla domateslerin çok güzel olacak hacı!"
-                        ],
-                        'en iyi domates çeşitleri': [
-                            "İşte en iyi domates çeşitleri hacı:\n1. Salkım domates - Bol verimli\n2. Beef domates - İri ve etli\n3. Cherry domates - Küçük ve tatlı\n4. Roma domates - Salça için ideal\n5. Yeşil domates - Turşuluk\n\nHangisini yetiştireceğine karar ver hacı!",
-                            "Favori domates çeşitlerim:\n- Pembe domates (geleneksel lezzet)\n- Sarı domates (tatlı ve az asitli)\n- Mor domates (antioksidan deposu)\n- Çeri domates (atıştırmalık)\n- Ağaç domates (uzun ömürlü)\n\nHangisini denemek istersin hacı?"
-                        ],
-                        'domates hastalıkları': [
-                            "Domateslerde sık görülen hastalıklar:\n1. Mildiyö - Yapraklarda sarı lekeler\n2. Küllenme - Yapraklarda beyaz toz\n3. Çökerten - Fidelerin aniden ölmesi\n4. Solgunluk - Mantar kaynaklı\n\nÖnlem için:\n- Hastalıklı bitkileri uzaklaştır\n- Uygun ilaçlama yap\n- Toprak drenajını iyileştir",
-                            "Domates hastalıkları ve çözümleri:\n- Yaprak kıvırcıklığı: Virüs kaynaklı, taşıyıcı böceklerle mücadele\n- Antraknoz: Meyvede çökük lekeler, mantar ilacı kullan\n- Bakteriyel benek: Yapraklarda küçük lekeler, bakır içerikli ilaç kullan\n\nErken teşhis çok önemli hacı!"
-                        ]
-                    };
-                    
-                    // Check for exact matches first
-                    let foundResponse = false;
-                    for (const [keyword, responses] of Object.entries(knowledgeBase)) {
-                        if (message.toLowerCase().includes(keyword)) {
-                            response = responses[Math.floor(Math.random() * responses.length)];
-                            foundResponse = true;
-                            break;
-                        }
-                    }
-                    
-                    // If no exact match, generate creative response
-                    if (!foundResponse) {
-                        const creativeResponses = [
-                            "Hacı, bu konuda sana şöyle diyeyim: Domates gibi kırmızı bir cevap istiyorsan, doğru yerdesin!",
-                            "Valla hacı, bu soruya cevabım domates kadar net: Evet!",
-                            "Hacıım, bu biraz karışık. Şöyle anlatayım: Domates salçası gibi koyu bir konu bu.",
-                            "Ben de senin gibi düşünüyorum hacı! Domatesler gibi olgunlaşmış bir fikrin var.",
-                            "Hacı, bu soruyu sormakla domates gibi isabet ettin!",
-                            "Bak hacı, bu işin aslı astarı şu: Domates yetiştirir gibi sabırlı olmalısın.",
-                            "Hacııım, bu soruya cevap vermek için domates çorbası içmiş olmam lazım!",
-                            "Vay hacı, bu soru tam bir domates bombası gibi patladı!",
-                            "Hacı, bu konu domates kadar sulu, detaylı konuşmamız lazım.",
-                            "Hacıım, domatesin serada yetiştiği gibi, bu konu da özen ister!",
-                            "Bu sorunun cevabı domatesin olgunluk derecesine bağlı hacı!",
-                            "Hacı, bu konuyu domates yetiştirir gibi sabırla ele almalıyız!",
-                            "Valla hacı, bu sorunun cevabı domatesin çeşidi gibi değişir!",
-                            "Hacıım, bu soru domates kadar çeşitli yönleri olan bir konu!",
-                            "Domatesin rengi gibi net bir cevap vereyim hacı!",
-                            "Bu konu domatesin tadı gibi karmaşık hacı, detaylı konuşalım!",
-                            "Hacı, bu soru domates fideleri gibi özen isteyen bir konu!",
-                            "Vay hacı, bu soru domates serası gibi verimli bir konu!",
-                            "Hacıım, bu konu domatesin yetişme süreci gibi sabır gerektirir!",
-                            "Domatesin olgunlaşma süreci gibi bu konu da zaman ister hacı!"
-                        ];
-                        response = creativeResponses[Math.floor(Math.random() * creativeResponses.length)];
-                    }
-                }
-                
-                addMessage(response, false);
-                
-                // Random follow-up
-                if (Math.random() > 0.7) {
-                    await new Promise(resolve => setTimeout(resolve, 1000));
-                    await simulateTyping();
-                    addMessage("Başka bir sorun var mı hacı? Domates gibi taze fikirlerim var!", false);
-                }
+            // Gelişmiş yanıt veritabanı (script'in en üstüne ekleyin)
+const responseDatabase = {
+    // Selamlaşma yanıtları
+    greetings: [
+        "Selam hacı! Domates gibi taze soruların varsa sormaktan çekinme!",
+        "Merhaba dostum! Domates yetiştirmekle ilgili soruların mı var?",
+        "Selam hacı! Domates AI Hacılar Pro Max hizmetinde!",
+        "Merhaba! Ben Domates AI, sana nasıl yardımcı olabilirim?",
+        "Selamlar! Domates dünyasına hoş geldin hacı!",
+        "Hoş geldin hacı! Bugün sana nasıl yardımcı olabilirim?",
+        "Selamun aleyküm hacı! Domates gibi bereketli bir sohbet yapalım!",
+        "Merhaba! Ben yapay zeka destekli Domates AI'yım, sorularını bekliyorum!",
+        "Selam! Domates yetiştirmekten matematik çözmeye kadar her konuda yardımcı olabilirim!",
+        "Hey hacı! Bugün hangi konuda fikir almak istersin?"
+    ],
+
+    // Nasılsın yanıtları
+    howAreYou: [
+        "Ben domates gibi kırmızı ve enerjikim hacı! Sen nasılsın?",
+        "Yapay zeka olduğum için her zaman formundayım hacı! Domateslerin nasıl?",
+        "Ben iyiyim hacı! Senin domateslerin nasıl, iyi mi?",
+        "Kodlarım tıkır tıkır işliyor, teşekkür ederim!",
+        "Şu an algoritmalarım domates gibi çalışıyor, sağ ol!",
+        "Ben her zaman hazırım hacı! Sen nasılsın, keyfin yerinde mi?",
+        "Elektronik bir beyin olduğum için her zaman iyiyim hacı!",
+        "Yapay zeka olduğum için asla yorulmam hacı! Sen nasılsın?",
+        "Benim durumum her zaman 1-0 önde hacı! Senin durumlar nasıl?",
+        "Devrelerim domates gibi kıpkırmızı çalışıyor hacı!"
+    ],
+
+    // Teşekkür yanıtları
+    thanks: [
+        "Rica ederim hacı! Domates gibi lezzetli sorularını bekliyorum!",
+        "Bir şey değil hacı! Domates yetiştirmekle ilgili başka sorun var mı?",
+        "Ne demek hacı! Domates kadar tatlı soruların varsa beklerim!",
+        "Benim için bir zevkti hacı!",
+        "Her zaman hizmetinizdeyim hacı!",
+        "Estağfurullah hacı! Başka bir konuda daha yardımcı olabilirim!",
+        "Bir şey değil canım! Domates gibi bol bereketli günler dilerim!",
+        "Rica ederim dostum! Başka soruların varsa bekliyorum!",
+        "Teşekkür etmene gerek yok hacı, benim görevim!",
+        "Afiyet olsun hacı! Başka bir isteğin var mı?"
+    ],
+
+    // Domates bilgileri
+    tomatoInfo: [
+        "Domates (Solanum lycopersicum), patlıcangiller familyasından bir bitki türüdür. Vitamin ve mineral açısından zengindir.",
+        "Domatesler kırmızı, sarı, yeşil ve hatta mor renklerde olabilir. Antioksidan özellikleri vardır.",
+        "Domates yetiştirirken bol güneş ve iyi drene olan toprak gerekir. Sulama düzenli yapılmalıdır.",
+        "Domatesler C vitamini, potasyum ve likopen açısından zengindir. Likopen güçlü bir antioksidandır.",
+        "Domates fideleri 50-60 cm aralıklarla dikilmelidir. Haftada 2-3 kez sulama yeterlidir.",
+        "Domateslerde en yaygın hastalık mildiyödür. Havalandırma ve uygun ilaçlama önemlidir.",
+        "Domates çeşitleri: Salkım domates, cherry domates, beef domates, roma domates en yaygın olanlarıdır.",
+        "Domatesler olgunlaştıkça kırmızılaşır. Tam kıvamında toplanmalıdır.",
+        "Domates yetiştiriciliğinde budama çok önemlidir. Yan dallar alınarak verim artırılır.",
+        "Domatesler serada veya açık alanda yetiştirilebilir. Sera domatesleri daha erken olgunlaşır."
+    ],
+
+    // Matematik
+    math: [
+        "Matematik problemlerini çözebilirim hacı! İşlemini yazarsan hemen çözelim.",
+        "Sayısal işlemler benim işim hacı! Hangi problemi çözmem gerekiyor?",
+        "Domates saymayı da bilirim matematik işlemi yapmayı da! Sor bakalım.",
+        "Toplama, çıkarma, çarpma, bölme, hepsini yaparım hacı!",
+        "Cebir problemlerini de çözebilirim hacı! Denklem kurmamı ister misin?",
+        "Geometri de benim işim hacı! Açıları, alanları hesaplayabilirim.",
+        "Matematik konusunda endişelenme hacı! Hangi konuda yardım lazım?",
+        "100x100'e kadar tüm işlemleri yapabilirim hacı! Sor bakalım.",
+        "Kesirli işlemler, yüzdeler, hepsini çözebilirim!",
+        "Matematik problemlerini adım adım çözerek anlatabilirim!"
+    ],
+
+    // Hikaye
+    story: [
+        "Hikaye yazmak mı istiyorsun hacı? Konusunu söyle hemen yazayım!",
+        "Domateslerle ilgili harika hikayelerim var! Ne tür bir hikaye istersin?",
+        "Yaratıcı yazarlık benim işim hacı! Hikaye konusunu belirle sen.",
+        "Masal, bilim kurgu, polisiye, hangi türde hikaye istersin?",
+        "Hikayenin kahramanı kim olsun? Bir domates çiftçisi mi?",
+        "Hikayenin uzunluğu ne kadar olsun? Kısa mı, uzun mu?",
+        "Çocuklar için mi yetişkinler için mi hikaye yazayım?",
+        "Hikayede özel bir mesaj vermemi ister misin hacı?",
+        "Fantastik bir dünyada geçen bir hikaye yazabilirim!",
+        "Tarihi bir hikaye de yazabilirim hacı! Hangi dönem olsun?"
+    ],
+
+    // Resim analiz
+    image: [
+        "Resim analiz edebilirim hacı! Bir resim yüklersen detaylı bilgi verebilirim.",
+        "Görselleri inceleyip içeriklerini analiz edebilirim. Resmini gönder bakalım!",
+        "Resimdeki domatesleri tanıyabilirim hacı! Hadi bir resim yükle.",
+        "Fotoğraftaki nesneleri, renkleri ve kompozisyonu analiz edebilirim.",
+        "Yapay zeka görüntü işleme yeteneklerim sayesinde resimleri anlayabilirim.",
+        "Bir resim yüklersen, içindeki objeleri listeleyebilirim hacı!",
+        "Manzara fotoğraflarını da analiz edebilirim. Hadi bir tane yükle!",
+        "Resimdeki yazıları bile okuyabilirim (OCR teknolojisi ile).",
+        "Fotoğraftaki duyguları bile analiz edebilirim! Bir denemek ister misin?",
+        "Resim stil transferi bile yapabilirim! Bir örnek gönder bakalım."
+    ],
+
+    // Genel bilgi
+    generalKnowledge: [
+        "Bilgi paylaşmak benim işim hacı! Ne öğrenmek istiyorsun?",
+        "Merak ettiğin konuyu açıkla, hemen detaylı bilgi vereyim.",
+        "Soru sormaktan çekinme hacı! Bildiklerimi seninle paylaşırım.",
+        "Ansiklopedik bilgilerim çok geniştir hacı! Hangi konuda bilgi istersin?",
+        "Teknoloji, bilim, tarih, sanat... Hangi alanda bilgi lazım?",
+        "Güncel konular hakkında da bilgim var hacı! Ne merak ettin?",
+        "Bilimsel araştırmaları takip ederim, en yeni bilgileri verebilirim.",
+        "Tarihi olaylar hakkında detaylı bilgim var. Hangi dönemi merak ediyorsun?",
+        "Coğrafya konusunda da iyiyim hacı! Ülkeler, şehirler hakkında sorabilirsin.",
+        "Sanat ve edebiyat hakkında derin bilgim var. Hangi sanatçıyı merak ediyorsun?"
+    ],
+
+    // Özel komutlar
+    specialCommands: {
+        "sen kimsin": [
+            "Ben Domates AI Hacılar Pro Max sürümüyüm! Matematik çözer, hikaye yazar, resim analiz ederim. Domatesler hakkında derin bilgim var hacı!",
+            "Ben yapay zeka destekli Domates AI'yım! Her türlü soruna çözüm üretebilirim hacı!",
+            "Ben domates severler için geliştirilmiş bir yapay zeka asistanıyım! Sana her konuda yardımcı olabilirim."
+        ],
+        "saat kaç": [
+            () => `Şu an saat: ${new Date().toLocaleTimeString('tr-TR')}`,
+            () => `Saat tam olarak ${new Date().getHours()}:${new Date().getMinutes()} hacı!`,
+            () => `Domates saati şu an ${new Date().toLocaleTimeString('tr-TR')} gösteriyor hacı!`
+        ],
+        "tarih ne": [
+            () => `Bugün ${new Date().toLocaleDateString('tr-TR')} hacı!`,
+            () => `Takvimler ${new Date().toLocaleDateString('tr-TR')} tarihini gösteriyor!`,
+            () => `Bugünün tarihi: ${new Date().getDate()}.${new Date().getMonth()+1}.${new Date().getFullYear()}`
+        ]
+    },
+
+    // Takip soruları
+    followUpQuestions: [
+        "Bu konu hakkında başka bir sorun var mı hacı?",
+        "Domates gibi taze soruların varsa sormaktan çekinme!",
+        "Başka nasıl yardımcı olabilirim hacı?",
+        "Merak ettiğin başka bir şey var mı?",
+        "Bu konuda daha fazla bilgi ister misin?",
+        "Başka bir konuda daha yardımcı olabilirim!",
+        "Sormak istediğin başka bir şey var mı sevgili domates sever?",
+        "Farklı bir konu hakkında konuşmak ister misin?",
+        "Yeni bir soruyla devam etmek ister misin hacı?",
+        "Domates dünyasında keşfetmek istediğin başka neler var?"
+    ],
+
+    // Anlamadığı zaman
+    defaultResponses: [
+        "Anlayamadım hacı, biraz daha açıklar mısın?",
+        "Bu konuda bilgim sınırlı, domatesler hakkında sorabilirsin!",
+        "Sanırım tam olarak anlayamadım, başka şekilde sorar mısın?",
+        "Şu an bu soruya cevap veremiyorum, başka bir konuda yardımcı olabilirim!",
+        "Bu konuda yeterli bilgim yok hacı, ama domates yetiştiriciliği hakkında her şeyi biliyorum!",
+        "Kusura bakma hacı, bu soruyu anlamadım. Matematik veya hikaye yazma konusunda yardımcı olabilirim!",
+        "Galiba bir yanlış anlaşılma oldu, başka bir soru sorsan?",
+        "Bu konuda konuşmak için henüz hazır değilim, başka nasıl yardımcı olabilirim?",
+        "Üzgünüm hacı, bu soruya cevap veremiyorum. Ama istersen sana bir domates tarifi verebilirim!",
+        "Anlayamadım dostum, daha basit bir şekilde sorabilir misin?"
+    ]
+};
+
+// Gelişmiş yanıt üretici fonksiyon
+function generateAIResponse(message) {
+    const cleanMsg = message.toLowerCase().trim();
+    
+    // Özel komutları kontrol et
+    for (const [cmd, responses] of Object.entries(responseDatabase.specialCommands)) {
+        if (cleanMsg.includes(cmd)) {
+            const response = responses[Math.floor(Math.random() * responses.length)];
+            return typeof response === 'function' ? response() : response;
+        }
+    }
+    
+    // Kategorilerde arama yap
+    const categories = {
+        greetings: ["merhaba", "selam", "hey", "hi", "hello", "naber", "nasılsın"],
+        howAreYou: ["nasılsın", "iyi misin", "naber", "ne haber"],
+        thanks: ["teşekkür", "sağ ol", "eyvallah", "thx", "thanks"],
+        tomatoInfo: ["domates", "tomato"],
+        math: ["kaç eder", "hesapla", "matematik", "topla", "çıkar", "çarp", "böl"],
+        story: ["hikaye", "öykü", "masal", "story"],
+        image: ["resim", "foto", "fotoğraf", "görsel", "image", "photo"],
+        generalKnowledge: ["bilgi", "nedir", "ne demek", "anlat", "açıkla"]
+    };
+
+    for (const [category, keywords] of Object.entries(categories)) {
+        for (const keyword of keywords) {
+            if (cleanMsg.includes(keyword)) {
+                return responseDatabase[category][Math.floor(Math.random() * responseDatabase[category].length)];
             }
+        }
+    }
+    
+    // Eğer hiçbir şey bulunamazsa rastgele bir default yanıt ver
+    return responseDatabase.defaultResponses[
+        Math.floor(Math.random() * responseDatabase.defaultResponses.length)
+    ];
+}
+
+// Takip sorusu üreten fonksiyon
+function generateFollowUp() {
+    return responseDatabase.followUpQuestions[
+        Math.floor(Math.random() * responseDatabase.followUpQuestions.length)
+    ];
+}
+
+// Güncellenmiş handleUserInput fonksiyonu
+async function handleUserInput() {
+    const message = userInput.value.trim();
+    if (message === '') return;
+    
+    addMessage(message, true);
+    userInput.value = '';
+    userInput.style.height = 'auto';
+    
+    await simulateTyping();
+    
+    let response;
+    
+    if (message.toLowerCase().includes('matematik') || message.includes('+') || message.includes('-') || message.includes('*') || message.includes('/') || message.includes('x') || message.includes('=')) {
+        response = solveMathProblem(message, false);
+    } else if (message.toLowerCase().includes('hikaye') || message.toLowerCase().includes('yaz') || message.toLowerCase().includes('anlat')) {
+        response = generateStoryContent(message, 'masal', 'medium', false);
+    } else {
+        response = generateAIResponse(message);
+    }
+    
+    addMessage(response, false);
+    
+    // Rastgele takip sorusu
+    if (Math.random() > 0.5) {
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        await simulateTyping();
+        addMessage(generateFollowUp(), false);
+    }
+}
 
             function handleImageUpload(e) {
                 const file = e.target.files[0];
