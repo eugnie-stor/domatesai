@@ -2314,6 +2314,30 @@ function generateFollowUp() {
     ];
 }
 
+      const responseDatabase = {
+    lessons: {
+        fen: [
+            // Önceki fen cevapları...
+            "Hücre konusu detaylı anlatım: Hücre zarı, sitoplazma ve çekirdekten oluşur. Bitki hücrelerinde ek olarak kloroplast ve hücre duvarı bulunur.",
+            "Kuvvet çeşitleri: 1) Sürtünme kuvveti 2) Yer çekimi kuvveti 3) Manyetik kuvvet 4) Elektrostatik kuvvet. Örneklerle açıklayayım mı?",
+            "Enerji dönüşümleri: Işık enerjisi → Kimyasal enerji (Fotosentez), Mekanik enerji → Elektrik enerjisi (Dinamo), Kimyasal enerji → Isı enerjisi (Yanma)",
+            "Maddenin halleri: Katı (belirli şekil ve hacim), Sıvı (belirli hacim, değişken şekil), Gaz (değişken hacim ve şekil). Plazma ise iyonize gaz halidir.",
+            "Güneş sistemi projesi için: Kartondan bir model yapabilirsin. Gezegenleri boyutlarına göre küreler şeklinde yapıp sıralayabilirsin. Detaylı rehber istersen anlatayım!",
+            "Elementler ve bileşikler: Saf maddelerdir. Elementler (Fe, O, H) tek cins atom, bileşikler (H2O, CO2) farklı elementlerin birleşmesiyle oluşur.",
+            "Asit-baz deneyi: Kırmızı lahana suyu indikatörü kullanarak maddelerin asit mi baz mı olduğunu test edebilirsin. Deney adımlarını anlatmamı ister misin?"
+        ],
+        türkçe: [
+            // Önceki türkçe cevapları...
+            "Fiil çekimleri: Haber kipleri (di'li geçmiş, miş'li geçmiş, şimdiki, gelecek, geniş zaman) ve dilek kipleri (gerek, şart, istek, emir). Örnek: gel-di-m (di'li geçş)",
+            "Anlatım bozuklukları türleri: 1) Gereksiz sözcük 2) Yanlış anlamda sözcük 3) Tamlama yanlışı 4) Çelişen ifadeler 5) Özne-yüklem uyumsuzluğu",
+            "Yazım kuralları: 'de/da' bağlacı ayrı yazılır, hal eki bitişik (evde). 'ki' bağlacı ayrı (bildim ki), ilgi eki bitişik (seninki). 'mi' soru eki ayrı yazılır.",
+            "Kitap analizi için: 1) Yazar ve dönem bilgisi 2) Olay örgüsü 3) Karakter analizleri 4) Temalar 5) Dil ve anlatım özellikleri. Hangi kitabı inceliyorsun?",
+            "Kompozisyon planı örneği:\nGİRİŞ: Tez cümlesi\nGELİŞME: 3 argüman + örnekler\nSONUÇ: Özet ve kapanış. 500 kelimelik bir kompozisyon için bu planı kullanabilirsin.",
+            "Sözcük türleri: İsim (varlık adı), sıfat (niteleme), zamir (adıl), zarf (belirteç), edat (ilgeç), bağlaç, ünlem. Her biri için örnekler verebilirim.",
+            "Paragraf soruları çözme teknikleri: 1) Ana düşünceyi bul 2) Yardımcı düşünceleri belirle 3) Anlatım biçimini tanı (açıklama, tartışma, betimleme, öyküleme)"
+        ]
+    }
+};
 // Güncellenmiş handleUserInput fonksiyonu
 async function handleUserInput() {
     const message = userInput.value.trim();
@@ -2400,240 +2424,173 @@ async function handleUserInput() {
                 mathResult.style.display = 'none';
             }
 
-            function solveMathProblem(problem, showInModal = true) {
-                let solution;
-                
-                try {
-                    // Basic math solutions
-                    if (problem.includes('+')) {
-                        const numbers = problem.split('+').map(num => parseFloat(num.trim()));
-                        if (numbers.some(num => num > 100)) {
-                            solution = "Hacı, 100'den büyük sayıları toplayamam! Domateslerim yetmez!";
-                        } else {
-                            const result = numbers.reduce((a, b) => a + b, 0);
-                            solution = `Toplama sonucu: ${numbers.join(' + ')} = ${result}`;
-                        }
-                    } else if (problem.includes('-')) {
-                        const numbers = problem.split('-').map(num => parseFloat(num.trim()));
-                        if (numbers.some(num => num > 100)) {
-                            solution = "Hacı, 100'den büyük sayıları çıkaramam! Domateslerim yetmez!";
-                        } else {
-                            const result = numbers.reduce((a, b) => a - b);
-                            solution = `Çıkarma sonucu: ${numbers.join(' - ')} = ${result}`;
-                        }
-                    } else if (problem.includes('*') || problem.includes('x')) {
-                        const numbers = problem.split(/[\*x]/).map(num => parseFloat(num.trim()));
-                        if (numbers.some(num => num > 100)) {
-                            solution = "Hacı, 100'den büyük sayıları çarpamam! Domateslerim patlar!";
-                        } else {
-                            const result = numbers.reduce((a, b) => a * b, 1);
-                            solution = `Çarpma sonucu: ${numbers.join(' × ')} = ${result}`;
-                        }
-                    } else if (problem.includes('/')) {
-                        const numbers = problem.split('/').map(num => parseFloat(num.trim()));
-                        if (numbers.some(num => num > 100)) {
-                            solution = "Hacı, 100'den büyük sayıları bölemem! Domateslerim yetmez!";
-                        } else if (numbers[1] === 0) {
-                            solution = "Hacı, sıfıra bölme yapamazsın! Domatesler bile bunu bilir!";
-                        } else {
-                            const result = numbers[0] / numbers[1];
-                            solution = `Bölme sonucu: ${numbers[0]} ÷ ${numbers[1]} = ${result.toFixed(2)}`;
-                        }
-                    } else if (problem.toLowerCase().includes('karekök')) {
-                        const number = parseFloat(problem.replace(/[^\d.]/g, ''));
-                        if (number > 10000) {
-                            solution = "Hacı, 10000'den büyük sayıların karekökünü alamam! Domateslerim yetmez!";
-                        } else if (number >= 0) {
-                            solution = `Karekök sonucu: √${number} = ${Math.sqrt(number).toFixed(2)}`;
-                        } else {
-                            solution = "Hacı, negatif sayıların karekökü olmaz! Domatesler bile reel sayıları sever!";
-                        }
-                    } else if (problem.includes('=') && problem.includes('x')) {
-                        // Simple linear equation
-                        const equationParts = problem.split('=');
-                        const leftSide = equationParts[0].trim();
-                        const rightSide = equationParts[1].trim();
-                        
-                        if (leftSide.includes('x')) {
-                            const coefficient = parseFloat(leftSide.replace(/[^\d.-]/g, '')) || 1;
-                            const constant = parseFloat(rightSide);
-                            
-                            if (coefficient > 100 || constant > 100) {
-                                solution = "Hacı, 100'den büyük katsayıları işleyemem! Domateslerim yetmez!";
-                            } else {
-                                solution = "Denklem çözümü:\n";
-                                solution += `1. Adım: ${leftSide} = ${rightSide}\n`;
-                                solution += `2. Adım: ${coefficient}x = ${rightSide}\n`;
-                                solution += `3. Adım: x = ${rightSide} / ${coefficient}\n`;
-                                solution += `4. Adım: x = ${(constant / coefficient).toFixed(2)}\n`;
-                                solution += `\nSonuç: x = ${(constant / coefficient).toFixed(2)}`;
-                            }
-                        }
-                    } else {
-                        solution = "Hacı, bu matematik problemini tam anlayamadım. Domates yetiştirmek daha kolay geliyor bana!";
-                    }
-                } catch (e) {
-                    solution = "Hacı, bu işlemi yapamadım! Belki daha basit bir problem sorsan?";
-                }
-                
-                if (showInModal) {
-                    mathSolution.innerHTML = solution.replace(/\n/g, '<br>');
-                    mathResult.style.display = 'block';
-                }
-                
-                return solution;
+ function solveMathProblem(problem, showInModal = true) {
+    let solution;
+    
+    try {
+        // Temel işlemler
+        if (problem.includes('+')) {
+            const numbers = problem.split('+').map(num => parseFloat(num.trim()));
+            const result = numbers.reduce((a, b) => a + b, 0);
+            solution = `Toplama sonucu: ${numbers.join(' + ')} = ${result}`;
+            
+        } else if (problem.includes('-')) {
+            const numbers = problem.split('-').map(num => parseFloat(num.trim()));
+            const result = numbers.reduce((a, b) => a - b);
+            solution = `Çıkarma sonucu: ${numbers.join(' - ')} = ${result}`;
+            
+        } else if (problem.includes('*') || problem.includes('x')) {
+            const numbers = problem.split(/[\*x]/).map(num => parseFloat(num.trim()));
+            const result = numbers.reduce((a, b) => a * b, 1);
+            solution = `Çarpma sonucu: ${numbers.join(' × ')} = ${result}`;
+            
+        } else if (problem.includes('/')) {
+            const numbers = problem.split('/').map(num => parseFloat(num.trim()));
+            if (numbers[1] === 0) {
+                solution = "Hacı, sıfıra bölme yapamazsın!";
+            } else {
+                const result = numbers[0] / numbers[1];
+                solution = `Bölme sonucu: ${numbers[0]} ÷ ${numbers[1]} = ${result.toFixed(2)}`;
             }
+            
+        } else if (problem.toLowerCase().includes('karekök')) {
+            const number = parseFloat(problem.replace(/[^\d.]/g, ''));
+            if (number >= 0) {
+                solution = `Karekök sonucu: √${number} = ${Math.sqrt(number).toFixed(2)}`;
+            } else {
+                solution = "Negatif sayıların karekökü olmaz hacı!";
+            }
+            
+        } else if (problem.includes('=') && problem.includes('x')) {
+            // Denklem çözme
+            const equationParts = problem.split('=');
+            const leftSide = equationParts[0].trim();
+            const rightSide = equationParts[1].trim();
+            
+            if (leftSide.includes('x')) {
+                const coefficient = parseFloat(leftSide.replace(/[^\d.-]/g, '')) || 1;
+                const constant = parseFloat(rightSide);
+                const xValue = (constant / coefficient).toFixed(2);
+                
+                solution = `Denklem çözümü:\n${leftSide} = ${rightSide}\nx = ${constant} / ${coefficient}\nx = ${xValue}`;
+            }
+            
+        } else {
+            // 7. sınıf matematik soruları
+            if (problem.includes('üslü sayı') || problem.includes('üs')) {
+                solution = "Üslü sayılar: 2³ = 2×2×2 = 8 gibi hacı! Tabandaki sayıyı üs kadar çarpıyoruz.";
+            } else if (problem.includes('cebir') || problem.includes('denklem')) {
+                solution = "Cebirsel ifadeler: 2x + 5 = 15 gibi denklemlerde x'i yalnız bırakıyoruz hacı!";
+            } else {
+                solution = "Hacı, bu matematik problemini tam anlayamadım. Daha detaylı anlatır mısın?";
+            }
+        }
+        
+        if (showInModal) {
+            mathSolution.innerHTML = solution.replace(/\n/g, '<br>');
+            mathResult.style.display = 'block';
+        }
+        
+        return solution;
+        
+    } catch (e) {
+        return "Hacı, bu işlemi yapamadım! Belki daha basit bir şekilde sorsan?";
+    }
+}
 
             function resetStoryModal() {
                 storyPrompt.value = '';
                 storyResult.style.display = 'none';
             }
 
-            function generateStoryContent(prompt, style, length, showInModal = true) {
-                const styleIntros = {
-                    'masal': [
-                        "Bir varmış bir yokmuş...",
-                        "Evvel zaman içinde...",
-                        "Çok eski zamanlarda..."
-                    ],
-                    'bilim-kurgu': [
-                        "Yıl 2150, Mars kolonisinde...",
-                        "Geleceğin dünyasında...",
-                        "Uzay gemisinin köşesinde..."
-                    ],
-                    'gerilim': [
-                        "Gece yarısı, eski evin tavan arasında tuhaf bir ses...",
-                        "Karanlık koridorda tek başına yürürken...",
-                        "Kapı çalındığında saat gece yarısını geçiyordu..."
-                    ],
-                    'komedi': [
-                        "Bir gün, sakar bir domates çiftçisi...",
-                        "Gülmekten kırıldığımız bir günde...",
-                        "Komik bir olay zinciri başladığında..."
-                    ],
-                    'romantik': [
-                        "Güneş batarken, iki domates fidanesi birbirine bakarak...",
-                        "Aşk dolu bir bahar gününde...",
-                        "Kalplerin birbirine yaklaştığı o an..."
-                    ],
-                    'macera': [
-                        "Tehlikeli bir yolculuk başlarken...",
-                        "Bilinmeyen diyarlara doğru yola çıktığımızda...",
-                        "Hazine haritasını bulduğumuz gün..."
-                    ],
-                    'korku': [
-                        "Karanlık basmıştı ve tek başınaydım...",
-                        "Garip sesler duyduğum o gece...",
-                        "Kapılar kendi kendine açılıyordu..."
-                    ],
-                    'fantastik': [
-                        "Büyülü krallığın son kalesinde...",
-                        "Ejderhaların özgürce uçtuğu diyarda...",
-                        "Sihirli asayı elime aldığım an..."
-                    ]
-                };
-                
-                const styleOutros = {
-                    'masal': "ve onlar ermiş muradına, biz çıkalım kerevetine!",
-                    'bilim-kurgu': "ve böylece galaksinin kaderi değişti...",
-                    'gerilim': "ve asla ne olduğunu tam olarak öğrenemedik...",
-                    'komedi': "ve böylece gülmekten yerlere yattık!",
-                    'romantik': "ve aşkları domatesler gibi kırmızı ve tatlı kaldı...",
-                    'macera': "ve macera dolu yolculuk devam etti...",
-                    'korku': "ve o geceden sonra hiçbir şey eskisi gibi olmadı...",
-                    'fantastik': "ve büyülü diyarlarda maceraları devam etti..."
-                };
-                
-                const lengthSettings = {
-                    'short': {
-                        paragraphs: 1,
-                        sentences: 3
-                    },
-                    'medium': {
-                        paragraphs: 3,
-                        sentences: 5
-                    },
-                    'long': {
-                        paragraphs: 5,
-                        sentences: 8
-                    }
-                };
-                
-                const selectedStyle = styleIntros[style] || styleIntros['masal'];
-                const styleIntro = selectedStyle[Math.floor(Math.random() * selectedStyle.length)];
-                const styleOutro = styleOutros[style] || styleOutros['masal'];
-                const lengthConfig = lengthSettings[length] || lengthSettings['medium'];
-                
-                let story = `${styleIntro}\n\n${prompt}\n\n`;
-                
-                // Generate story based on creativity level
-                const creativity = settings.creativityLevel;
-                const creativityFactors = {
-                    'low': { twists: 0, details: 1, characters: 1 },
-                    'medium': { twists: 1, details: 2, characters: 2 },
-                    'high': { twists: 2, details: 3, characters: 3 }
-                };
-                
-                const factors = creativityFactors[creativity];
-                
-                // Generate paragraphs
-                for (let p = 0; p < lengthConfig.paragraphs; p++) {
-                    let paragraph = "";
-                    
-                    // Generate sentences
-                    for (let s = 0; s < lengthConfig.sentences; s++) {
-                        let sentence = "";
-                        
-                        // Add some variety based on creativity
-                        if (s === 0 && p === 0) {
-                            sentence = `"${prompt}" diye başladı hikaye. `;
-                        } else {
-                            const sentenceTypes = [
-                                `Domatesler ${['şarkı söylüyordu', 'gizemli bir şekilde parlıyordu', 'sessizce büyüyordu'][Math.floor(Math.random() * 3)]}. `,
-                                `Bir ${['çiftçi', 'şövalye', 'bilim insanı', 'cadı'][Math.floor(Math.random() * 4)]} ortaya çıktı. `,
-                                `Aniden ${['gök gürledi', 'her şey değişti', 'sıradışı bir olay oldu'][Math.floor(Math.random() * 3)]}. `,
-                                `Bu sırada ${['uzaklarda', 'komşu köyde', 'eski bir şatoda'][Math.floor(Math.random() * 3)]}... `,
-                                `Hiç kimse ${['bu kadar hızlı', 'bu kadar gizemli', 'bu kadar beklenmedik'][Math.floor(Math.random() * 3)]} olacağını tahmin edemezdi. `
-                            ];
-                            
-                            sentence = sentenceTypes[Math.floor(Math.random() * sentenceTypes.length)];
-                            
-                            // Add twists for higher creativity
-                            if (factors.twists > 0 && Math.random() > 0.7) {
-                                const twists = [
-                                    `Ama hiç kimsenin bilmediği bir sır vardı... `,
-                                    `Ancak işler göründüğü gibi değildi... `,
-                                    `Fakat beklenmedik bir gelişme oldu... `
-                                ];
-                                sentence = twists[Math.floor(Math.random() * twists.length)] + sentence;
-                            }
-                            
-                            // Add details for higher creativity
-                            if (factors.details > 0 && Math.random() > 0.5) {
-                                const details = [
-                                    `Hava ${['ağır', 'tatlı', 'gizemli'][Math.floor(Math.random() * 3)]} bir kokuydu. `,
-                                    `Etrafta ${['eski', 'tozlu', 'büyülü'][Math.floor(Math.random() * 3)]} eşyalar vardı. `,
-                                    `Her şey ${['kırmızı', 'altın', 'gümüş'][Math.floor(Math.random() * 3)]} bir ışıkla aydınlanmıştı. `
-                                ];
-                                sentence += details[Math.floor(Math.random() * details.length)];
-                            }
-                        }
-                        
-                        paragraph += sentence;
-                    }
-                    
-                    story += paragraph + "\n\n";
-                }
-                
-                story += styleOutro;
-                
-                if (showInModal) {
-                    storyContent.textContent = story;
-                    storyResult.style.display = 'block';
-                }
-                
-                return story;
+function generateStoryContent(prompt, style, length, showInModal = true) {
+    // Geliştirilmiş hikaye stilleri
+    const styleIntros = {
+        'masal': [
+            "Evvel zaman içinde, kalbur saman içinde...",
+            "Bir varmış bir yokmuş, Allah'ın kulu çokmuş...",
+            "Zamanın birinde, diyarın birinde..."
+        ],
+        'bilim-kurgu': [
+            "Yıl 2150, Mars kolonisinde son gelişmeler...",
+            "Uzay gemisinin derinliklerinde bir uyarı sireni çalmaya başladı...",
+            "Yapay zeka çağında, insanlık yeni bir dönüm noktasına gelmişti..."
+        ],
+        'fen': [
+            "Bilim laboratuvarında heyecan verici bir keşif yapılmak üzereydi...",
+            "Genç mucit, 7. sınıf fen projesi için harika bir fikir bulmuştu...",
+            "Kimyasal tepkimelerin büyülü dünyasında bir macera başlıyordu..."
+        ]
+    };
+
+    // 7. sınıf fen konuları
+    const scienceTopics = [
+        "Güneş sistemi ve gezegenler",
+        "Hücre yapısı ve organeller",
+        "Kimyasal tepkime türleri",
+        "Elektrik devreleri",
+        "Işık ve ses dalgaları"
+    ];
+
+    // Hikaye uzunluk ayarları
+    const lengthSettings = {
+        'short': { paragraphs: 2, sentences: 3 },
+        'medium': { paragraphs: 4, sentences: 5 },
+        'long': { paragraphs: 6, sentences: 7 }
+    };
+
+    // Rastgele bir fen konusu seç
+    const randomScienceTopic = scienceTopics[Math.floor(Math.random() * scienceTopics.length)];
+    
+    // Hikaye oluştur
+    let story = "";
+    const selectedStyle = styleIntros[style] || styleIntros['masal'];
+    const intro = selectedStyle[Math.floor(Math.random() * selectedStyle.length)];
+    
+    story += intro + "\n\n";
+    story += `"${prompt}" konulu hikaye:\n\n`;
+    
+    if (style === 'fen') {
+        story += `7. sınıf fen konularından "${randomScienceTopic}" ile ilgili bir hikaye:\n\n`;
+    }
+
+    const config = lengthSettings[length] || lengthSettings['medium'];
+    
+    for (let p = 0; p < config.paragraphs; p++) {
+        let paragraph = "";
+        
+        for (let s = 0; s < config.sentences; s++) {
+            let sentence = "";
+            
+            // Fen temalı hikaye için özel cümleler
+            if (style === 'fen') {
+                const sciencePhrases = [
+                    `Deney tüpündeki sıvı ${['aniden renk değiştirdi', 'köpürmeye başladı', 'ışık saçmaya başladı'][Math.floor(Math.random() * 3)]}. `,
+                    `Öğretmen tahtaya ${['güneş sistemini', 'hücre yapısını', 'kimyasal formülleri'][Math.floor(Math.random() * 3)]} çizdi. `,
+                    `Laboratuvarda ${['mikroskopla', 'deney setiyle', 'ölçüm aletleriyle'][Math.floor(Math.random() * 3)]} çalışıyorlardı. `
+                ];
+                sentence = sciencePhrases[Math.floor(Math.random() * sciencePhrases.length)];
+            } 
+            // Diğer stiller
+            else {
+                sentence = `Hikayenin ${p+1}. paragrafında ${s+1}. cümle. `;
             }
+            
+            paragraph += sentence;
+        }
+        
+        story += paragraph + "\n\n";
+    }
+    
+    story += "Ve böylece hikayemiz sona erdi. Umarım beğenmişsindir hacı!";
+    
+    if (showInModal) {
+        storyContent.textContent = story;
+        storyResult.style.display = 'block';
+    }
+    
+    return story;
+}
 
             function resetVoiceModal() {
                 recordedChunks = [];
