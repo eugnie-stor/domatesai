@@ -2398,12 +2398,6 @@ async function handleUserInput() {
                 mathProblem.value = '';
                 mathResult.style.display = 'none';
             }
-/**
- * Ortaokul matematik müfredatını kapsayan gelişmiş matematik çözücü
- * @param {string} problem - Çözülecek matematik problemi
- * @param {boolean} showInModal - Sonucu modalda göster (opsiyonel)
- * @returns {string} - Problemin çözümü
- */
 function solveMathProblem(problem, showInModal = true) {
     let solution;
     const cleanedProblem = problem.toLowerCase().replace(/\s+/g, '');
