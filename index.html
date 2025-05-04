@@ -2398,80 +2398,323 @@ async function handleUserInput() {
                 mathProblem.value = '';
                 mathResult.style.display = 'none';
             }
-
- function solveMathProblem(problem, showInModal = true) {
+/**
+ * Ortaokul matematik müfredatını kapsayan gelişmiş matematik çözücü
+ * @param {string} problem - Çözülecek matematik problemi
+ * @param {boolean} showInModal - Sonucu modalda göster (opsiyonel)
+ * @returns {string} - Problemin çözümü
+ */
+function solveMathProblem(problem, showInModal = true) {
     let solution;
+    const cleanedProblem = problem.toLowerCase().replace(/\s+/g, '');
+    const numbers = cleanedProblem.match(/-?\d+\.?\d*/g)?.map(Number) || [];
     
     try {
-        // Temel işlemler
-        if (problem.includes('+')) {
-            const numbers = problem.split('+').map(num => parseFloat(num.trim()));
-            const result = numbers.reduce((a, b) => a + b, 0);
-            solution = `Toplama sonucu: ${numbers.join(' + ')} = ${result}`;
-            
-        } else if (problem.includes('-')) {
-            const numbers = problem.split('-').map(num => parseFloat(num.trim()));
-            const result = numbers.reduce((a, b) => a - b);
-            solution = `Çıkarma sonucu: ${numbers.join(' - ')} = ${result}`;
-            
-        } else if (problem.includes('*') || problem.includes('x')) {
-            const numbers = problem.split(/[\*x]/).map(num => parseFloat(num.trim()));
-            const result = numbers.reduce((a, b) => a * b, 1);
-            solution = `Çarpma sonucu: ${numbers.join(' × ')} = ${result}`;
-            
-        } else if (problem.includes('/')) {
-            const numbers = problem.split('/').map(num => parseFloat(num.trim()));
-            if (numbers[1] === 0) {
-                solution = "Hacı, sıfıra bölme yapamazsın!";
+        /* 1. SAYILAR VE İŞLEMLER */
+        // Doğal sayılar ve işlemler
+        if (/doğalsayı|doğal\s*sayı/i.test(problem)) {
+            if (numbers.length === 1) {
+                solution = `${numbers[0]} bir doğal sayıdır (0 ve pozitif tam sayılar)`;
             } else {
-                const result = numbers[0] / numbers[1];
-                solution = `Bölme sonucu: ${numbers[0]} ÷ ${numbers[1]} = ${result.toFixed(2)}`;
+                solution = `Doğal sayılar: ${numbers.filter(n => n >= 0 && Number.isInteger(n)).join(', ')}`;
             }
-            
-        } else if (problem.toLowerCase().includes('karekök')) {
-            const number = parseFloat(problem.replace(/[^\d.]/g, ''));
-            if (number >= 0) {
-                solution = `Karekök sonucu: √${number} = ${Math.sqrt(number).toFixed(2)}`;
+        }
+        // Tam sayılar
+        else if (/tamsayı|tam\s*sayı/i.test(problem)) {
+            if (numbers.length === 1) {
+                solution = `${numbers[0]} bir tam sayıdır (pozitif, negatif veya sıfır)`;
             } else {
-                solution = "Negatif sayıların karekökü olmaz hacı!";
+                solution = `Tam sayılar: ${numbers.filter(Number.isInteger).join(', ')}`;
             }
+        }
+        // Çarpanlar ve katlar
+        else if (/çarpan|kat/i.test(problem)) {
+            if (numbers.length === 1) {
+                const n = numbers[0];
+                const factors = [];
+                for (let i = 1; i <= n; i++) {
+                    if (n % i === 0) factors.push(i);
+                }
+                solution = `${n} sayısının çarpanları: ${factors.join(', ')}`;
+            } else if (numbers.length === 2) {
+                const [a, b] = numbers;
+                // EBOB
+                const gcd = (x, y) => y === 0 ? x : gcd(y, x % y);
+                // EKOK
+                const lcm = (x, y) => (x * y) / gcd(x, y);
+                solution = `EBOB(${a},${b}) = ${gcd(a, b)}\nEKOK(${a},${b}) = ${lcm(a, b)}`;
+            }
+        }
+        // Üslü ifadeler
+        else if (/üslü|üs\s*sayı/i.test(problem) && cleanedProblem.includes('^')) {
+            const base = numbers[0];
+            const exponent = numbers[1];
+            solution = `${base}^${exponent} = ${Math.pow(base, exponent)}`;
+        }
+        // Karekök
+        else if /(karekök|√)/i.test(problem)) {
+            const n = numbers[0] || 16;
+            solution = `√${n} = ${Math.sqrt(n).toFixed(4)}`;
+        }
+        
+        /* 2. KESİRLER, ONDALIKLAR VE YÜZDELER */
+        // Kesirler
+        else if (/kesir|bölü/i.test(problem) && cleanedProblem.includes('/')) {
+            const simplifyFraction = (numerator, denominator) => {
+                const gcd = (a, b) => b ? gcd(b, a % b) : a;
+                const divisor = gcd(numerator, denominator);
+                return [numerator/divisor, denominator/divisor];
+            };
             
-        } else if (problem.includes('=') && problem.includes('x')) {
-            // Denklem çözme
-            const equationParts = problem.split('=');
-            const leftSide = equationParts[0].trim();
-            const rightSide = equationParts[1].trim();
+            const [a, b] = numbers;
+            const simplified = simplifyFraction(a, b);
+            solution = `${a}/${b} kesiri ${simplified[0]}/${simplified[1]} şeklinde sadeleşir`;
             
-            if (leftSide.includes('x')) {
-                const coefficient = parseFloat(leftSide.replace(/[^\d.-]/g, '')) || 1;
-                const constant = parseFloat(rightSide);
-                const xValue = (constant / coefficient).toFixed(2);
+            if (cleanedProblem.includes('+') || cleanedProblem.includes('-')) {
+                const [c, d] = numbers.slice(2);
+                const commonDenominator = b * d;
+                const newA = a * d;
+                const newC = c * b;
                 
-                solution = `Denklem çözümü:\n${leftSide} = ${rightSide}\nx = ${constant} / ${coefficient}\nx = ${xValue}`;
+                if (cleanedProblem.includes('+')) {
+                    const resultNum = newA + newC;
+                    solution += `\nToplama: ${a}/${b} + ${c}/${d} = ${resultNum}/${commonDenominator}`;
+                } else {
+                    const resultNum = newA - newC;
+                    solution += `\nÇıkarma: ${a}/${b} - ${c}/${d} = ${resultNum}/${commonDenominator}`;
+                }
             }
-            
-        } else {
-            // 7. sınıf matematik soruları
-            if (problem.includes('üslü sayı') || problem.includes('üs')) {
-                solution = "Üslü sayılar: 2³ = 2×2×2 = 8 gibi hacı! Tabandaki sayıyı üs kadar çarpıyoruz.";
-            } else if (problem.includes('cebir') || problem.includes('denklem')) {
-                solution = "Cebirsel ifadeler: 2x + 5 = 15 gibi denklemlerde x'i yalnız bırakıyoruz hacı!";
-            } else {
-                solution = "Hacı, bu matematik problemini tam anlayamadım. Daha detaylı anlatır mısın?";
+        }
+        // Ondalık sayılar
+        else if (/ondalık|desimal/i.test(problem)) {
+            if (numbers.length === 1) {
+                const decimal = numbers[0].toString().split('.')[1] || '0';
+                solution = `${numbers[0]} sayısında ${decimal.length} ondalık basamak var`;
+            } else if (cleanedProblem.includes('+') || cleanedProblem.includes('-')) {
+                const result = cleanedProblem.includes('+') ? 
+                    numbers.reduce((a, b) => a + b, 0) : 
+                    numbers.reduce((a, b) => a - b);
+                solution = `Sonuç: ${result.toFixed(4)}`;
+            }
+        }
+        // Yüzdeler
+        else if (/yüzde|%/i.test(problem)) {
+            if (cleanedProblem.includes('%')) {
+                const percent = numbers[0];
+                const value = numbers[1] || 100;
+                solution = `${percent}% of ${value} = ${(value * percent / 100).toFixed(2)}`;
+            } else if (cleanedProblem.includes('yüzde')) {
+                const part = numbers[0];
+                const whole = numbers[1] || 100;
+                solution = `${part} sayısı ${whole} sayısının ${((part/whole)*100).toFixed(2)}%'sidir`;
+            }
+        }
+        // Oran ve orantı
+        else if (/oran|orantı/i.test(problem)) {
+            if (numbers.length === 2) {
+                const gcd = (a, b) => b ? gcd(b, a % b) : a;
+                const divisor = gcd(numbers[0], numbers[1]);
+                solution = `${numbers[0]}:${numbers[1]} oranı ${numbers[0]/divisor}:${numbers[1]/divisor} şeklinde sadeleşir`;
+            } else if (numbers.length === 3 && cleanedProblem.includes('=')) {
+                // a/b = c/x
+                const x = (numbers[1] * numbers[2]) / numbers[0];
+                solution = `${numbers[0]}/${numbers[1]} = ${numbers[2]}/x → x = ${x.toFixed(2)}`;
             }
         }
         
-        if (showInModal) {
-            mathSolution.innerHTML = solution.replace(/\n/g, '<br>');
+        /* 3. GEOMETRİ */
+        // Açılar
+        else if (/açı|derece/i.test(problem)) {
+            if (numbers.length === 1) {
+                const angle = numbers[0];
+                let type;
+                if (angle < 90) type = "dar açı";
+                else if (angle === 90) type = "dik açı";
+                else if (angle < 180) type = "geniş açı";
+                else if (angle === 180) type = "doğru açı";
+                else type = "yansıyan açı";
+                
+                solution = `${angle}° bir ${type}`;
+            } else if (cleanedProblem.includes('üçgen')) {
+                const sum = numbers.reduce((a, b) => a + b, 0);
+                if (sum === 180) {
+                    solution = `Üçgenin açıları toplamı 180° (${numbers.join(' + ')} = 180)`;
+                } else {
+                    solution = `Bu açılar üçgen oluşturmaz (${numbers.join(' + ')} = ${sum} ≠ 180)`;
+                }
+            }
+        }
+        // Çokgenler
+        else if (/(\d+)gen|çokgen/i.test(problem)) {
+            const n = parseInt(cleanedProblem.match(/(\d+)gen/)?.[1]) || 5;
+            const icAci = (n-2)*180/n;
+            const disAci = 360/n;
+            solution = `${n}-gen (${n} kenarlı çokgen):\n` +
+                      `- Her iç açı = ${icAci}°\n` +
+                      `- Her dış açı = ${disAci}°\n` +
+                      `- Köşegen sayısı = ${n*(n-3)/2}\n` +
+                      `- Toplam iç açılar = ${(n-2)*180}°`;
+        }
+        // Çember ve daire
+        else if (/(çember|daire)/i.test(problem)) {
+            const r = numbers[0] || 1;
+            solution = `Daire (r=${r}):\n` +
+                      `- Çevre = ${(2*Math.PI*r).toFixed(4)}\n` +
+                      `- Alan = ${(Math.PI*r*r).toFixed(4)}\n` +
+                      `- Merkez açı (360°) tüm çevreyi görür`;
+        }
+        // Alan hesaplama
+        else if (/alan/i.test(problem)) {
+            if (cleanedProblem.includes('kare')) {
+                const a = numbers[0] || 5;
+                solution = `Kare alanı (kenar=${a}): ${a*a}`;
+            } else if (cleanedProblem.includes('dikdörtgen')) {
+                const [a, b] = numbers.length >= 2 ? numbers : [4, 6];
+                solution = `Dikdörtgen alanı (${a}x${b}): ${a*b}`;
+            } else if (cleanedProblem.includes('üçgen')) {
+                const [a, h] = numbers.length >= 2 ? numbers : [5, 8];
+                solution = `Üçgen alanı (taban=${a}, yükseklik=${h}): ${(a*h/2).toFixed(2)}`;
+            } else if (cleanedProblem.includes('paralelkenar')) {
+                const [a, h] = numbers.length >= 2 ? numbers : [6, 7];
+                solution = `Paralelkenar alanı (taban=${a}, yükseklik=${h}): ${a*h}`;
+            }
+        }
+        // Geometrik cisimler
+        else if (/(küp|prizma|silindir|koni|küre)/i.test(problem)) {
+            if (cleanedProblem.includes('küp')) {
+                const a = numbers[0] || 3;
+                solution = `Küp (kenar=${a}):\n` +
+                          `- Hacim = ${a*a*a}\n` +
+                          `- Yüzey alanı = ${6*a*a}`;
+            } else if (cleanedProblem.includes('prizma')) {
+                const [a, b, c] = numbers.length >= 3 ? numbers : [3, 4, 5];
+                solution = `Dikdörtgen prizma (${a}x${b}x${c}):\n` +
+                          `- Hacim = ${a*b*c}\n` +
+                          `- Yüzey alanı = ${2*(a*b + a*c + b*c)}`;
+            } else if (cleanedProblem.includes('silindir')) {
+                const [r, h] = numbers.length >= 2 ? numbers : [3, 8];
+                solution = `Silindir (r=${r}, h=${h}):\n` +
+                          `- Hacim = ${(Math.PI*r*r*h).toFixed(4)}\n` +
+                          `- Yüzey alanı = ${(2*Math.PI*r*(r+h)).toFixed(4)}`;
+            }
+        }
+        
+        /* 4. CEBİR */
+        // Cebirsel ifadeler
+        else if (/cebir|ifade/i.test(problem)) {
+            if (cleanedProblem.includes('(') && cleanedProblem.includes(')')) {
+                // Basit cebirsel ifade sadeleştirme
+                const expr = cleanedProblem.replace(/[\(\)]/g, '');
+                solution = `Cebirsel ifade: ${expr}`;
+            }
+        }
+        // Denklemler
+        else if (/denklem/i.test(problem) && cleanedProblem.includes('x')) {
+            if (cleanedProblem.includes('x²')) {
+                // İkinci derece denklem
+                const coeffs = cleanedProblem.match(/(-?\d+)x²|(-?\d+)x|([+-]\d+)/g) || [];
+                const a = parseFloat(coeffs[0]) || 1;
+                const b = parseFloat(coeffs[1]) || 0;
+                const c = parseFloat(coeffs[2]) || 0;
+                
+                const discriminant = b*b - 4*a*c;
+                if (discriminant < 0) {
+                    const realPart = (-b/(2*a)).toFixed(2);
+                    const imagPart = (Math.sqrt(-discriminant)/(2*a)).toFixed(2);
+                    solution = `Denklem: ${a}x² + ${b}x + ${c} = 0\n` +
+                              `Karmaşık Kökler: ${realPart} ± ${imagPart}i`;
+                } else {
+                    const x1 = (-b + Math.sqrt(discriminant))/(2*a);
+                    const x2 = (-b - Math.sqrt(discriminant))/(2*a);
+                    solution = `Denklem: ${a}x² + ${b}x + ${c} = 0\n` +
+                              `Kökler: x₁ = ${x1.toFixed(4)}, x₂ = ${x2.toFixed(4)}`;
+                }
+            } else {
+                // Doğrusal denklem
+                const parts = cleanedProblem.split('=');
+                const left = parts[0].replace(/x/g, '*1');
+                const right = parts[1];
+                const xValue = (eval(right) - eval(left.replace(/x/, '0'))) / eval(left.replace(/[^x]*x/, '1'));
+                solution = `Denklem: ${parts[0]} = ${parts[1]}\nÇözüm: x = ${xValue}`;
+            }
+        }
+        
+        /* 5. VERİ ANALİZİ VE OLASILIK */
+        // Veri analizi (ortalama, medyan, mod)
+        else if (/ortalama|medyan|mod/i.test(problem)) {
+            if (numbers.length > 0) {
+                // Ortalama
+                const mean = numbers.reduce((a, b) => a + b, 0) / numbers.length;
+                
+                // Medyan
+                const sorted = [...numbers].sort((a, b) => a - b);
+                let median;
+                if (sorted.length % 2 === 0) {
+                    median = (sorted[sorted.length/2 - 1] + sorted[sorted.length/2]) / 2;
+                } else {
+                    median = sorted[Math.floor(sorted.length/2)];
+                }
+                
+                // Mod
+                const frequency = {};
+                sorted.forEach(n => frequency[n] = (frequency[n] || 0) + 1);
+                const maxFreq = Math.max(...Object.values(frequency));
+                const modes = Object.keys(frequency).filter(k => frequency[k] === maxFreq);
+                
+                solution = `Veri seti: ${numbers.join(', ')}\n` +
+                          `- Ortalama = ${mean.toFixed(2)}\n` +
+                          `- Medyan = ${median}\n` +
+                          `- Mod = ${modes.length > 1 ? modes.join(', ') + ' (çoklu mod)' : modes[0]}`;
+            }
+        }
+        // Olasılık
+        else if /olasılık|ihtimal/i.test(problem)) {
+            if (numbers.length === 2) {
+                const [favourable, total] = numbers;
+                solution = `Olasılık = İstenen / Toplam = ${favourable}/${total} = ${(favourable/total).toFixed(4)} (${(favourable/total*100).toFixed(2)}%)`;
+            }
+        }
+        
+        /* DESTEKLENMEYEN SORULAR */
+        else {
+            solution = "Ortaokul Matematik Konuları Desteklenmektedir:\n" +
+                      "1. SAYILAR VE İŞLEMLER\n" +
+                      "- Doğal sayılar, tam sayılar\n" +
+                      "- Kesirler, ondalık sayılar, yüzdeler\n" +
+                      "- Çarpanlar, katlar, EBOB-EKOK\n" +
+                      "- Üslü ve kareköklü ifadeler\n" +
+                      "- Oran ve orantı\n\n" +
+                      "2. GEOMETRİ\n" +
+                      "- Açılar, üçgenler, çokgenler\n" +
+                      "- Çember, daire\n" +
+                      "- Alan ve hacim hesaplamaları\n" +
+                      "- Geometrik cisimler\n\n" +
+                      "3. CEBİR\n" +
+                      "- Cebirsel ifadeler\n" +
+                      "- Denklemler (doğrusal ve ikinci derece)\n\n" +
+                      "4. VERİ ANALİZİ VE OLASILIK\n" +
+                      "- Veri analizi (ortalama, medyan, mod)\n" +
+                      "- Basit olasılık hesaplamaları\n\n" +
+                      "Örnekler:\n" +
+                      "'24 ve 36'nın EBOB'u', '3/4 + 1/2', '15% of 200',\n" +
+                      "'üçgenin açıları 30 60 90', 'küpün hacmi kenar=5',\n" +
+                      "'x²-5x+6=0', '2x+5=15', 'veri seti 5 7 3 9 5'";
+        }
+        
+        // Sonuç gösterimi
+        if (showInModal && typeof mathSolution !== 'undefined') {
+            mathSolution.innerHTML = solution.toString().replace(/\n/g, '<br>');
             mathResult.style.display = 'block';
         }
         
         return solution;
         
     } catch (e) {
-        return "Hacı, bu işlemi yapamadım! Belki daha basit bir şekilde sorsan?";
+        return `Hata: ${e.message}\nLütfen geçerli bir matematik ifadesi girin.`;
     }
 }
+ 
+ 
 
             function resetStoryModal() {
                 storyPrompt.value = '';
